@@ -9,7 +9,7 @@ category: 技术分享
 
 ## 五、面向连接的传输：TCP（Transmission Control Protocol）
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f0975ee9041c034c9c5bea80bb232542.png)
+![在这里插入图片描述](images/csdn_f0975ee9041c034c9c5bea80bb232542.png)
 
 ### 1.概述
 
@@ -30,7 +30,7 @@ category: 技术分享
 **`MSS`：最大报文段大小**
 MSS就是在应用层的传下来的字节流信息被分成一定数量的段
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/58c5cc113a10f1ad8f128442bafbeb2f.png)
+    ![在这里插入图片描述](images/csdn_58c5cc113a10f1ad8f128442bafbeb2f.png)
     
 - 面向连接:
     
@@ -46,11 +46,11 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 - 序号：就是把字节流切成一个个MSS，每个MSS根据上个MSS形成的偏移量，ACK等于序号时，实际上时序号之前的全部但不包括序号所代表的数据
 - 确认号：期望从另一方收到的下一个字节的序号；累积确认
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/af7bf464b5aff725c5994172d27eac0f.png)
+![在这里插入图片描述](images/csdn_af7bf464b5aff725c5994172d27eac0f.png)
 
 ### 1.1.1 TCP序号和确认号
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/153764aacc8f4e9d4d4351d9e9af6bb9.png)
+![在这里插入图片描述](images/csdn_153764aacc8f4e9d4d4351d9e9af6bb9.png)
 
 ### 2.TCP往返延时（RTT）和超时（下面还会再复习一遍）
 
@@ -74,13 +74,13 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 
 因为SampleRTT会变化无常，所以我们的参考要以平均值为准，可以看到公式，越靠后前面的采样值影响就越小
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9e20f9e3c2e04cbadde6d62e84261619.png)
+![在这里插入图片描述](images/csdn_9e20f9e3c2e04cbadde6d62e84261619.png)
 
 ### 2.2 设置超时
 
 形容的可以理解为：这个超时时间设置的十分保守，大概会等待四个间隔的时间也就是一次首次确认+三次冗余确认，四次以后还没来就大概率信息丢失
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/909f9c85f070735198eb91c7ef726cb2.png)
+![在这里插入图片描述](images/csdn_909f9c85f070735198eb91c7ef726cb2.png)
 
 ### 3.TCP如何向上层提供可靠的数据传输(RDT)
 
@@ -122,7 +122,7 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 > 如果后沿已经移动到前沿的位置且还有没有确认这时定时器是要被关闭的更新已被确认的报文序号如果当前还有未被确认的报文段，重新启动定时器
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/85bc23c5035cfccd3d6cac0f2b9b3094.png)
+![在这里插入图片描述](images/csdn_85bc23c5035cfccd3d6cac0f2b9b3094.png)
 
 ### 3.3 超时重传（累计确认+期待）
 
@@ -133,7 +133,7 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 - **首次重传，由于没有前面的参照，RTT~S~就取值本次的RTT，然后RTT~D~为RTT~S~的一半，RTO=RTT~S~+4RTT~D~**
 - 今后重传及动态变化：首先得到本次RTT的时间，引入两个常量`α取1/8，β取1/4`。==然后新的RTT~S~=（1-α）×（旧的RTT~S~)+α×（本次RTT样本）；新的RTT~D~=（1-β）×（旧的RTT~D~)+β×|RTT~S~ - 本次RTT样本|，RTO = RTT~S~+4RTT~D~==
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/45dbc5517936a08e0c8222288ca44ffe.png)
+    ![在这里插入图片描述](images/csdn_45dbc5517936a08e0c8222288ca44ffe.png)
     
 - 快速重传
 
@@ -162,7 +162,7 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 - 发送方限制未确认(“in-flight”)字节的个数 ≤ 接收方发送过来的**rwnd**值
 - 保证接收方不会被淹没
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4c083ca4a53c864a68fabd5a5bb7ea98.png)
+    ![在这里插入图片描述](images/csdn_4c083ca4a53c864a68fabd5a5bb7ea98.png)
     
 - 概述
 
@@ -196,7 +196,7 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 **用最近收到的字节 - 最近被读的字节 = 在buffer中缓冲的字节（就是还没来得及读的字节）
 总的缓冲区 - 在buffer中缓冲的字节 = 空闲的 = RcvWindow（这个字段就就是TCP报文结构中很重要的一个字段）**
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1ca25784e275bcb0e5b0fd833ba728ac.png)
+![在这里插入图片描述](images/csdn_1ca25784e275bcb0e5b0fd833ba728ac.png)
 
 ### 5.TCP连接管理（三次握手、四次挥手）
 
@@ -205,7 +205,7 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 - 同意建立连接（每一方都知道对方愿意建立连接）
 - 同意连接参数
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ea6a455488723873781564292ffbac52.png)
+    ![在这里插入图片描述](images/csdn_ea6a455488723873781564292ffbac52.png)
     
 
 ### 5.1 概述
@@ -217,16 +217,16 @@ MSS就是在应用层的传下来的字节流信息被分成一定数量的段
 
 ### 5.2 二次握手
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/93fd749d560638b5aa013352a800fc01.png)
+![在这里插入图片描述](images/csdn_93fd749d560638b5aa013352a800fc01.png)
 
 - 二次握手的失败场景
 1. 在两次握手中又会以下难以处理的情况：一是如果在确认请求的发送过程中请求端的超时器超时重新发了一个请求这个请求到达时间是连接已经建立完成后，那么客户端就不会在建立了，此时服务器还在维护这个后来的请求，称为**半连接**；
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/79f48c169f5259630ff1e588e741c6ae.png)
+    ![在这里插入图片描述](images/csdn_79f48c169f5259630ff1e588e741c6ae.png)
     
 2. 二是在一的基础上，又发生了数据超时重传，数据的重新发送而且还被成功接收当作新的数据
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8e661df4d6367d25c3d96c92462d67d8.png)
+    ![在这里插入图片描述](images/csdn_8e661df4d6367d25c3d96c92462d67d8.png)
     
 
 ### 5.3 三次握手
@@ -242,7 +242,7 @@ TCP会处理HTTP传下来的报文，如果超过MSS（最大报文长度）会�
 - 9位的标志位：标志现在连接是什么状态
 - 16 位的紧急数据指针字段，当紧急数据存在并给出指向紧急数据尾的指针的时候， TCP 必须通知接收端的上层实体 。
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/923267e3c51d37cbd1c7f419de909ecd.png)
+    ![在这里插入图片描述](images/csdn_923267e3c51d37cbd1c7f419de909ecd.png)
     
 - 标志位的总结
 
@@ -312,7 +312,7 @@ TCP会处理HTTP传下来的报文，如果超过MSS（最大报文长度）会�
         > 
 - 流程图
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/776ee83600076989fe5e3abbd9e1c538.png)
+![在这里插入图片描述](images/csdn_776ee83600076989fe5e3abbd9e1c538.png)
 
 - 为什么挥手需要四次呢
 
@@ -449,7 +449,7 @@ TCP会处理HTTP传下来的报文，如果超过MSS（最大报文长度）会�
 
 ### 2.1 吞吐量
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1ee94b62b5ccd115cee600d9ed35e5bb.png)
+![在这里插入图片描述](images/csdn_1ee94b62b5ccd115cee600d9ed35e5bb.png)
 
 ### 2.2 公平性
 
@@ -459,7 +459,7 @@ TCP会处理HTTP传下来的报文，如果超过MSS（最大报文长度）会�
 > 
 - 公平阐述
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9a589b3b5c4c6f03449ce1b3176a1b10.png)
+    ![在这里插入图片描述](images/csdn_9a589b3b5c4c6f03449ce1b3176a1b10.png)
     
 - UDP
 

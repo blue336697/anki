@@ -458,4 +458,4 @@ func (kv *KVServer) PersistSnapShot() []byte {
 - 在初始化的时候需要读取是否再存快照，如果有就要进行解码
 - 并增加一个新的变量`lastIncludeIndex`去确保每次编解码时的快照位于日志的什么部分
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c2a89fde1116d357941c2e55ccccfe8e.png)
+    ![在这里插入图片描述](images/csdn_c2a89fde1116d357941c2e55ccccfe8e.png)

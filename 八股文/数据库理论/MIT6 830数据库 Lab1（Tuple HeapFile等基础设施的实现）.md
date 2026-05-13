@@ -476,7 +476,7 @@ public class Tuple implements Serializable {
 > - `CataLog`：目录。数据库包含很多张表，每张表有一个TupleDesc，以及这个TupleDesc规范下的很多个Tuple。Catalog管理着数据库中的所有表。调用数据库的Catalog需要调用Database.getCatalog()方法。
 > - `DbFile`：为数据库磁盘文件的接口。数据库中每张表对应着一个DbFile，DbFile储存着表中的所有信息。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc01710c2e02252f65191067592aafce.png)
+>     ![在这里插入图片描述](images/csdn_cc01710c2e02252f65191067592aafce.png)
 >     
 - 代码
 

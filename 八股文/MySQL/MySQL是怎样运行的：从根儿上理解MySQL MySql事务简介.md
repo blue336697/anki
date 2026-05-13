@@ -35,7 +35,7 @@ category: 数据库
 > 
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cabd5891fbafe2fb85285abaaa9b432e.png)
+> ![在这里插入图片描述](images/csdn_cabd5891fbafe2fb85285abaaa9b432e.png)
 > 
 
 ### 1.3 一致性（Consistency）
@@ -78,7 +78,7 @@ category: 数据库
 > 
 > **只有当事务处于提交的或者中止的状态时，一个事务的生命周期才算是结束了**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/766add9c5302bd6fbe055f5ed1f50bed.png)
+> ![在这里插入图片描述](images/csdn_766add9c5302bd6fbe055f5ed1f50bed.png)
 > 
 
 ## 3.MySQL中事务的语法
@@ -89,11 +89,11 @@ mysql为我们提供了两种开启事务的方式：这两种方式起到的效
 
 1. `BEGIN;------>加入事务的语句.......;`
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/04b1196471842f9db81ff77b3dfe53cf.png)
+    ![在这里插入图片描述](images/csdn_04b1196471842f9db81ff77b3dfe53cf.png)
     
 2. `START TRANSACTION`
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f13b71eaa3dc305ec0cf34b7dd7b484a.png)
+    ![在这里插入图片描述](images/csdn_f13b71eaa3dc305ec0cf34b7dd7b484a.png)
     
 
 ### 3.1.1 START TRANSACTION
@@ -101,7 +101,7 @@ mysql为我们提供了两种开启事务的方式：这两种方式起到的效
 > 厉害就厉害在这个语句后面可以跟几个修饰符，你可以试试只读和读写能同时设置吗？
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e404b55b1c90e9366c80c52bb6596306.png)
+> ![在这里插入图片描述](images/csdn_e404b55b1c90e9366c80c52bb6596306.png)
 > 
 1. `READ ONLY` ：标识当前事务是一个只读事务，也就是属于该事务的数据库操作只能读取数据，而不能修改数据。
     
@@ -147,7 +147,7 @@ mysql为我们提供了两种开启事务的方式：这两种方式起到的效
 > MyISAM、Memory
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/45a76962a6bda709111307f9505e05c8.png)
+> ![在这里插入图片描述](images/csdn_45a76962a6bda709111307f9505e05c8.png)
 > 
 
 ### 3.5 自动提交
@@ -159,7 +159,7 @@ mysql为我们提供了两种开启事务的方式：这两种方式起到的效
 > 
 > **你如果想关掉就手动开启事务或者把这个系统变量设置为`OFF`**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5edd1d105da82af1c5e8f10c7f5f6856.png)
+> ![在这里插入图片描述](images/csdn_5edd1d105da82af1c5e8f10c7f5f6856.png)
 > 
 
 ### 3.6 隐式提交
@@ -181,4 +181,4 @@ mysql为我们提供了两种开启事务的方式：这两种方式起到的效
 > 
 - 用法如下
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/960ea759e8389579e175e147322bf5a0.png)
+    ![在这里插入图片描述](images/csdn_960ea759e8389579e175e147322bf5a0.png)

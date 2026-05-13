@@ -14,7 +14,7 @@ category: 缓存
 > 当服务器使用了SLAVEOF命令，该服务器就变成目标服务器的从服务器
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fcf39f97facf4e131320a17df92a3ab1.png)
+> ![在这里插入图片描述](images/csdn_fcf39f97facf4e131320a17df92a3ab1.png)
 > 
 
 ```sql
@@ -36,7 +36,7 @@ category: 缓存
 
 - 流程图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c491ab09a9cb1427e1843d1709ec381e.png)
+    ![在这里插入图片描述](images/csdn_c491ab09a9cb1427e1843d1709ec381e.png)
     
 
 ### 1.2 命令传播
@@ -72,7 +72,7 @@ category: 缓存
 > 就是为了解决需要同步的RDB文件太大，这次改进过的直接发送断连期间的命令，从服务器执行就完事了
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/83d8d48ed008bfb880f0555708c0f306.png)
+> ![在这里插入图片描述](images/csdn_83d8d48ed008bfb880f0555708c0f306.png)
 > 
 
 ### 2.1 部分重同步的实现
@@ -89,7 +89,7 @@ category: 缓存
 > 在主服务器和从服务器会分别维护一个复制偏移量，如果主服务器转播了xx字节的命令长度，那么对应主从服务器的偏移量+xx；那么对比主从服务器的偏移量就能知道是否是同步状态
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c69da708b7114322bdbd2fff9b1ecd08.png)
+> ![在这里插入图片描述](images/csdn_c69da708b7114322bdbd2fff9b1ecd08.png)
 > 
 
 > 当某个从服务器跟主服务器断线后，进行重连会发送自己的偏移量，这时的偏移量对比就不一样的，这时会根据复制积压缓冲区的内容来
@@ -99,7 +99,7 @@ category: 缓存
 > 在主服务器每次执行命令都会将命令写入到复制积压缓冲区，主服务器维护这个区域就是为了断连以后从服务器的同步问题，缓冲区是有一个固定大小的FIFO队列组成，当设置好一个固定大小后主服务器每次写入数据，当容量到达限制将会进行出队
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a7cf82939ed2de3de88c3f51d18ad07.png)
+> ![在这里插入图片描述](images/csdn_8a7cf82939ed2de3de88c3f51d18ad07.png)
 > 
 > - 偏移量在这个缓冲区的范围内，那么直接回传给偏移量到重连之间的命令就好
 > - **如果偏移量不在这个范围内了，说明更新的太快，那么就执行完整重同步**
@@ -107,7 +107,7 @@ category: 缓存
 > 要根据需要适当调整这个缓冲区的大小
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2eacf7a5b2654c02616813d0fa4ad735.png)
+> ![在这里插入图片描述](images/csdn_2eacf7a5b2654c02616813d0fa4ad735.png)
 > 
 - 服务器运行ID
 

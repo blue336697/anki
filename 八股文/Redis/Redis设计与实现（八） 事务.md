@@ -7,7 +7,6 @@ summary: Redis通过MULTI、EXEC、WATCH等命令来实现事务（transaction)�
 tags: Redis
 category: 缓存
 
-@[toc]
 
 # 事务
 
@@ -109,7 +108,7 @@ watch "xx" "xx" "xx"
 > 可以看到在T4执行完后，在T5会拒接执行事务
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/12bc53797c1b731a9a9332f9bce62b4c.png)
+> ![在这里插入图片描述](images/csdn_12bc53797c1b731a9a9332f9bce62b4c.png)
 > 
 
 ### 2.1 使用WATCH命令监视数据库键
@@ -122,7 +121,7 @@ watch "xx" "xx" "xx"
 > 从图中可以看到，name键被c1和c2监视，其他同理
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fcafc3487b90ac8353cf6e8640e77283.png)
+> ![在这里插入图片描述](images/csdn_fcafc3487b90ac8353cf6e8640e77283.png)
 > 
 - 注意
 
@@ -169,14 +168,14 @@ watch "xx" "xx" "xx"
 > 执行失败是命令错误而被服务器拒接执行，导致整个事务都不会执行
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/459ce95687df85b5db4ef4c45304851f.png)
+> ![在这里插入图片描述](images/csdn_459ce95687df85b5db4ef4c45304851f.png)
 > 
 - 执行完才报错（即不支持回滚）
 
 > Redis的事务和传统的关系型数据库事务的最大区别在于，Redis不支持事务回滚机制( rollback )，即使事务队列中的某个命令在执行期间出现了错误，整个事务也会继续执行下去，直到将事务队列中的所有命令都执行完毕为止。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/72aa6a9ebdc9910a7f76aabdee4c0717.png)
+> ![在这里插入图片描述](images/csdn_72aa6a9ebdc9910a7f76aabdee4c0717.png)
 > 
 
 ### 3.2 一致性（Consistency）
@@ -234,5 +233,5 @@ watch "xx" "xx" "xx"
 > 不论Redis在什么模式下运作，在一个事务的最后加上SAVE命令总可以保证事务的耐久性:
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/eff2e3969eea7795961e53bc764e9b98.png)
+> ![在这里插入图片描述](images/csdn_eff2e3969eea7795961e53bc764e9b98.png)
 >

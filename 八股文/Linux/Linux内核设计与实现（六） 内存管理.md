@@ -63,7 +63,7 @@ struct page {
 > 例如在x86体系结构上，ISA设备就不能在整个32位9的地址空间中执行DMA，因为ISA 设备只能访问物理内存的前16MB。因此，ZONE_DMA在x86上包含的页都在0-16MB的内存范围里。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8ebb859c3cf228dcbd90576eeec77d07.png)
+> ![在这里插入图片描述](images/csdn_8ebb859c3cf228dcbd90576eeec77d07.png)
 > 
 - 注意
 

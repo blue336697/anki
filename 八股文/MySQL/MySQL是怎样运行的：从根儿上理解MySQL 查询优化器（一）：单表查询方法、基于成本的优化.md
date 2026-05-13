@@ -145,7 +145,7 @@ SELECT * FROM single_table WHERE key2 IN (1438, 6328) OR (key2 >= 38 AND key2 <=
 > 1. 所有搜索条件都可以使用某个索引的情况
 > `SELECT * FROM single_table WHERE key2 > 100 AND key2 > 200;`
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/244d4e299e0fc397cd780a2ba0f3e1dc.png)
+>     ![在这里插入图片描述](images/csdn_244d4e299e0fc397cd780a2ba0f3e1dc.png)
 >     
 
 > 有的搜索条件无法使用索引的情况

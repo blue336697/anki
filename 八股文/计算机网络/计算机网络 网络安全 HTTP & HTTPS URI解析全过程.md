@@ -18,7 +18,7 @@ category: 技术分享
 - 响应行：包含表明响应结果的状态码，原因短语和 HTTP 版本。
 - 可能包含 HTTP 的 RFC 里未定义的首部（Cookie 等）
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a80a9872f42d8b033931553152911755.png)
+    ![在这里插入图片描述](images/csdn_a80a9872f42d8b033931553152911755.png)
     
 
 ### 1.2 HTTP的缺点
@@ -45,11 +45,11 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 
 的组合使用，通常HTTP直接与TCP通信，当使用SSL时，则先演变为SSL通信，再由SSL与TCP通信
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9a0b129fcc00a7be189323b82d03e77b.png)
+![在这里插入图片描述](images/csdn_9a0b129fcc00a7be189323b82d03e77b.png)
 
 - SSL和TLS的关系
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/78d9d232d9ab30e8ca15403673afbfa3.png)
+    ![在这里插入图片描述](images/csdn_78d9d232d9ab30e8ca15403673afbfa3.png)
     
 
 ### 1. 通信加密
@@ -99,13 +99,13 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 7. 拿到证书的公开密钥对报文进行加密传输
 8. 服务器用自己的私有密钥进行解密
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/63b2aaa485d9514dda418db41ad027d6.png)
+    ![在这里插入图片描述](images/csdn_63b2aaa485d9514dda418db41ad027d6.png)
     
 - 注意
 
 上面过程中我们没有写具体是怎么对证书进行验证的例如第6步
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/30040f4dfbd634bfb3aea2912d128bf5.png)
+![在这里插入图片描述](images/csdn_30040f4dfbd634bfb3aea2912d128bf5.png)
 
 - 证书链（信任链）
 
@@ -113,7 +113,7 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 
 ，所以一般会一直想上寻找到没有上级签发机构的证书，说明它是根证书
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bc2bc7766ba0fe1f2263dc694f46118e.png)
+![在这里插入图片描述](images/csdn_bc2bc7766ba0fe1f2263dc694f46118e.png)
 
 ### 3. 完整性保护
 
@@ -147,7 +147,7 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 1. 服务器同样发送`Change Cipher Spec`报文
 2. 服务器发送`Finished`报文。如果双⽅都验证加密和解密没问题，那么握⼿正式完成。
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/40aee9b9199be323a39197e7bf423b5b.png)
+    ![在这里插入图片描述](images/csdn_40aee9b9199be323a39197e7bf423b5b.png)
     
 - RSA的缺点
 
@@ -158,7 +158,7 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 
 - 与RSA的流程区别（大致有两个区别）
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7ac15dbd2f9b53912cf84519d38c71f1.png)
+![在这里插入图片描述](images/csdn_7ac15dbd2f9b53912cf84519d38c71f1.png)
 
 - 在第二阶段末尾多了个Server Key Exchange报文
 
@@ -186,7 +186,7 @@ SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security
 
 get方法用来获取请求访问已被URI识别的资源，指定的资源服务器解析请求报文后返回响应内容。如果是请求的资源为文本则保持原样返回（像CGI：通用网管接口，则需要处理后返回）
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/722682889520fbe077908ee87d6ac578.png)
+![在这里插入图片描述](images/csdn_722682889520fbe077908ee87d6ac578.png)
 
 - post：传输实体主体
 
@@ -218,7 +218,7 @@ get方法用来获取请求访问已被URI识别的资源，指定的资源服�
 > 
 - 1.0 与 1.1 之间请求方法的区别
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/466ee97aa49e8d1f133df0f031e68d7f.png)
+    ![在这里插入图片描述](images/csdn_466ee97aa49e8d1f133df0f031e68d7f.png)
     
 
 ### 2.GET和POST的区别
@@ -238,7 +238,7 @@ get方法用来获取请求访问已被URI识别的资源，指定的资源服�
 - ==幂等性==：Get是幂等性的；而Post不是。这是因为从下面后退刷新和缓存中能看出，Get方法使用完对双方都没有什么区别，而Post重新刷新意味着重新提交，可以改变服务器行为的，即不是幂等性
 - ==安全==：两者其实都是明文，但是Get的请求参数是跟在URI后面的，而Post的数据不会在在URI中显示，并且Post参数无法被缓存从日志信息上也无法查看
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/45b4438fe58dbe864147defaf31231e7.png)
+    ![在这里插入图片描述](images/csdn_45b4438fe58dbe864147defaf31231e7.png)
     
 1. 对于接口中的Get和Post
 

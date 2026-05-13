@@ -21,7 +21,7 @@ category: 数据库
 > - `record_type`：表示当前记录的类型，**0表示普通记录，1表示B+树非叶子节点记录，2表示最小记录，3表示最大记录**
 > - `next_record`：表示下一条记录的相对位置
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f6420f9337d897a71cb583f60632d215.png)
+![在这里插入图片描述](images/csdn_f6420f9337d897a71cb583f60632d215.png)
 
 - 隐藏列
 
@@ -37,7 +37,7 @@ category: 数据库
 > 
 > - 为了让箭头顺序（记录与记录之间是单链表）更直观我在前面的几个都标了序号；蓝色的就是记录头信息
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/533a3b542f02d341304ff51df9b864fe.png)
+>     ![在这里插入图片描述](images/csdn_533a3b542f02d341304ff51df9b864fe.png)
 >     
 
 ## 1.没有索引的查找
@@ -92,7 +92,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/23e6b658416d1e9823704119916e8172.png)
+![在这里插入图片描述](images/csdn_23e6b658416d1e9823704119916e8172.png)
 
 ### 2.1 一个简单的索引方案
 
@@ -121,7 +121,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 此时变成了这样，之所以页号是不连续的，因为页在存储空间里可能并不挨着，但是你仔细看这是不符合我们后面的页的记录必须大于前一个页的要求的
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/977f0fdeb810d58340ca1cb4db418907.png)
+> ![在这里插入图片描述](images/csdn_977f0fdeb810d58340ca1cb4db418907.png)
 > 
 
 ==第二步——页分裂==
@@ -133,7 +133,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 页分裂
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6a8f325eff6dbfe16d9d5e5ee92937e0.png)
+> ![在这里插入图片描述](images/csdn_6a8f325eff6dbfe16d9d5e5ee92937e0.png)
 > 
 
 ==第三步——给所有的页建立一个目录项——索引==
@@ -144,7 +144,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > - 页的用户记录中最小的主键值，我们用 key 来表示。
 > - 页号，我们用 page_no 表示。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/328cb38c804743e740346a0f2131f4ef.png)
+>     ![在这里插入图片描述](images/csdn_328cb38c804743e740346a0f2131f4ef.png)
 >     
 
 ### 2.2 InnoDB中的索引方案
@@ -167,7 +167,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 现在就变成这样了
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d582a64bc6261090897c0a2aaad940b8.png)
+> ![在这里插入图片描述](images/csdn_d582a64bc6261090897c0a2aaad940b8.png)
 > 
 - 那如果数据页太多怎么？
 
@@ -178,7 +178,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 因为页与页之间物理上可能不连续，目录页太多那我们怎么根据主键值快速定位一个存储 目录项记录 的页呢？其实也简单，为这些存储 目录项记录 的页再生成一个更高级的目录，就像是一个多级目录一样，大目录里嵌套小目录，小目录里才是实际的数据
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/adf840cfb2a5edc9237dc1dd6f10cc6b.png)
+> ![在这里插入图片描述](images/csdn_adf840cfb2a5edc9237dc1dd6f10cc6b.png)
 > 
 - B+树
 
@@ -275,7 +275,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 如果我们在加入一个c2列为1，它该插入到页4还是页5？答案是都不行，这个建立方式就是错的
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/aa11d0f490efb752e3540b10d0d45ea0.png)
+> ![在这里插入图片描述](images/csdn_aa11d0f490efb752e3540b10d0d45ea0.png)
 > 
 - 解决
 
@@ -303,7 +303,7 @@ mysql> INSERT INTO index_demo VALUES(1, 4, 'u'), (3, 9, 'd'), (5, 3, 'y');
 > 
 > - 将表中的记录按照记录的插入顺序单独存储在一个文件中，称之为 `数据文件` 。这个文件并不划分为若干个数据页，有多少记录就往这个文件中塞多少记录就成了。我们可以通过行号而快速访问到一条记录。我们就以上面的表为例子，里面随便插点数据看看结构，可以看没有按照之间的顺序所以二分查找也是空谈
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/427a723ff5a5a1eac8b9c3ae5d1558c3.png)
+>     ![在这里插入图片描述](images/csdn_427a723ff5a5a1eac8b9c3ae5d1558c3.png)
 >     
 > - 使用 MyISAM 存储引擎的表会把索引信息另外存储到一个称为 `索引文件` 的另一个文件中。 MyISAM 会单独为表的主键创建一个索引，只不过在索引的叶子节点中存储的不是完整的用户记录，而是 `主键值 + 行号` 的组合。也就是先通过索引找到对应的行号，再通过行号去找对应的记录。**在 MyISAM 中却需要进行一次 回表 操作，意味着 MyISAM 中建立的索引相当于全部都是 二级索引**
 > - 如果有需要的话，我们也可以对其它的列分别建立索引或者建立联合索引，原理和 InnoDB 中的索引差不多，不过在叶子节点处存储的是 相应的列 + 行号 。这些索引也全部都是 二级索引 。
@@ -377,7 +377,7 @@ CREATE TABLE person_info(
 > - 如果 name 列的值相同，则按照 birthday 列的值进行排序。
 > - 如果 birthday 列的值也相同，则按照 phone_number 的值进行排序。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d5f79412cd255bb7c09a4c91ceeacbb0.png)
+>     ![在这里插入图片描述](images/csdn_d5f79412cd255bb7c09a4c91ceeacbb0.png)
 >     
 
 ### 2.1 全值匹配

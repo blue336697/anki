@@ -77,7 +77,7 @@ category: 数据库
 > 
 > **聚簇索引的记录除了会保存完整的用户数据以外，而且还会自动添加名为trx_id、roll_pointer的隐藏列，如果用户没有在表中定义主键以及UNIQUE键，还会自动添加一个名为row_id的隐藏列**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b3946f85e45a6c7c210c7f5ab5682747.png)
+> ![在这里插入图片描述](images/csdn_b3946f85e45a6c7c210c7f5ab5682747.png)
 > 
 - trx_id的意思
 
@@ -121,7 +121,7 @@ CREATE TABLE undo_demo (
 > 
 - 结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8f54514870c8a47bf6916a8d8227429c.png)
+    ![在这里插入图片描述](images/csdn_8f54514870c8a47bf6916a8d8227429c.png)
     
 - 注意
 
@@ -159,7 +159,7 @@ INSERT INTO undo_demo(id, key1, col)
 > 
 > **记录主键占用的存储空间长度为 4 ，真实值为 1**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bec28e6fa173ecb6a05a39dce7a27d6f.png)
+> ![在这里插入图片描述](images/csdn_bec28e6fa173ecb6a05a39dce7a27d6f.png)
 > 
 - 第二条undo日志
 
@@ -167,7 +167,7 @@ INSERT INTO undo_demo(id, key1, col)
 这样（与第一条 undo日志 对比， undo no 和主键各列信息有不同）：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cda5d82888358d98206df43aeb858eaa.png)
+> ![在这里插入图片描述](images/csdn_cda5d82888358d98206df43aeb858eaa.png)
 > 
 - 小贴士
 
@@ -209,7 +209,7 @@ INSERT INTO undo_demo(id, key1, col)
 > FIL_PAGE_UNDO_LOG
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/36f372fc67bfb8c643b8db76dcaafaa2.png)
+> ![在这里插入图片描述](images/csdn_36f372fc67bfb8c643b8db76dcaafaa2.png)
 > 
 > ```
 > trx_id
@@ -245,7 +245,7 @@ INSERT INTO undo_demo(id, key1, col)
 > 正常记录链表
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ffb8b30f040fa20dffae07616f96c7e7.png)
+> ![在这里插入图片描述](images/csdn_ffb8b30f040fa20dffae07616f96c7e7.png)
 > 
 - 对上面的链表进行操作
 
@@ -276,7 +276,7 @@ INSERT INTO undo_demo(id, key1, col)
 >  delete mark
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/eddeb8ba33777af378231f2d5e0e87a9.png)
+> ![在这里插入图片描述](images/csdn_eddeb8ba33777af378231f2d5e0e87a9.png)
 > 
 - 阶段二（purge：净化的意思）：
 
@@ -287,7 +287,7 @@ INSERT INTO undo_demo(id, key1, col)
 >  PAGE_N_RECS 、上次插入记录的位置 PAGE_LAST_INSERT 、垃圾链表头节点的指针PAGE_FREE 、页面中可重用的字节数量 PAGE_GARBAGE 、还有页目录的一些信息等等。设计 InnoDB 的大叔把这个阶段称之为 purge 。
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bd9e7c1099f7e91188affa3f8e61a653.png)
+> ![在这里插入图片描述](images/csdn_bd9e7c1099f7e91188affa3f8e61a653.png)
 > 
 > **对照着图我们还要注意一点，将被删除记录加入到 垃圾链表 时，实际上加入到链表的头节点处，会跟着修改 PAGE_FREE 属性的值。**
 > 
@@ -304,9 +304,9 @@ INSERT INTO undo_demo(id, key1, col)
 > 
 - 结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/501b708142ba629ff5758a8bfa1e2aff.png)
+    ![在这里插入图片描述](images/csdn_501b708142ba629ff5758a8bfa1e2aff.png)
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f36d319c52b10e27e0fc33504c2eb4d9.png)
+    ![在这里插入图片描述](images/csdn_f36d319c52b10e27e0fc33504c2eb4d9.png)
     
 - old trx_id 和 old roll_pointer 属性
 
@@ -344,7 +344,7 @@ INSERT INTO undo_demo(id, key1, col)
 > 版本链
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bff922e936cada1432ef4fcd5493ea40.png)
+> ![在这里插入图片描述](images/csdn_bff922e936cada1432ef4fcd5493ea40.png)
 > 
 - 索引列各列信息
 
@@ -411,7 +411,7 @@ DELETE FROM undo_demo WHERE id = 1;
 > 比方说现在 undo_demo 表里还有一条 id 值为 2 的记录，它的各个列占用的大小如图所示（因为采用 utf8 字符集，所以 '步枪' 这两个字符占用6个字节）：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8fd2413496fc667e9c448e104dd37bcc.png)
+> ![在这里插入图片描述](images/csdn_8fd2413496fc667e9c448e104dd37bcc.png)
 > 
 
 > 下面对这条记录进行更新，key1不满足前后大小不变（从4个字节到3个字节），col列满足，总体不满就地更新
@@ -460,9 +460,9 @@ UPDATE undo_demo
 > TRX_UNDO_UPD_EXIST_REC
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/890137da0aa19de1592f7f15643c4c00.png)
+> ![在这里插入图片描述](images/csdn_890137da0aa19de1592f7f15643c4c00.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d4d17272ed6e416a7d063f536c88129f.png)
+> ![在这里插入图片描述](images/csdn_d4d17272ed6e416a7d063f536c88129f.png)
 > 
 - 注意
 
@@ -478,7 +478,7 @@ UPDATE undo_demo
 > - 这条日志的 `roll_pointer` 指向 `undo no 为 1` 的那条日志，也就是插入主键值为`2`的记录时产生的那条`undo`日志 ，也就是最近一次对该记录做改动时产生的 `undo`日志 。
 > - 由于本条 `UPDATE` 语句中更新了索引列`key1`的值，所以需要记录一下 索引列各列信息 部分，也就是把主键和`key1`列更新前的信息填入。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7ba8a5b104f997bf4d3ea213a0779215.png)
+>     ![在这里插入图片描述](images/csdn_7ba8a5b104f997bf4d3ea213a0779215.png)
 >     
 
 ```sql

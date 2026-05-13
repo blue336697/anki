@@ -62,7 +62,7 @@ struct sdshdr {
 
 ### 1.3 与C字符串的对比
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ae298b5670554ca3cdf52649394705dc.png)
+![在这里插入图片描述](images/csdn_ae298b5670554ca3cdf52649394705dc.png)
 
 ## 2.链表（linkedlist）
 
@@ -128,7 +128,7 @@ typedef struct list {
 > 例如一个大小为4的空哈希表
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19852f8d889a0c45462ba8488e9d729f.png)
+> ![在这里插入图片描述](images/csdn_19852f8d889a0c45462ba8488e9d729f.png)
 > 
 
 ```cpp
@@ -151,7 +151,7 @@ typedef struct dictht {
 > 与哈希表的联合结构
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/eba8cf7f9668a41d22d6f11fa714b80e.png)
+> ![在这里插入图片描述](images/csdn_eba8cf7f9668a41d22d6f11fa714b80e.png)
 > 
 
 ```cpp
@@ -175,7 +175,7 @@ typedef struct dictEntry {
 > 普通状态下的字典（未进行rehash）
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c6027e6fd465c5841bd936f94e3819b1.png)
+> ![在这里插入图片描述](images/csdn_c6027e6fd465c5841bd936f94e3819b1.png)
 > 
 
 ```cpp
@@ -200,7 +200,7 @@ typedef struct dict {
 > 无论是作为数据库的底层实现往里面添加k-v，还是作为哈希表的底层实现添加k-v，都需要计算出哈希值和索引值，再根据索引值将包含新的键值对哈希节点放入哈希数组的对应位置上
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7679092e87c352c6786f49b73cb46758.png)
+> ![在这里插入图片描述](images/csdn_7679092e87c352c6786f49b73cb46758.png)
 > 
 
 ==使用算法==：
@@ -222,7 +222,7 @@ typedef struct dict {
 > 任何字典的k-v都会维护一个负载因子，让其内部达到平衡，元素不会太多也不会太少（维持一个范围），当出现太多或太少系统就会对哈希表的大小进行扩展或收缩
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/688052bdfbd34a775e30a449328deacb.png)
+> ![在这里插入图片描述](images/csdn_688052bdfbd34a775e30a449328deacb.png)
 > 
 - rehash的步骤如下：
 
@@ -288,7 +288,7 @@ typedef struct dict {
 
 - 跳跃表的结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/02cfc10c7a2e97e27aa91e4bdfef91e0.png)
+    ![在这里插入图片描述](images/csdn_02cfc10c7a2e97e27aa91e4bdfef91e0.png)
     
 
 ```cpp
@@ -486,7 +486,7 @@ int8_t contents[];intset;
 
 ==previous_entry_length==：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/060a15d2cc9516265377bf1f84bbd805.png)
+    ![在这里插入图片描述](images/csdn_060a15d2cc9516265377bf1f84bbd805.png)
     
 
 > 该属性单位为字节，记录列表中前一个节点的长度：该属性就是列表从后向前遍历的原理实现
@@ -589,7 +589,7 @@ typedef struct quicklistNode {
 
 - 结构示例图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/eeae70b670e69c0d46cd4705d210bdb7.png)
+    ![在这里插入图片描述](images/csdn_eeae70b670e69c0d46cd4705d210bdb7.png)
     
 
 # Redis中的高级数据类型
@@ -602,7 +602,7 @@ typedef struct quicklistNode {
 对于偏移值，通过整除8来定位那个字节，通过取余8加1来定位这个字节的那个二进制位，通过整除8加1来确定字节数量
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1b78b00792ed84b58f068f6688744a15.png)
+> ![在这里插入图片描述](images/csdn_1b78b00792ed84b58f068f6688744a15.png)
 > 
 - 集中基本操作的底层实现
 
@@ -760,7 +760,7 @@ GEOHASH key member [member ...]
 > 
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f694c90af85ec55ab37c735f3f4e7289.png)
+> ![在这里插入图片描述](images/csdn_f694c90af85ec55ab37c735f3f4e7289.png)
 > 
 - 列表对象（在3.2版本之前是linkedlist或ziplist，之后就被quicklist替代）
 
@@ -771,30 +771,30 @@ GEOHASH key member [member ...]
 > 
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/099d627b64f1672ab25a398cacdde825.png)
+> ![在这里插入图片描述](images/csdn_099d627b64f1672ab25a398cacdde825.png)
 > 
 - 集合对象（intset或hashtable为底层编码）
 
 > 
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6a827f347b4b757b5724a29af6fd6563.png)
+> ![在这里插入图片描述](images/csdn_6a827f347b4b757b5724a29af6fd6563.png)
 > 
 - 有序对象（ziplist或skiplist为底层编码的zset结构）
 
 > 以跳表为底层的zset，会加入字典再存一份来互补；而以压缩为底层的zset就不会加入字典
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/579596fae8d4f4fa950a87bae482bc7f.png)
+> ![在这里插入图片描述](images/csdn_579596fae8d4f4fa950a87bae482bc7f.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/697a2cf680497bc614346ad5fa863ec2.png)
+> ![在这里插入图片描述](images/csdn_697a2cf680497bc614346ad5fa863ec2.png)
 > 
 - 通用命令
 
 > 上面列出来的都是对于某个数据对象特定的指令，而有一些通用指令可以用在所有对象中
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4a2d9667b59257017cb6000aaac3a028.png)
+> ![在这里插入图片描述](images/csdn_4a2d9667b59257017cb6000aaac3a028.png)
 > 
 - 检查命令的对应性
 
@@ -810,13 +810,13 @@ GEOHASH key member [member ...]
 > 例子：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/31fa8e8188837b83d20026d2210a7d2e.png)
+> ![在这里插入图片描述](images/csdn_31fa8e8188837b83d20026d2210a7d2e.png)
 > 
 
 > 新版本的改动
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/244b0896552c40895add5ace9a5a2f64.png)
+> ![在这里插入图片描述](images/csdn_244b0896552c40895add5ace9a5a2f64.png)
 > 
 - 为什么redis不共享字符串对象
 
@@ -830,5 +830,5 @@ GEOHASH key member [member ...]
 > 可以看到图中查看这个属性的命令，注意使用这个命令并不更新对象的lru属性哦
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/606a195f870da519a03e8e783e12dbc8.png)
+> ![在这里插入图片描述](images/csdn_606a195f870da519a03e8e783e12dbc8.png)
 >

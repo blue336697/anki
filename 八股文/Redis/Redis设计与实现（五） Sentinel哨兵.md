@@ -40,7 +40,7 @@ $ redis-server /path/to/your/sentinel.conf --sentinel
 > Sentinel是一个特殊的redis服务器，所以我们要先启动一个普通的redis服务器对其进行初始化，跟平常的初始化较为不同，为了实现特点的某些功能其余多余的功能就不会进行初始化加载进来，详情如下图
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1fc82dfeeb6ae8c0721278b6ae8ca47d.png)
+> ![在这里插入图片描述](images/csdn_1fc82dfeeb6ae8c0721278b6ae8ca47d.png)
 > 
 
 ### 1.2 使用Sentinel专用代码
@@ -150,13 +150,13 @@ typedef struct sentinelRedisInstance {
 > 对sentinel的初始化将引起对masters字典的初始化，对masters字典的初始化是根据被载入的Sentinel配置文件进行的，配置文件，根据配置文件加载的实例结构如下图
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/195199c8b83c3824baa9bc8e8b7104c8.png)
+> ![在这里插入图片描述](images/csdn_195199c8b83c3824baa9bc8e8b7104c8.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/dfbd1dd0986c0d4a376ecdada2ce8fb7.png)
+> ![在这里插入图片描述](images/csdn_dfbd1dd0986c0d4a376ecdada2ce8fb7.png)
 > 
 - 假如有两个这样的结构，那么宏观上就是如下图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9fb561e280fe1352336eeb60b2e2f3d9.png)
+    ![在这里插入图片描述](images/csdn_9fb561e280fe1352336eeb60b2e2f3d9.png)
     
 
 ### 1.5 创建连向主服务器的网络连接
@@ -168,9 +168,9 @@ typedef struct sentinelRedisInstance {
 > - 一个是命令连接，专用于向主服务器发送命令，并接收命令回复
 > - 一个是订阅连接，这个连接专门用于订阅主服务器的`_sentinel_:hello`频道
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/df67059dcd513be03c015e1bdb8465fb.png)
+>     ![在这里插入图片描述](images/csdn_df67059dcd513be03c015e1bdb8465fb.png)
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bd4ae183b8f7c509a12ace340726eec0.png)
+>     ![在这里插入图片描述](images/csdn_bd4ae183b8f7c509a12ace340726eec0.png)
 >     
 
 ## 2.获取主服务器信息
@@ -182,7 +182,7 @@ typedef struct sentinelRedisInstance {
 > - 主服务器本身的信息，比如runid、role域记录的服务器角色
 > - 从服务器的信息，根据此Sentinel不需要用户提供地址就能自动发现从服务器
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/17cf440af602aabd14e477f8cf877611.png)
+>     ![在这里插入图片描述](images/csdn_17cf440af602aabd14e477f8cf877611.png)
 >     
 - 更新slaves字典
 
@@ -192,7 +192,7 @@ typedef struct sentinelRedisInstance {
 > - 如果不存在，则根据信息在字典中开辟新的添加进去
 - 结构如下
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/99c2832c7d14fd73b9df48f34a6753d7.png)
+    ![在这里插入图片描述](images/csdn_99c2832c7d14fd73b9df48f34a6753d7.png)
     
 
 ## 3.获取从服务器的信息
@@ -212,11 +212,11 @@ typedef struct sentinelRedisInstance {
 > 在默认情况下，Sentinel会以2秒一次的频率向通过命令向hello订阅连接发送信息，这个命令会向这个订阅连接发送一条信息，会根据情况里面的信息参数有所不同
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7453f0b6dd8ab7ccbd9d4f932558b8a3.png)
+> ![在这里插入图片描述](images/csdn_7453f0b6dd8ab7ccbd9d4f932558b8a3.png)
 > 
 - 信息有关参数
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/63f0475661b050ef97529c9dc72e7601.png)
+    ![在这里插入图片描述](images/csdn_63f0475661b050ef97529c9dc72e7601.png)
     
 
 ## 5.接收来自主服务器和从服务器的频道信息
@@ -226,14 +226,14 @@ typedef struct sentinelRedisInstance {
 > 上面说到Sentinel会使用命令在hello频道发消息，这里又会通过订阅连接从hello频道接收消息，这个订阅连接会一直持续到Sentinel与服务器断开连接为止
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6c28b9e07aaecdf40d78a63922f0ef98.png)
+> ![在这里插入图片描述](images/csdn_6c28b9e07aaecdf40d78a63922f0ef98.png)
 > 
 - 多Sentinel
 
 > 在多Sentinel节点的情况下，如果都监视同一个主服务器，说明都订阅了同一个hello频道，那么其中一个Sentinel节点向频道发送信息，别的节点还可以拿这个信息更新自己的主服务器实例结构中的信息，保持了各个节点的数据一致性
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/851ce51db75709123ee76bf45ce96795.png)
+> ![在这里插入图片描述](images/csdn_851ce51db75709123ee76bf45ce96795.png)
 > 
 
 ### 5.1 更新Sentinels字典
@@ -243,7 +243,7 @@ typedef struct sentinelRedisInstance {
 > 在Sentinel中的结构中存放在很多个主服务器实体结构，实体结构中会有从服务器字典，存放该主服务器的所有从服务器实体结构，主服务器的实体结构中同样还有Sentinels字典，存放着监视自己的所有哨兵的实体结构，这个字典在每次，某个Sentinel发送信息会附带自己的主服务器、从服务器、订阅同一频道的其他Sentinel信息，而其他Sentinel也是接收该消息会更新自己的结构，就这样利用发送接收来更新Sentinels字典
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/65e2b5c473ae765df41783c7380e029a.png)
+> ![在这里插入图片描述](images/csdn_65e2b5c473ae765df41783c7380e029a.png)
 > 
 
 ### 5.2 创建连向其他Sentinel的命令连接
@@ -253,11 +253,11 @@ typedef struct sentinelRedisInstance {
 > 上述过程除了目标Sentinel使用channel中的信息来更新自己的实体结构外，发送消息的Sentinel如果是一个新的Sentinel，目标Sentinel还会为这个新的在字典创建实体结构，并且还会创建一个命令连接，反向的新的也会创建这个命令连接连向目标Sentinel，最终监视同一服务器的Sentinel将形成相互连接的网络
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e9449ef008d92b2523978acdf942b25e.png)
+> ![在这里插入图片描述](images/csdn_e9449ef008d92b2523978acdf942b25e.png)
 > 
 - Sentinel只会使用订阅同一个频道会传送信息，或者直接使用命令连接来传送，而不会两个Sentinel专门创建订阅连接
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c0981f56b1fb805732227ccfc1b56d63.png)
+    ![在这里插入图片描述](images/csdn_c0981f56b1fb805732227ccfc1b56d63.png)
     
 
 ## 6.检测主观下线状态
@@ -287,7 +287,7 @@ SENTINEL is-master-down-by-addr <ip> <port> <current_epoch> <runid>
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3a10ca08748b38c248a7a95b5020b115.png)
+![在这里插入图片描述](images/csdn_3a10ca08748b38c248a7a95b5020b115.png)
 
 ### 7.2 接收检查命令
 
@@ -300,7 +300,7 @@ SENTINEL is-master-down-by-addr <ip> <port> <current_epoch> <runid>
 > <down state><leader runid><leader epoch>
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3a96c0695e640bbea4851c5bd0172085.png)
+> ![在这里插入图片描述](images/csdn_3a96c0695e640bbea4851c5bd0172085.png)
 > 
 
 ### 7.3 is-master-down-by-addr发送方的后续处理
@@ -310,7 +310,7 @@ SENTINEL is-master-down-by-addr <ip> <port> <current_epoch> <runid>
 > 发送方会统计收到目标Sentinel同意主服务器已下线的数量，当这一数量达到配置的指定客观下线所需要的数量，Sentinel就会为该主服务器的实例结构的flags属性中表示SRI_O_DOWN，表示客观下线状态
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/afbad260ec6106aa2d31137e5bcfa8f3.png)
+> ![在这里插入图片描述](images/csdn_afbad260ec6106aa2d31137e5bcfa8f3.png)
 > 
 - 注意
 

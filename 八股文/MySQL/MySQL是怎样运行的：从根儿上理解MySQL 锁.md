@@ -35,7 +35,7 @@ category: 数据库
 > 这种情况下就会发生脏写，而mysql是不允许脏写的情况出现的，那么有这种情况时就要适用锁来让事务排队执行，这个锁其实是一个内存中的结构，在事务执行前本来是没有加锁的，也就是说一开始是没有锁结构和记录进行关联，如下图
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f23278105e0442ce8d000bc2a559b58c.png)
+> ![在这里插入图片描述](images/csdn_f23278105e0442ce8d000bc2a559b58c.png)
 > 
 - 当一个事务想对这条记录做改动时
 
@@ -44,7 +44,7 @@ category: 数据库
 > - trx信息 ：代表这个锁结构是哪个事务生成的。
 > - is_waiting ：代表当前事务是否在等待。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a591c9885dbdc6d741adfff57dc3361e.png)
+>     ![在这里插入图片描述](images/csdn_a591c9885dbdc6d741adfff57dc3361e.png)
 >     
 - 事务T1修改后事务T2也想对该记录做修改
 
@@ -59,7 +59,7 @@ category: 数据库
 > 
 > **就会先去检查有没有锁结构与这条记录进行关联，如果有则要也生成一个锁结构与这条记录关联，`不过锁结构的is_waitting属性值为true`，表示T2事务需要等待，即获取锁失败**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c82f50a3e10f687549a517946114f1dc.png)
+> ![在这里插入图片描述](images/csdn_c82f50a3e10f687549a517946114f1dc.png)
 > 
 - 事务T1提交后
 
@@ -68,7 +68,7 @@ category: 数据库
 > 
 > **然后看看还有没有别的事务在等待获取锁，发现了事务T2还在等待线程，所以T2的线程结构的is_waitting属性就会被设置成false，然后该事务把对应线程进行唤醒，使其继续执行，此时T2就获取到了锁**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7158b6b4710f8e5de61c789942e8c4c3.png)
+> ![在这里插入图片描述](images/csdn_7158b6b4710f8e5de61c789942e8c4c3.png)
 > 
 - 有关锁术语的解释
 
@@ -145,7 +145,7 @@ SELECT * FROM t1 INNER JOIN t2 ON t1.col1 = t2.col2
 > 假如事务T1先获取了X锁，那么事务T2不管是想获取该记录的S锁还是X锁都会被阻塞直到事务T1提交
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2ee7bc85ddf70842a48a3f168ca39c46.png)
+> ![在这里插入图片描述](images/csdn_2ee7bc85ddf70842a48a3f168ca39c46.png)
 > 
 
 ### 1.3.2 锁定读的语句
@@ -275,7 +275,7 @@ commit;
 > IS、IX锁是表级锁，它们的提出仅仅为了在之后加表级别的S锁和X锁时可以快速判断表中的记录是否被上锁，以避免用遍历的方式来查看表中有没有上锁的记录，也就是说其实IS锁和IX锁是兼容的，IX锁和IX锁是兼容的
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bff4ec1a2c1e20560ec7faec1951be3.png)
+> ![在这里插入图片描述](images/csdn_9bff4ec1a2c1e20560ec7faec1951be3.png)
 > 
 
 ## 3.MySQL中的行锁和表锁
@@ -381,7 +381,7 @@ innodb_autoinc_lock_mode值为1时，两种方式混着来（也就是在插入�
 > 
 > **所以你现在应该知道了，事务中的 MDL 锁，在语句执行开始时申请，但是语句结束后并不会马上释放，而会等到整个事务提交后再释放。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3094dd9457fe80fce7f05b1fc2b39edf.png)
+> ![在这里插入图片描述](images/csdn_3094dd9457fe80fce7f05b1fc2b39edf.png)
 > 
 - 解决思路：手动释放长连接
 
@@ -448,7 +448,7 @@ INSERT INTO hero VALUES
 > 
 > **我们这里只是想强调聚簇索引中的记录是按照主键大小排序的，并且省略掉了聚簇索引中的隐藏列**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/73281904418c8092220fa704139b85c7.png)
+> ![在这里插入图片描述](images/csdn_73281904418c8092220fa704139b85c7.png)
 > 
 
 ### 3.2.2.1 Record Locks （基本行锁）
@@ -468,7 +468,7 @@ INSERT INTO hero VALUES
 > 
 > **当一个事务获取了一条记录的 S型记录锁 后，其他事务也可以继续获取该记录的 S型记录锁 ，但不可以继续获取 X型记录锁 ；当一个事务获取了一条记录的 X型记录锁 后，其他事务既不可以继续获取该记录的 S型记录锁 ，也不可以继续获取 X型记录锁 ；**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d3192e7ea504096fb1c3a3a552c25fba.png)
+> ![在这里插入图片描述](images/csdn_d3192e7ea504096fb1c3a3a552c25fba.png)
 > 
 
 ### 3.2.2.2 Cap Locks：间隙锁（可重复读情况下的解决幻读）
@@ -524,7 +524,7 @@ INSERT INTO hero VALUES
 > gap锁
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2c4bf0ffcedfe0888b6aa91f9145aeb4.png)
+> ![在这里插入图片描述](images/csdn_2c4bf0ffcedfe0888b6aa91f9145aeb4.png)
 > 
 > - 解释
 > **如图中为 number 值为 8 的记录加了 gap锁 ，意味着不允许别的事务在 number 值为 8 的记录前边的 间隙插入新记录，其实就是 number 列的值 (3, 8) 这个区间的新记录是不允许立即插入的。比方说有另外一个事务再想插入一条 number 值为 4 的新记录，它定位到该条新记录的下一条记录的 number 值为8，而这条记录上又有一个 gap锁 ，所以就会阻塞插入操作，直到拥有这个 gap锁 的事务提交了之后， number 列的值在区间 (3, 8) 中的新记录才可以被插入。**
@@ -542,7 +542,7 @@ INSERT INTO hero VALUES
 > 为了实现阻止其他事务插入 number 值在 (20, +∞) 这个区间的新记录，我们可以给索引中的最后一条记录，也就是number 值为 20的那条记录所在页面的 Supremum 记录加上一个 gap锁 ，画个图就是这样，这样就可以阻止其他事务插入 number 值在 (20, +∞) 这个区间的新记录。为了大家理解方便，之后的索引示意图中都会把这个 Supremum 记录画出来
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3bcd863626afb87bff0c24eb755be8d9.png)
+> ![在这里插入图片描述](images/csdn_3bcd863626afb87bff0c24eb755be8d9.png)
 > 
 
 ### 3.2.2.3 Next-Key Locks
@@ -576,7 +576,7 @@ INSERT INTO hero VALUES
 >  next-key
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3f2326128e439f66aaeb135b1db3293d.png)
+> ![在这里插入图片描述](images/csdn_3f2326128e439f66aaeb135b1db3293d.png)
 > 
 - 总结
 
@@ -606,7 +606,7 @@ INSERT INTO hero VALUES
 > 插入意向锁
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/45f71f214a3f68d1ff70af954dccd48f.png)
+> ![在这里插入图片描述](images/csdn_45f71f214a3f68d1ff70af954dccd48f.png)
 > 
 - 举个例子加深理解
 
@@ -650,7 +650,7 @@ INSERT INTO hero VALUES
 > 
 > **插入意向锁 就是这么鸡肋**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d8e4249b34462d708300f1522ec20118.png)
+> ![在这里插入图片描述](images/csdn_d8e4249b34462d708300f1522ec20118.png)
 > 
 
 ### 3.2.2.5 隐式锁
@@ -749,7 +749,7 @@ SELECT * FROM hero LOCK IN SHARE MODE;
 > - 其他信息 ：为了更好的管理系统运行过程中生成的各种锁结构而设计了各种哈希表和链表，为了简化讨论，我们忽略这部分信息哈～
 > - 一堆比特位 ，下面会有详解
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/78dc6411e330e7700e7117121526a479.png)
+>     ![在这里插入图片描述](images/csdn_78dc6411e330e7700e7117121526a479.png)
 >     
 - 属性小贴士
 
@@ -766,7 +766,7 @@ SELECT * FROM hero LOCK IN SHARE MODE;
 > 前面说到这个是由3个部分组成的如下图
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4d2c1d1664a4285f242218f22ebd935d.png)
+> ![在这里插入图片描述](images/csdn_4d2c1d1664a4285f242218f22ebd935d.png)
 > 
 - 锁的模式（ `lock_mode` ），占用低4位，可选的值如下：
 
@@ -806,7 +806,7 @@ SELECT * FROM hero LOCK IN SHARE MODE;
 > 
 > **伪记录 `Infimum 的 heap_no 值为 0` ，`Supremum 的 heap_no 值为 1`，之后每插入一条记录， `heap_no值就增1`。 锁结构 最后的一堆比特位就对应着一个页面中的记录，一个比特位映射一个 `heap_no` ，不过为了编码方便，映射方式有点怪**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5d8d968c364b7dd568f5f0cb9a1ae16f.png)
+> ![在这里插入图片描述](images/csdn_5d8d968c364b7dd568f5f0cb9a1ae16f.png)
 > 
 > **这么怪的映射方式纯粹是为了敲代码方便，大家不要大惊小怪，只需要知道一个比特位映射到页
 > 内的一条记录就好了。**
@@ -872,11 +872,11 @@ LOCK_PAGE_BITMAP_MARGIN 是一个固定的值 64 ，所以本次加锁的 n_bits
 > 1
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/97e3e4e8343b190a98b2c938fa31ccc5.png)
+> ![在这里插入图片描述](images/csdn_97e3e4e8343b190a98b2c938fa31ccc5.png)
 > 
 - 这么多信息杂糅进这个锁结构就如图所示
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bd4c264f891610f083362970f1f93512.png)
+    ![在这里插入图片描述](images/csdn_bd4c264f891610f083362970f1f93512.png)
     
 
 ### 3.3.3.2 T2 想对 number 值为 3 、 8 、 15 的这三条记录加 X型的next-key锁

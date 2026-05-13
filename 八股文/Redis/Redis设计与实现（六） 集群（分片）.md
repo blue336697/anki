@@ -3,7 +3,7 @@
 type: Post
 status: Published
 date: 2022/07/01
-summary: 一个Redis集群有多个节点组成，在刚开始的时候每个节点都是独立的，每个节点都处于一个只包含自己的集群当中，使用CLUTER MEET来让别的节点加入自己的集群
+summary: 一个Redis集群有多个节点组成，在刚开始的时候每个节点都是独立的，每个节点都处于一个只包含自己的集群当中，使用CLUSTER MEET来让别的节点加入自己的集群
 tags: Redis
 category: 缓存
 
@@ -13,7 +13,7 @@ category: 缓存
 
 - 概述
 
-> 一个Redis集群有多个节点组成，在刚开始的时候每个节点都是独立的，每个节点都处于一个只包含自己的集群当中，使用CLUTER MEET来让别的节点加入自己的集群
+> 一个Redis集群有多个节点组成，在刚开始的时候每个节点都是独立的，每个节点都处于一个只包含自己的集群当中，使用CLUSTER MEET来让别的节点加入自己的集群
 > 
 - 例子，假设现在有三个结点分别为`127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002`
 
@@ -21,17 +21,17 @@ category: 缓存
 > 
 
 ```sql
-CLUTER MEET <ip> <port>
+CLUSTER MEET <ip> <port>
 
 # 我们将7001和7002加入7000
-127.0.0.1:7000> CLUTER MEET 127.0.0.1 7001
-# 然后你查看CLUTER NODES就可以看到原来一个节点变成两个了
+127.0.0.1:7000> CLUSTER MEET 127.0.0.1 7001
+# 然后你查看CLUSTER NODES就可以看到原来一个节点变成两个了
 # 信息有结点id ip port 是主是从等
-127.0.0.1:7000> CLUTER MEET 127.0.0.1 7002
+127.0.0.1:7000> CLUSTER MEET 127.0.0.1 7002
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/901a84fddba781fb6d9e75bc2e78d783.png)
+![在这里插入图片描述](images/csdn_901a84fddba781fb6d9e75bc2e78d783.png)
 
 - Docker中随机分配集群命令
 
@@ -66,7 +66,7 @@ redis-cli --cluster create 192.168.56.10.7001
 > Redis
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3991c8d474d14c6a7c42925209d7eca0.png)
+> ![在这里插入图片描述](images/csdn_3991c8d474d14c6a7c42925209d7eca0.png)
 > 
 
 ### 1.2 集群数据结构
@@ -137,7 +137,7 @@ typedef struct clusterLink(
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/001a43b067e1fc07a103487b4b0e74d3.png)
+![在这里插入图片描述](images/csdn_001a43b067e1fc07a103487b4b0e74d3.png)
 
 - clusterState结构
 
@@ -180,7 +180,7 @@ typedef struct clusterState(
 > 5. 如果顺利，节点`A`收到，并在发送一条`PING`消息
 > 6. 此时节点`B`收到`PING`消息，`B`节点知道了`A`成功收到了`PONG`，握手完成
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b946d1e8096c6fa44b0a5116508a6df2.png)
+>     ![在这里插入图片描述](images/csdn_b946d1e8096c6fa44b0a5116508a6df2.png)
 >     
 
 ## 2.槽指派
@@ -224,7 +224,7 @@ struct clusterNode {
 > - 如果slots数组在索引i的二进制位的值为1，那么表示节点负责处理槽i
 > - 相反如果值是0，则不负责处理
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9d5e6e721385fb923d2c473c2669f812.png)
+>     ![在这里插入图片描述](images/csdn_9d5e6e721385fb923d2c473c2669f812.png)
 >     
 - 总结
 
@@ -247,7 +247,7 @@ struct clusterNode {
 > - 数组某个索引元素指向null，就证明没有分配
 > - 指向某个clusterNode结构，就证明分配了
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19c60351637c256353a5119c9c0ab020.png)
+![在这里插入图片描述](images/csdn_19c60351637c256353a5119c9c0ab020.png)
 
 - 注意
 
@@ -256,7 +256,7 @@ struct clusterNode {
 > - 因为程序需要将某节点的槽指派信息发送给另外节点直接发送`clusterNode`就可
 > - 如果没有这个，都要去遍历一边`clusterState`在去发送槽指派，这比每个都有一份`Node`要低效的多
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fcebfc5d0e2eecdab9915a72128e85f9.png)
+>     ![在这里插入图片描述](images/csdn_fcebfc5d0e2eecdab9915a72128e85f9.png)
 >     
 
 ### 2.4 CLUSTER ADDSLOTS命令的实现
@@ -275,9 +275,9 @@ CLUSTER ADDSLOTS 1 2
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/71adb933bae3f800488b19e2673f2727.png)
+![在这里插入图片描述](images/csdn_71adb933bae3f800488b19e2673f2727.png)
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1587114b9a1db5f49702748d668f0480.png)
+![在这里插入图片描述](images/csdn_1587114b9a1db5f49702748d668f0480.png)
 
 ## 3.在集群执行命令
 
@@ -286,7 +286,7 @@ CLUSTER ADDSLOTS 1 2
 > 指派完全部的槽，集群就进入上线状态，可以接收来自客户端的命令，当客户端想要访问或修改的某个数据，接收命令的节点会计算出要处理的数据库键属于那个槽，并检查这个槽是否指派给了自己
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/04ab264143033a6d172705564c14e8af.png)
+> ![在这里插入图片描述](images/csdn_04ab264143033a6d172705564c14e8af.png)
 > 
 
 ### 3.1 计算键属于哪个槽
@@ -348,9 +348,9 @@ MOVED <slot> <ip>:<port>
 > 所谓节点转向，就是换一个套接字来执行该命令
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/61822c3eb3bf61b74c1db1b21e928ee6.png)
+> ![在这里插入图片描述](images/csdn_61822c3eb3bf61b74c1db1b21e928ee6.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/89501aac7b6fd7157cf4b464035f284e.png)
+> ![在这里插入图片描述](images/csdn_89501aac7b6fd7157cf4b464035f284e.png)
 > 
 
 ### 3.4 节点数据库的实现
@@ -379,7 +379,7 @@ MOVED <slot> <ip>:<port>
 > 因为保存在跳跃表中，我们对于槽和键值对的操作就更加方便一点，例如CLUSTER GETKEYSINSLOT<slot><count>可以查看对应槽有多少个键
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/60c8843cf4f83433a7d5bfb305f980f0.png)
+![在这里插入图片描述](images/csdn_60c8843cf4f83433a7d5bfb305f980f0.png)
 
 ## 4.重新分片
 
@@ -399,9 +399,9 @@ MOVED <slot> <ip>:<port>
 > redis-trib对目标节点发送 CLUSTER SETSLOT<slot> IMPROTING <source_id>命令，让目标节点准备好从源节点导入（ import）属于槽slot的键值对redis-trib对源节点发送CLUSTER SETSLOT <slot> MIGRATING<target_ id>命令，让源节点准备好将属于槽slot的键值对迁移( migrate）至目标节点。redis-trib向源节点发送CLUSTER GETKEYSINSLOT <slot> <count>命令，获得最多count个属于槽slot的键值对的键名（key name )。对于步骤3获得的每个键名，redis-trib都向源节点发送一个MIGRATE<target_ip> <target_port> <key_name> 0 <timeout>命令，将被选中的键原子地从源节点迁移至目标节点。重复执行步骤3和步骤4，直到源节点保存的所有属于槽slot的键值对都被迁移至目标节点为止。每次迁移键的过程如图17-24所示。redis-trib向集群中的任意一个节点发送 CLUSTER SETSLOT<slot> NODE<target_id>命令，将槽slot指派给目标节点，这一指派信息会通过消息发送至整个集群,最终集群中的所有节点都会知道槽slot已经指派给了目标节点。
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8f07aa9e2b8d50dae702835a53299c9f.png)
+![在这里插入图片描述](images/csdn_8f07aa9e2b8d50dae702835a53299c9f.png)
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/507ff09bdcaae593c765779e639fa3ee.png)
+![在这里插入图片描述](images/csdn_507ff09bdcaae593c765779e639fa3ee.png)
 
 ## 5.ASK错误
 
@@ -418,7 +418,7 @@ MOVED <slot> <ip>:<port>
 > 这里面的ASK并不会主动切换节点哦，也就是自动转向，也就是说和MOVED不一样需要自己切换节点
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ee8f32a83bf2eedff508bdf70f5012e3.png)
+> ![在这里插入图片描述](images/csdn_ee8f32a83bf2eedff508bdf70f5012e3.png)
 > 
 
 ### 5.1 CLUSTER SETSLOT IMPORTING命令的实现
@@ -430,7 +430,7 @@ MOVED <slot> <ip>:<port>
 > 
 > **如果对于索引的槽不为NULL，而是指向节点，就表示当前结点正在导入槽，这个数组的对应索引的槽就指向自己**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8c966e31805cd5a3e7679f71dd7d5931.png)
+> ![在这里插入图片描述](images/csdn_8c966e31805cd5a3e7679f71dd7d5931.png)
 > 
 
 ### 5.2 CLUSTER SETSLOT MIGRATING命令的实现
@@ -440,7 +440,7 @@ MOVED <slot> <ip>:<port>
 > 这个命令是通知重新分片迁移的源节点做好迁移的准备工作，同理在节点状态中也是一个数组，对应槽指向NULL说明没有迁移，指向自己就说明正在迁移
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3b1dac3199bea8b6e975fa18cef7fe26.png)
+> ![在这里插入图片描述](images/csdn_3b1dac3199bea8b6e975fa18cef7fe26.png)
 > 
 
 ### 5.3 ASK错误
@@ -454,9 +454,9 @@ MOVED <slot> <ip>:<port>
 > 如果不在源节点通过返回ASK错误，我们可以使用ASKING命令来转向
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/48048fe429f2deb38395ebefd8a7bdd5.png)
+> ![在这里插入图片描述](images/csdn_48048fe429f2deb38395ebefd8a7bdd5.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/41774cf81d55a0f2ad6bc9af6ecbb152.png)
+> ![在这里插入图片描述](images/csdn_41774cf81d55a0f2ad6bc9af6ecbb152.png)
 > 
 - 注意
 
@@ -516,7 +516,7 @@ CLUSTER ERPLICATE <node_id>
 > 
 - 例子
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9798d3047070ba1ceb81092ffe1f84eb.png)
+    ![在这里插入图片描述](images/csdn_9798d3047070ba1ceb81092ffe1f84eb.png)
     
 - 下线状态
 
@@ -607,13 +607,13 @@ PUBLISH <channel> <message>
 message,它还会向集群广播一条PUBLISH消息，所有接收到这条PUBLISH消息的节点都会向channel频道发送message消息。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4d55f58a2217cafd30cb38c357062805.png)
+> ![在这里插入图片描述](images/csdn_4d55f58a2217cafd30cb38c357062805.png)
 > 
 
 > 这里说的PUBLISH的命令时发送PUBLISH消息，而消息是一个结构，我们之所以不直接广播命令，而是通过客户端让一个节点给集群内所有节点PUBLISH消息
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc9f39ffec0413445b0bf53da7ed7e0c.png)
+> ![在这里插入图片描述](images/csdn_cc9f39ffec0413445b0bf53da7ed7e0c.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/47fa4688f5e13ea65b7f7b54c96d3b10.png)
+> ![在这里插入图片描述](images/csdn_47fa4688f5e13ea65b7f7b54c96d3b10.png)
 >

@@ -344,7 +344,7 @@ public @interface DubboComponentScan {		//DubboComponentScan 注解
 > 7. 订阅服务提供者、路由和动态配置（第一次发起订阅时会进行一次数据拉取操作）
 > 8. 通过 Cluster 合并 invokers（多个服务），同时默认也会启用FailoverCluster策略进行服务调用重试。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5686167531e136cea61b61e600e049ee.png)
+>     ![在这里插入图片描述](images/csdn_5686167531e136cea61b61e600e049ee.png)
 >     
 
 ==细节解析之——具体远程Invoker是在哪里创建——拦截器何时构造——RegistryDirectory#toInvokers==

@@ -21,7 +21,7 @@ category: 数据库
 > - `Pre Node Page Number 和 Pre Node Offset` 的组合就是指向前一个节点的指针
 > - `Next Node Page Number 和 Next Node Offset` 的组合就是指向后一个节点的指针。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a54a267b3ba2950e7e2f5522c942d28a.png)
+>     ![在这里插入图片描述](images/csdn_a54a267b3ba2950e7e2f5522c942d28a.png)
 >     
 - 基节点
 
@@ -31,14 +31,14 @@ category: 数据库
 > - `First Node Page Number 和 First Node Offset` 的组合就是指向链表头节点的指针。
 > - `Last Node Page Number 和 Last Node Offset` 的组合就是指向链表尾节点的指针。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/659eed400b840819811f2f7cce6519d4.png)
+>     ![在这里插入图片描述](images/csdn_659eed400b840819811f2f7cce6519d4.png)
 >     
 - 总结
 
 > List Base Node 和 List Node
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a09be34a55f36f6a5925275c1562a94e.png)
+> ![在这里插入图片描述](images/csdn_a09be34a55f36f6a5925275c1562a94e.png)
 > 
 
 ## 2.FIL_PAGE_UNDO_LOG页面
@@ -72,11 +72,11 @@ category: 数据库
 > 16KB
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2bdb56f08460363c193ad51aa98a55a9.png)
+> ![在这里插入图片描述](images/csdn_2bdb56f08460363c193ad51aa98a55a9.png)
 > 
 - undo页面的Undo Page Header结构示意图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c229e67eb134e69bcc46090354206408.png)
+    ![在这里插入图片描述](images/csdn_c229e67eb134e69bcc46090354206408.png)
     
 - `TRX_UNDO_PAGE_TYPE`：本页面准备存储什么种类的undo日志
 
@@ -100,7 +100,7 @@ category: 数据库
 > TRX_UNDO_PAGE_START 和 TRX_UNDO_PAGE_FREE
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f9afcda772c1e7435063b161ea7409ba.png)
+> ![在这里插入图片描述](images/csdn_f9afcda772c1e7435063b161ea7409ba.png)
 > 
 - `TRX_UNDO_PAGE_NODE` ：代表一个 List Node 结构（链表的**普通节点**，我们上边刚说的）。
 
@@ -117,7 +117,7 @@ category: 数据库
 > TRX_UNDO_PAGE_NODE
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/00e839dc8cb6263c89bce5ff0aaa804c.png)
+> ![在这里插入图片描述](images/csdn_00e839dc8cb6263c89bce5ff0aaa804c.png)
 > 
 > ```
 > Undo页面
@@ -162,14 +162,14 @@ category: 数据库
 >  update undo链表
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b796be7cd26a4c1a15ca39483fa2ed76.png)
+> ![在这里插入图片描述](images/csdn_b796be7cd26a4c1a15ca39483fa2ed76.png)
 > 
 - 普通表和临时表的undo页面
 
 > 规定对普通表和临时表的记录改动时产生的 undo日志 要分别记录（我们稍后阐释为啥这么做），所以在一个事务中最多有4个以 Undo页面 为节点组成的链表：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/404ff5a53295e0b53e044341eac1ee8b.png)
+> ![在这里插入图片描述](images/csdn_404ff5a53295e0b53e044341eac1ee8b.png)
 > 
 - 链表分配策略
 
@@ -196,7 +196,7 @@ category: 数据库
 > - 针对临时表的 `insert undo`链表
 > - 针对临时表的 `update undo`链表 。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/341abf5ea85705c632174cfde7f68531.png)
+>     ![在这里插入图片描述](images/csdn_341abf5ea85705c632174cfde7f68531.png)
 >     
 
 > trx 2 对普通表做了 INSERT 、 UPDATE 和 DELETE 操作，没有对临时表做改动。InnoDB 会为 trx 2 分配2个链表，分别是：
@@ -204,7 +204,7 @@ category: 数据库
 > - 针对普通表的 `insert undo`链表
 > - 针对普通表的 `update undo`链表 。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9afa4348db9288abcf285409fcf3e7e7.png)
+>     ![在这里插入图片描述](images/csdn_9afa4348db9288abcf285409fcf3e7e7.png)
 >     
 
 ## 4.undo日志具体写入过程
@@ -257,7 +257,7 @@ category: 数据库
 > Undo 页面
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d9766ab729133d008692d6fc9332763e.png)
+> ![在这里插入图片描述](images/csdn_d9766ab729133d008692d6fc9332763e.png)
 > 
 
 ### 4.2.1 Undo Log Segment Header结构的各个属性
@@ -267,7 +267,7 @@ category: 数据库
 > 这个属性的结构如下：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3a2e4bad3906d4a892e7990019fd1363.png)
+> ![在这里插入图片描述](images/csdn_3a2e4bad3906d4a892e7990019fd1363.png)
 > 
 - `TRX_UNDO_STATE` ：本 Undo页面 链表处在什么状态。
 
@@ -298,7 +298,7 @@ category: 数据库
 > 
 - 页中所处结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6adbd9ae3ba000b45f570ef10bf38440.png)
+    ![在这里插入图片描述](images/csdn_6adbd9ae3ba000b45f570ef10bf38440.png)
     
 - Undo Log Header具体结构
 
@@ -335,7 +335,7 @@ category: 数据库
 > TRX_UNDO_NEXT_LOG和TRX_UNDO_PREV_LOG
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/981071e2354b22007bed08908c18b429.png)
+> ![在这里插入图片描述](images/csdn_981071e2354b22007bed08908c18b429.png)
 > 
 
 ### 4.4 小结
@@ -343,7 +343,7 @@ category: 数据库
 > 对于没有被重用的 Undo页面 链表来说，链表的第一个页面，也就是first undo page在真正写入 undo日志前，会填充Undo Page Header 、 Undo Log Segment Header 、 Undo Log Header这3个部分，之后才开始正式写入 undo日志 。对于其他的页面来说，也就是normal undo page在真正写入undo日志前，只会填充Undo Page Header。链表的List Base Node存放到 first undo page 的Undo Log Segment Header部分， List Node 信息存放到每一个 Undo页面 的 undo Page Header 部分，所以画一个 Undo页面 链表的示意图就是这样：
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/21c54b30de6c643ede24bf0dfc6cf11a.png)
+![在这里插入图片描述](images/csdn_21c54b30de6c643ede24bf0dfc6cf11a.png)
 
 - 注意
 
@@ -388,14 +388,14 @@ category: 数据库
 > 
 > **假设此刻该页面已使用的空间小于整个页面大小的3/4，那么下一个事务就可以重用这个 insert undo链表 （链表中只有一个页面）。假设此时有一个新事务重用了该 insert undo链表 ，那么可以直接把旧的一组 undo日志 覆盖掉，写入一组新的 undo日志 （当然除了这些结构中的其他属性也会得到调整）。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a905ef8485f57d35744fabeddfb822c3.png)
+> ![在这里插入图片描述](images/csdn_a905ef8485f57d35744fabeddfb822c3.png)
 > 
 - update undo链表
 
 > 事务提交后，update链表中的undo日志不能被立即删除掉（这些日志用于MVCC），如果之后的事务想重用update链表时，就不能覆盖之前事务写入的undo日志，这样就相当于在旧的后面续写了
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/30d904b26ff0b87e18c52a42a9912648.png)
+> ![在这里插入图片描述](images/csdn_30d904b26ff0b87e18c52a42a9912648.png)
 > 
 
 ## 6.回滚段
@@ -425,7 +425,7 @@ category: 数据库
 > 
 > **只有一个页面**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cde363f6602986eccf91f615cc65e18f.png)
+> ![在这里插入图片描述](images/csdn_cde363f6602986eccf91f615cc65e18f.png)
 > 
 > - `TRX_RSEG_MAX_SIZE`：本回滚段所管理的所有undo页面链表中undo数量之和的最大值，默认值已经为4个直接能表示的最大值减一，`0xFFFFFFFF`这个数有特殊用途，所以实际上`TRX_RSEG_MAX_SIZE的值为0xFFFFFFFE`。
 > - `TRX_RSEG_HISTORY_SIZE` ： History 链表占用的页面数量。
@@ -487,7 +487,7 @@ category: 数据库
 > 前面我们说过一个 Rollback Segment Header 页面对应一个回滚段，那么总共有128个回滚段自然而然也有128个Header，这128个页面存放在系统表空间的页号为5的某个区域包含了128个8字节大小的格子如下图：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/98919dfa3d1be000bc922a1ac4c0e977.png)
+> ![在这里插入图片描述](images/csdn_98919dfa3d1be000bc922a1ac4c0e977.png)
 > 
 - 而每个格子的构造如下图：
 
@@ -502,7 +502,7 @@ category: 数据库
 > 通过不断的深入我们了解到，系统表空间内的第五号页面有128个字节的地方存放在指向128个Rollback Segment Header的指针，每一个Rollback Segment Header对应一个回滚段，每一个回滚段中有1024个slot，而每个slot由对应着不同的undo页面链表
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/37ceca8e6d79610da7ca97bc22a87064.png)
+> ![在这里插入图片描述](images/csdn_37ceca8e6d79610da7ca97bc22a87064.png)
 > 
 
 ### 6.4 回滚段的分类

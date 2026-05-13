@@ -72,12 +72,12 @@ category: 技术栈
 
 - 概述
 
-> Go 语言对并发的支持是这门语言最重要的特性之一，就是用goruntime运行所有的一切，包括main入口函数，**goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息**。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
+> Go 语言对并发的支持是这门语言最重要的特性之一，就是用goroutine运行所有的一切，包括main入口函数，**goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息**。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
 > 
 
-==goruntime==
+==goroutine==
 
-> 在web开发中，以往的Java等编程语言来同时处理不同的web请求会使得代码量增加在使用线程上，而在go中每个线程可以执行多个goruntime，这些goruntime可以并行执行的函数，所以go中的网络库可以直接使用goruntime，每个请求对应一个
+> 在web开发中，以往的Java等编程语言来同时处理不同的web请求会使得代码量增加在使用线程上，而在go中每个线程可以执行多个goroutine，这些goroutine可以并行执行的函数，所以go中的网络库可以直接使用goroutine，每个请求对应一个
 > 
 
 ![image.png](Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%20Go%20%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/image%201.png)
@@ -100,7 +100,7 @@ go log("发生了可怕的事情")
 > **通道是一种数据结构，可以让 goroutine 之间进行安全的数据通信**。通道可以帮用户避免其他语言里常见的共享内存访问的问题。即最难也就是数据的同步性了，当不同的线程在没有同步保护的情况下修改同一个数据时，总会发生不同步的现象，这个时候其他语言就会用复杂的锁规则来控制资源的访问
 > 
 
-> 通道这一模式保证同一时刻只会有一个 goroutine 修改数据。通道用于在几个运行的 goroutine 之间发送数据。在下图可以看到数据是如何流动的示例。想象一个应用程序，有多个进程需要顺序读取或者修改某个数据，使用 goroutine 和通道，可以为这个过程建立安全的模型。**第一个goruntime处理完数据就传递给正在等待（同步的）的第二个goruntime，然后依次传递，整个过程不需要锁或同步机制**
+> 通道这一模式保证同一时刻只会有一个 goroutine 修改数据。通道用于在几个运行的 goroutine 之间发送数据。在下图可以看到数据是如何流动的示例。想象一个应用程序，有多个进程需要顺序读取或者修改某个数据，使用 goroutine 和通道，可以为这个过程建立安全的模型。**第一个goroutine处理完数据就传递给正在等待（同步的）的第二个goroutine，然后依次传递，整个过程不需要锁或同步机制**
 > 
 
 ![image.png](Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%20Go%20%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/image%202.png)
@@ -344,7 +344,7 @@ func main(){
 
 - 并发
 
-> 这里主要就是goruntime和channel的配合使用了
+> 这里主要就是goroutine和channel的配合使用了
 > 
 
 ```go
@@ -368,7 +368,7 @@ func main(){
 	time.Sleep(time.Second * 6)
 }
 
-//goruntime+channel
+//goroutine+channel
 /*
 *
 这个接收参数：1.接收传输int类型的通道

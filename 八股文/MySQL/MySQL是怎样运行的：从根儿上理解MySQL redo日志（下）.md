@@ -59,7 +59,7 @@ category: 数据库
 > 
 > **继续循环到ib_logfile0开始下个循环**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fc079103b867b3191930e109389b3fef.png)
+> ![在这里插入图片描述](images/csdn_fc079103b867b3191930e109389b3fef.png)
 > 
 - 总共的 redo 日志文件大小
 
@@ -78,22 +78,22 @@ category: 数据库
 > 也就是说我们真正存放redo日志的是从第2048个字节开始算，结构图如下，那么请注意我们前面介绍的block的内部结构其实针对的是后面橙色block的通用结构，下面我们介绍蓝色的
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c78b84c11427c3d84e17c4dfa592dd1c.png)
+> ![在这里插入图片描述](images/csdn_c78b84c11427c3d84e17c4dfa592dd1c.png)
 > 
 
 ### 1.3.1 日志文件前四个block示意图
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9c2f9634b65e25dbba2e98b6ffe80a9c.png)
+![在这里插入图片描述](images/csdn_9c2f9634b65e25dbba2e98b6ffe80a9c.png)
 
 - log file header ：描述该 redo 日志文件的一些整体属性，看一下它的结构：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e83006adeae29bdef542e9a6b8bb3bdb.png)
+    ![在这里插入图片描述](images/csdn_e83006adeae29bdef542e9a6b8bb3bdb.png)
     
     > 注意：mysql后续版本对block的格式一直有在修改，以最新为准！
     > 
 - checkpoint1 ：记录关于 checkpoint 的一些属性，看一下它的结构；checkpoint2 与之同理
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/222d466bc26cd1e9f90bb39fc322ba4e.png)
+    ![在这里插入图片描述](images/csdn_222d466bc26cd1e9f90bb39fc322ba4e.png)
     
 
 ## 2.Log Sequeue Number
@@ -108,15 +108,15 @@ category: 数据库
 > 
 1. **系统第一次初始化时，在pool中的buf_free（就是指向下一条redo写在哪里的变量）就会指向第一个block的偏移量为12字节（log block header的大小）的地方，相应LSN的值也会增加12**
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8171300b2fe9d23b282390a5852949ca.png)
+    ![在这里插入图片描述](images/csdn_8171300b2fe9d23b282390a5852949ca.png)
     
 2. **如果某个 mtr 产生的一组 redo 日志占用的存储空间比较小（假设有200字节）**，也就是待插入的block剩余空闲空间能容纳这个 mtr 提交的日志时， lsn 增长的量就是该 mtr 生成的 redo 日志占用的字节数，就像这样：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cd41a7c0abe6fdb6a7dbdcc6cda5b1d3.png)
+    ![在这里插入图片描述](images/csdn_cd41a7c0abe6fdb6a7dbdcc6cda5b1d3.png)
     
 3. **如果某个 mtr 产生的一组 redo 日志占用的存储空间比较大（假设有1000字节）**，也就是待插入的block剩余空闲空间不足以容纳这个 mtr 提交的日志时， lsn 增长的量就是该 mtr 生成的 redo 日志占用的字节数加上额外占用的 `log block header 和 log block trailer` 的字节数，就像这样：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9694f09971bb7db206c848f0df31cab8.png)
+    ![在这里插入图片描述](images/csdn_9694f09971bb7db206c848f0df31cab8.png)
     
 - 总结
 
@@ -154,7 +154,7 @@ category: 数据库
 > buf_next_to_write
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bc6015d9dee50bbcb252156382eb7e5.png)
+> ![在这里插入图片描述](images/csdn_9bc6015d9dee50bbcb252156382eb7e5.png)
 > 
 - `flushed_to_disk_lsn`
 
@@ -170,11 +170,11 @@ category: 数据库
 > 1. 此时的 lsn 已经增长到了10000，但是由于没有刷新操作，所以此时 `flushed_to_disk_lsn` 的值仍为
 > `8704` ，如图：
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cf89d10f9cdfb047bde4145d75bea386.png)
+>     ![在这里插入图片描述](images/csdn_cf89d10f9cdfb047bde4145d75bea386.png)
 >     
 > 2. 随后进行将`log buffer`中的block刷新到 redo 日志文件的操作，假设将 `mtr_1 和 mtr_2` 的日志刷新到磁盘，那么`flushed_to_disk_lsn`就应该增长`mtr_1 和 mtr_2`写入的日志量，所以 `flushed_to_disk_lsn` 的值增长到了 9948 ，如图：
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3826d13202cfae5a2e3720db1ea27f40.png)
+>     ![在这里插入图片描述](images/csdn_3826d13202cfae5a2e3720db1ea27f40.png)
 >     
 - 总结
 
@@ -194,7 +194,7 @@ category: 数据库
 > 日志文件组（还记得ib_logfile吗）
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/df07476ac129b46045eec185f12ea630.png)
+> ![在这里插入图片描述](images/csdn_df07476ac129b46045eec185f12ea630.png)
 > 
 > **初始时的 LSN 值是 8704 ，对应文件偏移量 2048 ，之后每个 mtr 向磁盘中写入多少字节日志， lsn 的值就增长多少**
 > 
@@ -214,7 +214,7 @@ category: 数据库
 > flush
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6ac33fdb6f4ef6f4a977d2c1d6956eca.png)
+> ![在这里插入图片描述](images/csdn_6ac33fdb6f4ef6f4a977d2c1d6956eca.png)
 > 
 > **就会将该页对应的控制块插入到flush链表的头部，之后再修改该页面时由于它已经在 flush 链表中了，就不再次插入了。也就是说flush链表中的脏页是按照页面的第一次修改时间从大到小进行排序的**
 > 
@@ -225,15 +225,15 @@ category: 数据库
 
 1. 假设 `mtr_1` 执行过程中修改了`页a`，那么在`mtr_1`执行结束时，就会将 `页a` 对应的控制块加入到 `flush链表` 的头部。并且将 `mtr_1` 开始时对应的 `lsn` ，也就是 `8716` 写入 `页a` 对应的控制块的`oldest_modification` 属性中，把 `mtr_1` 结束时对应的 `lsn` ，也就是`8916`写入 `页a` 对应的控制块的`newest_modification` 属性中。画个图表示一下（为了让图片美观一些，我们把 `oldest_modification` 缩写成了`o_m`，把 `newest_modification` 缩写成了`n_m`）：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/82dc5f619a8c881e269a666fd145236d.png)
+    ![在这里插入图片描述](images/csdn_82dc5f619a8c881e269a666fd145236d.png)
     
 2. 接着假设 `mtr_2` 执行过程中又修改了 页b 和 页c 两个页面，那么在`mtr_2`执行结束时，就会将 页b 和 页c对应的控制块都加入到`flush链表`的头部。并且将 mtr_2 开始时对应的`lsn`，也就是`8916`写入 `页b 和 页c`对应的控制块的`oldest_modification`属性中，把`mtr_2`结束时对应的 lsn ，也就是`9948`写入 页b 和 页c对应的控制块的 `newest_modification` 属性中。画个图表示一下
     
-    ![](https://i-blog.csdnimg.cn/blog_migrate/1dfcc42b7a7fd7588d9858373cb671f1.png)
+    ![](images/csdn_1dfcc42b7a7fd7588d9858373cb671f1.png)
     
 3. 接着假设`mtr_3`执行过程中修改了 `页b 和 页d` ，不过`页b`之前已经被修改过了，所以它对应的控制块已经被插入到了`flush`链表，所以在`mtr_3`执行结束时，只需要将`页d`对应的控制块都加入到 `flush链表` 的头部即可。所以需要将`mtr_3`开始时对应的`lsn`，也就是`9948`写入 页d 对应的控制块的`oldest_modification` 属性中，把 mtr_3 结束时对应的 lsn ，也就是10000写入 页d 对应的控制块的`newest_modification` 属性中。另外，由于 页b 在 mtr_3 执行过程中又发生了一次修改，所以需要更新 页 b 对应的控制块中`newest_modification`的值为`10000`。画个图表示一下：
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/53e534b824b31054685473ceee187cdc.png)
+    ![在这里插入图片描述](images/csdn_53e534b824b31054685473ceee187cdc.png)
     
 - 总结
 
@@ -271,7 +271,7 @@ category: 数据库
 > 
 - 经过一系列运算redo日志文件组中各个lsn关系就像这样
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5ea4d0759f83cadfda8a1923b51b8ae1.png)
+    ![在这里插入图片描述](images/csdn_5ea4d0759f83cadfda8a1923b51b8ae1.png)
     
 
 ### 3.2 批量从flush链表中刷出脏页
@@ -298,7 +298,7 @@ category: 数据库
 > LSN
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b2ac078bc6829a89582d31696a8623e4.png)
+> ![在这里插入图片描述](images/csdn_b2ac078bc6829a89582d31696a8623e4.png)
 > 
 
 ## 4.innodb_flush_log_at_trx_commit的用法
@@ -339,7 +339,7 @@ category: 数据库
 > 假如现在有5条redo日志如下图，起点是checkpoint_lsn那么前面的就不用管了，我们直接能想到的就是按照这个顺序依次恢复，不过mysql想到了一个更加快速便捷的方法
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1ae4250e2b04bcc27b6fca5fda87fc02.png)
+> ![在这里插入图片描述](images/csdn_1ae4250e2b04bcc27b6fca5fda87fc02.png)
 > 
 
 ### 5.3.2 使用哈希表
@@ -350,7 +350,7 @@ category: 数据库
 > 
 - 结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c99b69c424c999e78f5be1ff63d24bc7.png)
+    ![在这里插入图片描述](images/csdn_c99b69c424c999e78f5be1ff63d24bc7.png)
     
 
 ### 5.3.3 跳过已经刷新到磁盘的页面
@@ -411,7 +411,7 @@ category: 数据库
 > LOG_BLOCK_HDR_NO
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6c6705ee141be9c7da0eeb9af419d55e.png)
+> ![在这里插入图片描述](images/csdn_6c6705ee141be9c7da0eeb9af419d55e.png)
 > 
 - 小贴士
 

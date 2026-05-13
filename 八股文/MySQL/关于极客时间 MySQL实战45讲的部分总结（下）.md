@@ -50,7 +50,7 @@ category: 数据库
 > 在server层只看做一个。表可以看到，虽然 session B 只需要操作 p_2017 这个分区，但是由于 session A 持有整个表 t 的 MDL 锁，就导致了 session B 的 alter 语句被堵住。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a01ebe7addb8cce87e318dda1dd49098.png)
+> ![在这里插入图片描述](images/csdn_a01ebe7addb8cce87e318dda1dd49098.png)
 > 
 - 概述
 
@@ -86,7 +86,7 @@ category: 数据库
 > 对于MyISAM这个引擎来说，当执行该update语句由于只支持表锁，所以这个语句会锁住这个表中的所有读，但是B的第一句执行成功但第二句缺执行失败
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cd6bcaf55570a8519c9df60348373325.png)
+> ![在这里插入图片描述](images/csdn_cd6bcaf55570a8519c9df60348373325.png)
 > 
 
 ### 1.2 引擎是MyISAM会发生什么
@@ -96,22 +96,22 @@ category: 数据库
 > 
 > **所以，session B 要写入一行 ftime 是 2018-2-1 的时候是可以成功的，而要写入 2017-12-1 这个记录，就要等 session A 的间隙锁。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fb3b89da673b012c978e23c59d45b0c5.png)
+> ![在这里插入图片描述](images/csdn_fb3b89da673b012c978e23c59d45b0c5.png)
 > 
 - 对于分区表这个插入语句间隙锁
 
 > 也就是说，'2017-4-1' 和'2018-4-1' 这两个记录之间的间隙是会被锁住的。那么，sesion B 的两条插入语句应该都要进入锁等待状态。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4405678844b463ecf63cbd2609d9a5c0.png)
+> ![在这里插入图片描述](images/csdn_4405678844b463ecf63cbd2609d9a5c0.png)
 > 
 - 对于普通表这个插入语句的间隙锁
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/38dae5cbc3fac4c23383c325ff48b4e6.png)
+![在这里插入图片描述](images/csdn_38dae5cbc3fac4c23383c325ff48b4e6.png)
 
 ### 1.1 InnoDB分区表的引擎层的行为
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/95cad7d735ab0dda23cb1068f708360f.png)
+![在这里插入图片描述](images/csdn_95cad7d735ab0dda23cb1068f708360f.png)
 
 ```sql
 CREATE TABLE `t` (
@@ -140,14 +140,14 @@ insert into t values('2017-4-1',1),('2018-4-1',1);
 > 可以看到，由于在 T3 时刻直接删除了数据表的记录，而内存的数据还存在。这就导致了：T4 时刻给用户 ua 赋权限失败，因为 mysql.user 表中找不到这行记录；而 T5 时刻要重新创建这个用户也不行，因为在做内存判断的时候，会认为这个用户还存在。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/31eef965cb092394fca81c83cb99eac9.png)
+> ![在这里插入图片描述](images/csdn_31eef965cb092394fca81c83cb99eac9.png)
 > 
 - 例子二
 
 > 可以看到，T3 时刻虽然已经用 delete 语句删除了用户 ua，但是在 T4 时刻，仍然可以用 ua 连接成功。原因就是，这时候内存中 acl_users 数组中还有这个用户，因此系统判断时认为用户还正常存在。在 T5 时刻执行过 flush 命令后，内存更新，T6 时刻再要用 ua 来登录的话，就会报错“无法访问”了。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b4103efeb8c0d66c12ae3b7f3a47e224.png)
+> ![在这里插入图片描述](images/csdn_b4103efeb8c0d66c12ae3b7f3a47e224.png)
 > 
 - 例子一
 
@@ -192,7 +192,7 @@ GRANT SELECT(id), INSERT (id,a) ON mydb.mytbl TO 'ua'@'%' with grant option;
 > 
 - 全局与库权限的区别
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6b8a197ffbfe4c9460efdaccd2e1b1be.png)
+![在这里插入图片描述](images/csdn_6b8a197ffbfe4c9460efdaccd2e1b1be.png)
 
 ```sql
 grant all privileges on db1.* to 'ua'@'%' with grant option;
@@ -235,7 +235,7 @@ grant all privileges on *.* to 'ua'@'%' with grant option;
 > - 磁盘上，往 mysql.user 表里插入一行，由于没有指定权限，所以这行数据上所有表示权限的字段的值都是 N；
 > - 内存里，往数组 acl_users 里插入一个 acl_user 对象，这个对象的 access 字段值为 0。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/afb4402b9519292002a2577b3a352931.png)
+>     ![在这里插入图片描述](images/csdn_afb4402b9519292002a2577b3a352931.png)
 >     
 
 ```sql
@@ -256,7 +256,7 @@ create user 'ua'@'%' identified by 'pa';
 
 - CSV主备同步流程
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/260185080ccc7090cc06cc5d1ea41923.png)
+    ![在这里插入图片描述](images/csdn_260185080ccc7090cc06cc5d1ea41923.png)
     
 
 > 语句执行流程
@@ -319,7 +319,7 @@ mysqldump -h$host -P$port -u$user --add-locks=0 --no-create-info --single-transa
 
 # 如何快速的复制一张表
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3dd3c6ee388faebd228c1a89f5ef62f7.png)
+![在这里插入图片描述](images/csdn_3dd3c6ee388faebd228c1a89f5ef62f7.png)
 
 ```sql
 insert into t values(11,10,10) on duplicate key update d=100;
@@ -339,7 +339,7 @@ insert into t values(11,10,10) on duplicate key update d=100;
 > session A 执行的 insert 语句，发生唯一键冲突的时候，并不只是简单地报错返回，还在冲突的索引上加了锁。我们前面说过，一个 next-key lock 就是由它右边界的值定义的。这时候，session A 持有索引 c 上的 (5,10]共享 next-key lock（读锁）。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/939a5092e1eb72cec9861374921beae3.png)
+> ![在这里插入图片描述](images/csdn_939a5092e1eb72cec9861374921beae3.png)
 > 
 - 例子
 
@@ -403,7 +403,7 @@ create table t2 like t
 > insert into t2(c,d) select c,d from t;
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5861bc52947f3302bfd47ca882a5a93b.png)
+> ![在这里插入图片描述](images/csdn_5861bc52947f3302bfd47ca882a5a93b.png)
 > 
 - 场景搭建
 
@@ -434,7 +434,7 @@ create table t2 like t
 > - 然后，session A 来申请自增 id 得到 id=3，插入了（3,5,5)；
 > - 之后，session B 继续执行，插入两条记录 (4,3,3)、 (5,4,4)。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/66d8d2ef4608919533167d0826cc165a.png)
+>     ![在这里插入图片描述](images/csdn_66d8d2ef4608919533167d0826cc165a.png)
 >     
 - 场景
 
@@ -523,7 +523,7 @@ insert into t values(null,2,2);
 > - 临时表重启后也是需要删除的，清空数据这个问题不存在；
 > - 备库的临时表也不会影响主库的用户线程。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b5e6911ca2096765d8ea4b9471f236fc.png)
+>     ![在这里插入图片描述](images/csdn_b5e6911ca2096765d8ea4b9471f236fc.png)
 >     
 - 有个特殊的场景可以使用Memory
 
@@ -536,7 +536,7 @@ insert into t values(null,2,2);
 > 在这个结构下，那么备库可以作为主库，主库也能作为备库，当备库进行重启时同样会在主库上复现那个诡异的操作
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3e4de50970ebf5b1f610e67a88fa12ba.png)
+> ![在这里插入图片描述](images/csdn_3e4de50970ebf5b1f610e67a88fa12ba.png)
 > 
 - M-M结构下（双向）
 
@@ -545,7 +545,7 @@ insert into t values(null,2,2);
 > 
 > **主备切换就更诡异了**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f629663d725f8ee8b282be3ea00593d6.png)
+> ![在这里插入图片描述](images/csdn_f629663d725f8ee8b282be3ea00593d6.png)
 > 
 - 在M-S结构下（即主备关系在同一时刻内是单向的）
 
@@ -579,7 +579,7 @@ insert into t values(null,2,2);
 > 
 - 对比
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/43b5290107d018a262ae31f01ef6424e.png)
+![在这里插入图片描述](images/csdn_43b5290107d018a262ae31f01ef6424e.png)
 
 ```sql
 alter table t1 add index a_btree_index using btree (id);
@@ -603,12 +603,12 @@ alter table t1 add index a_btree_index using btree (id);
 > 可以看到，内存表的数据部分以数组的方式单独存放，而主键 id 索引里，存的是每个数据的位置。主键 id 是 hash 索引，可以看到索引上的 key 并不是有序的。所以当进行select *的时候走的是全表查询，依次扫描这个数据数组
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/aaad60514739c771b460c89dc879b3c6.png)
+> ![在这里插入图片描述](images/csdn_aaad60514739c771b460c89dc879b3c6.png)
 > 
 - Memory的存储结构如下
 - InnoDB的存储结构你已经很清楚了，根据主键顺序存储在B+树的叶子节点上
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b4f373c36719b85431051333b79fde23.png)
+![在这里插入图片描述](images/csdn_b4f373c36719b85431051333b79fde23.png)
 
 ```sql
 create table t1(id int primary key, c int) engine=Memory;
@@ -624,9 +624,9 @@ insert into t2 values(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(0,0)
 
 - 先来看看各大引擎对于某些功能的支持，**默认临时表是使用 Memory 引擎的**
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1d20aac18fd467cb1d0bb090f80b2eaf.png)
+    ![在这里插入图片描述](images/csdn_1d20aac18fd467cb1d0bb090f80b2eaf.png)
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c2c58d8742a624638edbd9ad31e9600e.png)
+    ![在这里插入图片描述](images/csdn_c2c58d8742a624638edbd9ad31e9600e.png)
     
 
 # Memory引擎
@@ -696,7 +696,7 @@ select SQL_BIG_RESULT id%100 as m, count(*) as c from t1 group by m;
 - 总结
 1. 创建一个临时表，将每个分表中符合条件的记录查出并插入到临时表，然后对临时表进行相同条件的查询即可得
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c106b5aeafdac523edc1c820b3e317c9.png)
+    ![在这里插入图片描述](images/csdn_c106b5aeafdac523edc1c820b3e317c9.png)
     
 2. 将全部的符合条件的记录放在内存中进行排序并限制记录数
 
@@ -799,7 +799,7 @@ select v from ht where k >= M order by t_modified desc limit 100;
 > 边读边发
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/754f913331f6fab100f4c220845f6cd4.png)
+> ![在这里插入图片描述](images/csdn_754f913331f6fab100f4c220845f6cd4.png)
 > 
 - 流程图
 
@@ -946,7 +946,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > B、C、D
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a75fcf0738f4bddfdb95ca7a57e0faf1.png)
+> ![在这里插入图片描述](images/csdn_a75fcf0738f4bddfdb95ca7a57e0faf1.png)
 > 
 - 宕机后的结构图
 
@@ -969,7 +969,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 
 > **读写分离**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4e68e50668fe9545c1ab5277328a89be.png)
+> ![在这里插入图片描述](images/csdn_4e68e50668fe9545c1ab5277328a89be.png)
 > 
 - 一主多从的结构图
 
@@ -1024,7 +1024,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 给每个工作线程创建一个专属的hash来分配对应处理表，对于处理冲突问题，实行有冲突就等待，没有冲突就分配的策略
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/648af1737e3df46536811271b84cf798.png)
+> ![在这里插入图片描述](images/csdn_648af1737e3df46536811271b84cf798.png)
 > 
 - 按表分发策略
 
@@ -1045,11 +1045,11 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 因为 row 格式在记录 binlog 的时候，会记录新插入的行的所有字段值，所以最后只会有一行不一致。而且，两边的主备同步的应用线程会报错 duplicate key error 并停止。也就是说，这种情况下，备库 B 的 (5,4) 和主库 A 的 (5,5) 这两行数据，都不会被对方执行。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/353beb06abc951a9e5b9320a3566027c.png)
+> ![在这里插入图片描述](images/csdn_353beb06abc951a9e5b9320a3566027c.png)
 > 
 - 数据不一致场景重现
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/180f63998402dad29afcea74fdfc3fda.png)
+    ![在这里插入图片描述](images/csdn_180f63998402dad29afcea74fdfc3fda.png)
     
 
 > 可用性就是把上述的可靠性的4~5步直接提到前面执行，不等同步让备库直接上来接收业务处理，这样几乎没有可用时间，也就造成了主备库数据不统一不一致
@@ -1069,7 +1069,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 
 ### 2.1 可靠性优先策略
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e1ea7a17d6f3fb1746161a64a2bae87e.png)
+![在这里插入图片描述](images/csdn_e1ea7a17d6f3fb1746161a64a2bae87e.png)
 
 ## 2.优化策略
 
@@ -1097,7 +1097,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 1. 分片存储
 > 2. 分库分表
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b1a05724baf65f9ad84228b3d77c3abf.png)
+>     ![在这里插入图片描述](images/csdn_b1a05724baf65f9ad84228b3d77c3abf.png)
 >     
 - 总的架构图
 
@@ -1106,7 +1106,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 
 > **如果有节点down 机，集群会自动更新配置。集群包含单点写入和多点写入两种模式。在单主模式下，如果主节点down掉，从节点自动替换上来,MySQL Router会自动探测，并将客户端连接到新节点。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a1588bebb968a005d8b2ccff01664150.png)
+> ![在这里插入图片描述](images/csdn_a1588bebb968a005d8b2ccff01664150.png)
 > 
 1. InnoDB Cluster
 
@@ -1117,7 +1117,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 分别给三个主机虚拟IP，监视器维护一个IP集，现在实际上是一主多从，只不过当真正的主机宕机，另外的作为备用主机；置换过程其实就是虚拟IP的更换，外界看着没变其实内部已经发生变化
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8da4448cc3dc7fd96f8851e1ed1d040d.png)
+> ![在这里插入图片描述](images/csdn_8da4448cc3dc7fd96f8851e1ed1d040d.png)
 > 
 1. MYSQL-MMM（MYSQL主主复制监视器）
 
@@ -1145,7 +1145,7 @@ mysql -h$host -P$port -u$user -p$pwd -e "select * from db1.t" > $target_file
 > 现在应用越多的是双M结构，而本章开始的那个基本流程图是M-S结构，也就是同一时刻内单向主备关系，当主备关系切换时，需要切换标志位谁是主谁知备。而如下图所示就是双M结构：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0094143b5060310e4a656ecd94cef789.png)
+> ![在这里插入图片描述](images/csdn_0094143b5060310e4a656ecd94cef789.png)
 > 
 - 概述
 
@@ -1187,7 +1187,7 @@ mysqlbinlog master.000001  --start-position=2738 --stop-position=2973 | mysql -h
 > 
 - 优点
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e7d8af92c4a91f513cfff38e15580713.png)
+![在这里插入图片描述](images/csdn_e7d8af92c4a91f513cfff38e15580713.png)
 
 ```sql
 mysqlbinlog  -vv data/master.000001 --start-position=8900;
@@ -1204,7 +1204,7 @@ binlog的样子如下：：
 > - Table_map event，用于说明接下来要操作的表是 test 库的表 t;
 > - Delete_rows event，用于定义删除的行为。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8d0ca5253500f1a459962abcf873375d.png)
+>     ![在这里插入图片描述](images/csdn_8d0ca5253500f1a459962abcf873375d.png)
 >     
 - 概述
 
@@ -1217,7 +1217,7 @@ binlog的样子如下：：
 > 原因是当前格式是statement，并且语句中有limit，可能会导致在主库与备库执行有歧义即使用的优化方式可能会不同
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1e3b3d446aa0f5c49657e9f97fab3bd9.png)
+> ![在这里插入图片描述](images/csdn_1e3b3d446aa0f5c49657e9f97fab3bd9.png)
 > 
 - 该语句执行完成会有warnings
 
@@ -1277,7 +1277,7 @@ insert into t values(5,5,'2018-11-09');
 > 4. 备库 B 拿到`binlog`后，写到本地文件，称为中转日志（`relay log`）。
 > 5. `sql_thread` 读取中转日志，解析出日志里的命令，并执行。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/eaf6b99c616234c1f15f62290af7b16b.png)
+>     ![在这里插入图片描述](images/csdn_eaf6b99c616234c1f15f62290af7b16b.png)
 >     
 - 节点A到节点B的内部流程
 
@@ -1287,7 +1287,7 @@ insert into t values(5,5,'2018-11-09');
 > 2. 防止切换逻辑有 bug，比如切换过程中出现双写（即在两个库进行写操作），造成主备不一致；
 > 3. 可以用 readonly 状态，来判断节点的角色。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5ceebf298d133f49e3564eb820e8f619.png)
+>     ![在这里插入图片描述](images/csdn_5ceebf298d133f49e3564eb820e8f619.png)
 >     
 - 主备切换基本流程图
 

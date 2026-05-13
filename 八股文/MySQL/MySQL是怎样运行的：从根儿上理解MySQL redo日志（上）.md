@@ -59,7 +59,7 @@ category: 数据库
 > data
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4a19b3b34525843e90ab5795358a7e7f.png)
+> ![在这里插入图片描述](images/csdn_4a19b3b34525843e90ab5795358a7e7f.png)
 > 
 
 ### 2.1 简单的redo日志类型
@@ -72,7 +72,7 @@ category: 数据库
 > 
 - 页面结构
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1648c7ad068513ff98880ed04437c405.png)
+    ![在这里插入图片描述](images/csdn_1648c7ad068513ff98880ed04437c405.png)
     
 - Max Row ID ：
 
@@ -95,7 +95,7 @@ category: 数据库
 > 1. `MLOG_1BYTE` （ type 字段对应的十进制数字为 1 ）：表示在页面的某个偏移量处写入1个字节的 redo 日志类型。
 > 2. `2BYTE、4BYTE、8BYTE`同理，结构这四种都差不多哦
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d49ee51702bd49658d3d0887045ce7cc.png)
+>     ![在这里插入图片描述](images/csdn_d49ee51702bd49658d3d0887045ce7cc.png)
 >     
 
 > MLOG_WRITE_STRING （ type 字段对应的十进制数字为 30 ）：表示在页面的某个偏移量处写入一串数据。如果你len的地方正好是1、2、4、8又跟上面一样了
@@ -124,7 +124,7 @@ category: 数据库
 > - 还有别的吧啦吧啦的更新的地方，就不一一唠叨了...
 - 修改于未修改的数据页抽象图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4a629a74097913da7d0a3e2806641090.png)
+    ![在这里插入图片描述](images/csdn_4a629a74097913da7d0a3e2806641090.png)
     
 
 ### 2.2.2 解决方案
@@ -161,9 +161,9 @@ category: 数据库
 
 - 图示
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5ac02d12469ce959e8862827d912b1cd.png)
+    ![在这里插入图片描述](images/csdn_5ac02d12469ce959e8862827d912b1cd.png)
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4c55f2066ed02a36891996521f35334e.png)
+    ![在这里插入图片描述](images/csdn_4c55f2066ed02a36891996521f35334e.png)
     
 
 下面大致说一下里面有些字段的意思：
@@ -214,7 +214,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 > **乐观插入**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e72e0f5e33469abfdfd105823c3299de.png)
+> ![在这里插入图片描述](images/csdn_e72e0f5e33469abfdfd105823c3299de.png)
 > 
 - 情况二：
 
@@ -223,9 +223,9 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 > **所以相比于乐观插入悲观插入所要记录的redo日志就非常多了**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/23645ef23762fcc3c2df171b4d298700.png)
+> ![在这里插入图片描述](images/csdn_23645ef23762fcc3c2df171b4d298700.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4eec7169707b7615d6b492de80145de9.png)
+> ![在这里插入图片描述](images/csdn_4eec7169707b7615d6b492de80145de9.png)
 > 
 - 小贴士
 
@@ -257,7 +257,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 > **当发生崩溃时进行回复如果没有这个既不是一组完整的redo日志会放弃前面所解析恢复的日志**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d58ea41485a81ef09b5f0b8a842534fa.png)
+> ![在这里插入图片描述](images/csdn_d58ea41485a81ef09b5f0b8a842534fa.png)
 > 
 - MLOG_MULTI_REC_END用不到的情况
 
@@ -267,7 +267,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 1则表示为单一redo日志
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7990e4392a39682abc58151154d6400f.png)
+> ![在这里插入图片描述](images/csdn_7990e4392a39682abc58151154d6400f.png)
 > 
 
 ### 3.2 Mini-Transaction的概念
@@ -278,7 +278,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 - 关系结构图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b4cd041d8913d2fdfc28b39a0891e00f.png)
+    ![在这里插入图片描述](images/csdn_b4cd041d8913d2fdfc28b39a0891e00f.png)
     
 
 ## 4.redo日志的写入过程
@@ -291,7 +291,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 - 结构图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a30e7eaed1d4b75475bf4befbcf7e7ec.png)
+    ![在这里插入图片描述](images/csdn_a30e7eaed1d4b75475bf4befbcf7e7ec.png)
     
 - `log block header 和 log block trailer` 存储的是一些管理信息。我们来看看这些所谓的 管理信息 都是啥：
 
@@ -306,7 +306,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 > - `LOG_BLOCK_CHECKSUM` ：表示block的校验值，用于正确性校验，我们暂时不关心它。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/50b532b67c6a6cf512b8344c778a2c22.png)
+>     ![在这里插入图片描述](images/csdn_50b532b67c6a6cf512b8344c778a2c22.png)
 >     
 
 ### 4.2 redo日志缓冲区
@@ -317,7 +317,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 - 结构如下
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b402f22eef7ae6673c846fb45b72aa0e.png)
+    ![在这里插入图片描述](images/csdn_b402f22eef7ae6673c846fb45b72aa0e.png)
     
 - 设置大小
 
@@ -343,7 +343,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > buf_free
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/10b309570eefb760ac4f760a619ac8bb.png)
+> ![在这里插入图片描述](images/csdn_10b309570eefb760ac4f760a619ac8bb.png)
 > 
 
 ### 4.3.1 当两个事务的mtr并发插入到log buffer
@@ -354,7 +354,7 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 - 结构图如下
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3cdeaa61dd09c15f6b04bb35a7aef26f.png)
+    ![在这里插入图片描述](images/csdn_3cdeaa61dd09c15f6b04bb35a7aef26f.png)
     
 - 过程图如下
 
@@ -363,5 +363,5 @@ PAGE_HEAP_TOP 的值修改为了啥，PAGE_N_HEAP的值修改为了啥等等这�
 > 
 > **可以看到pool里有很多个block，每个block里面有很多mtr，每个mtr代表着一组redo日志**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/25dbdb1e76f27f5b337c074a1dfb16d1.png)
+> ![在这里插入图片描述](images/csdn_25dbdb1e76f27f5b337c074a1dfb16d1.png)
 >

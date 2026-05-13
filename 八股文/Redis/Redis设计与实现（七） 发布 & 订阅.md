@@ -24,7 +24,7 @@ PUBLISH "news.it" "hello"
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/24e94fce0890f352c340a13ed0917006.png)
+![在这里插入图片描述](images/csdn_24e94fce0890f352c340a13ed0917006.png)
 
 - PSUBSCRIBE
 
@@ -38,7 +38,7 @@ PSUBSCRIBE "news.?t"
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4c6125dfc15574620611ed7296b6d581.png)
+![在这里插入图片描述](images/csdn_4c6125dfc15574620611ed7296b6d581.png)
 
 ## 1.频道的订阅和退订
 
@@ -55,7 +55,7 @@ PSUBSCRIBE "news.?t"
 > pubsub_channels
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/dc75d1a2682d2f1cfdef4d4c9943d9c2.png)
+> ![在这里插入图片描述](images/csdn_dc75d1a2682d2f1cfdef4d4c9943d9c2.png)
 > 
 
 ### 1.1 订阅频道
@@ -84,7 +84,7 @@ UNSUBSCRIBE "频道1" "频道2"
 > 模式订阅和退订会在redisServer的pubsub_patterns属性中，同样也是一个链表，每个节点的结构为pubsubPattern
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/989280e313423bbd1917eaaa98defe49.png)
+> ![在这里插入图片描述](images/csdn_989280e313423bbd1917eaaa98defe49.png)
 > 
 - 实例
 

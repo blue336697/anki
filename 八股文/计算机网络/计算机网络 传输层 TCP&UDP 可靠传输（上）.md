@@ -15,7 +15,7 @@ category: 技术分享
 
 这里在提一嘴，TCP传输的报文是没有边界的，也就是说信息的合理分段是应用层需要自己做的事情
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bf7497e9336ed4a5b6e8ebe30cb76909.png)
+![在这里插入图片描述](images/csdn_bf7497e9336ed4a5b6e8ebe30cb76909.png)
 
 - 提供的服务
 
@@ -30,7 +30,7 @@ category: 技术分享
 
 TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/895bc0a1461bd21c59756d088bb5dee8.png)
+![在这里插入图片描述](images/csdn_895bc0a1461bd21c59756d088bb5dee8.png)
 
 ### 2.传输层 vs. 网络层
 
@@ -49,7 +49,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 **即这12个小孩的信被家里面老大封装（复用）成一个邮包进行邮政公司运送（网络层传输），每个信封上都有源端和目标端，等到目标端那个家的老大进行拆包（解复用）说这个是谁的，那个是谁的**
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a246afaae6cc29648bb1db4c28bc480b.png)
+![在这里插入图片描述](images/csdn_a246afaae6cc29648bb1db4c28bc480b.png)
 
 - 注意
 
@@ -58,23 +58,23 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 ## 二、多路复用/解复用
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7f195f16c37a2f4b2affec1a92df3919.png)
+![在这里插入图片描述](images/csdn_7f195f16c37a2f4b2affec1a92df3919.png)
 
 ### 1.TCP
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fe271e7f07c0abd9036726cf6ce75fd4.png)
+![在这里插入图片描述](images/csdn_fe271e7f07c0abd9036726cf6ce75fd4.png)
 
 如果是多线程的话，可能发送给同一个进程的不同线程
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/30d8e8dac49a3abbacbe42ed8e67d646.png)
+![在这里插入图片描述](images/csdn_30d8e8dac49a3abbacbe42ed8e67d646.png)
 
 ### 2.UDP
 
 不同客户端的信息发送给目标端的端口号一致，那么就是说这些信息都是给这个端口对应的应用
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fd2a3c42a1150441e338f5aaa846a422.png)
+![在这里插入图片描述](images/csdn_fd2a3c42a1150441e338f5aaa846a422.png)
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0033561714960941b0721639382f3a61.png)
+![在这里插入图片描述](images/csdn_0033561714960941b0721639382f3a61.png)
 
 ## 三、无连接传输：UDP（User Datagram Protocol：用户数据报协议）
 
@@ -105,7 +105,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 **从图中可以看到当头部字节数越大，那么应用程序数据的容量就越小即承载量就越小**
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4d3e94a06c90ba6be331bfa2ed7e3321.png)
+![在这里插入图片描述](images/csdn_4d3e94a06c90ba6be331bfa2ed7e3321.png)
 
 ### 3.UDP校验和
 
@@ -128,7 +128,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 ### 3.3 例子
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1d1ffe3fb3e551a18f078e4679c92962.png)
+![在这里插入图片描述](images/csdn_1d1ffe3fb3e551a18f078e4679c92962.png)
 
 ## 四、可靠数据传输（RDT）的原理
 
@@ -146,7 +146,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 - 双向的数据传输问题实际上是2个单向数据传输问题的综合
 - 使用有限状态机（FSM如下图）描述发送方和接收方
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/31a124679d25ffd51613eca5b31a4c33.png)
+    ![在这里插入图片描述](images/csdn_31a124679d25ffd51613eca5b31a4c33.png)
     
 
 ### 2.RDT版本变迁
@@ -193,13 +193,13 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 下面一些名词稍安勿躁，接下来就会讲解
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ab58dc5f507a418905f916f5543a51cc.png)
+![在这里插入图片描述](images/csdn_ab58dc5f507a418905f916f5543a51cc.png)
 
 ### 3.3 发送窗口（sending-window）及接收窗口
 
 先来看看发送窗口移动的方式
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/65bf348b6395744bb76f67d6811e1148.png)
+![在这里插入图片描述](images/csdn_65bf348b6395744bb76f67d6811e1148.png)
 
 ### 3.3.1 概述
 
@@ -216,7 +216,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 
 下图就是发送窗口为空集，发送缓冲区为0.1.2.3.4
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/81ac4f01260010016eec8fafdff0ff37.png)
+![在这里插入图片描述](images/csdn_81ac4f01260010016eec8fafdff0ff37.png)
 
 ### 3.3.2 前沿的移动
 
@@ -225,7 +225,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 > 由上图看到就是发送窗口的前沿不能超过绿色的部分
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7e4b557a9730e2053fcebd6b93d5ab4b.png)
+![在这里插入图片描述](images/csdn_7e4b557a9730e2053fcebd6b93d5ab4b.png)
 
 ### 3.3.3 后沿的移动
 
@@ -243,7 +243,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 - 结果：发送缓冲区罩住新的分组，来了分组可以发送
 - 移动的极限：不能够超过前沿
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/873fce90d6765029daf71f22490ab6e2.png)
+    ![在这里插入图片描述](images/csdn_873fce90d6765029daf71f22490ab6e2.png)
     
 
 ### 3.3.5 接收窗口(receiving window) = 接收缓冲区（注意这里是接收窗口）
@@ -259,7 +259,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 > 
 - **例子:Wr = 1，在0的位置;只有0号分组可以接收；向前滑动一个，罩在1的位置，如果来了第2号分组，则丢弃，并且给顺序到来最大序号分组确认，这个例子中即要给0一个ACK=0；往后如果来了3.4.5等等只要2号分组没收都要做这两个动作，一是丢弃，二是确认消息**
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6ac1b4d01430331ef1baf0c8f0d1d7ed.png)
+    ![在这里插入图片描述](images/csdn_6ac1b4d01430331ef1baf0c8f0d1d7ed.png)
     
 
 ### 3.3.6 接收窗口的滑动和发送确认
@@ -267,11 +267,11 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 - 滑动:
 - 低序号的分组到来，接收窗口移动;
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9b0f1b6e71d69cbddd37eedf9de1d9d0.png)
+    ![在这里插入图片描述](images/csdn_9b0f1b6e71d69cbddd37eedf9de1d9d0.png)
     
 - 高序号分组乱序到，缓存但不交付（因为要实现rdt，不允许失序），不滑动
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/638861bc8ad9a303e6e4453672956194.png)
+    ![在这里插入图片描述](images/csdn_638861bc8ad9a303e6e4453672956194.png)
     
 - 发送确认:
 
@@ -333,7 +333,7 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 发送端：从表现来看，一旦一个分组没有发成功，如:0,1,2,3,4∶假如1未成功，234都发送出去了，要返回1再发送;GB到1，然后把1以后发送的包括1在全部发送一遍
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/13cf1c8376151bcb3df9fa9bc348cd3f.png)
+![在这里插入图片描述](images/csdn_13cf1c8376151bcb3df9fa9bc348cd3f.png)
 
 - SR:接收窗口尺寸>1
 
@@ -341,8 +341,8 @@ TCP和UDP，他俩都是建立在IP协议的基础上来完成的
 发送端：发送0,1,2,3,4，一旦1未成功，2,3,4,己发送，无需重发，选择性发送1
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ad532234a88a70992e66ae03cc110f41.png)
+![在这里插入图片描述](images/csdn_ad532234a88a70992e66ae03cc110f41.png)
 
 ### 3.4 总结（GBN和SR协议）
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bfc6dba5e8ad278742d010a82d91fff7.png)
+![在这里插入图片描述](images/csdn_bfc6dba5e8ad278742d010a82d91fff7.png)

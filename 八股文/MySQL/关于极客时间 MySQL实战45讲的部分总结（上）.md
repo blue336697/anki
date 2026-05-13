@@ -163,7 +163,7 @@ select id,name,email from SUser where email='zhangssxyz@xxx.com';
 > 比如，如果按照主键递增的方式插入的，注意为啥不能将550留在pageA呢，此时就要说明页分裂是非常消耗资源的，同时又要满足主键递增排序，所以就会造成这样的结果
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ac37b3ad30459d931894183b8d373670.png)
+> ![在这里插入图片描述](images/csdn_ac37b3ad30459d931894183b8d373670.png)
 > 
 
 ### 1.1 如何处理空洞
@@ -259,9 +259,9 @@ alter table A engine=InnoDB
 > 缓存缓存，那么肯定有几率会造成数据的丢失。即使你通过方法解决了丢失的问题，但Redis就算能正常工作这个值还是逻辑上不精确的。例如下面两个时序图
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/28096bce6cc227618c74b9609e6d193a.png)
+> ![在这里插入图片描述](images/csdn_28096bce6cc227618c74b9609e6d193a.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/81d50adf00d80dc232c8a6e6b40cbde4.png)
+> ![在这里插入图片描述](images/csdn_81d50adf00d80dc232c8a6e6b40cbde4.png)
 > 
 
 ### 4.2 在数据库保存计数
@@ -285,7 +285,7 @@ alter table A engine=InnoDB
 > 
 > **会话B读取的计数值和记录都是会话A开启之前的旧数据所以互相不影响**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0df621a9a4633ec1e4c0cc153f1af262.png)
+> ![在这里插入图片描述](images/csdn_0df621a9a4633ec1e4c0cc153f1af262.png)
 > 
 
 ## 5.基于InnoDB不同的count用法效率
@@ -366,7 +366,7 @@ select city,name,age from t where city='杭州' order by name limit 1000  ;
 > 
 - 流程图
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a8e8804fc9eea214d22da36c4f5f5af.png)
+    ![在这里插入图片描述](images/csdn_8a8e8804fc9eea214d22da36c4f5f5af.png)
     
 
 ### 1.2 借助磁盘进行排序
@@ -379,7 +379,7 @@ select city,name,age from t where city='杭州' order by name limit 1000  ;
 > 可以看到为12，也就是说mysql将待排序的问分成12份，并适应归并排序最后合成一份
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1982210d7a53de56f8e3e20d51f9f274.png)
+> ![在这里插入图片描述](images/csdn_1982210d7a53de56f8e3e20d51f9f274.png)
 > 
 - 其他参数解释
 
@@ -406,7 +406,7 @@ select city,name,age from t where city='杭州' order by name limit 1000  ;
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/935de04c54c74361518ec4a7ea5801f7.png)
+![在这里插入图片描述](images/csdn_935de04c54c74361518ec4a7ea5801f7.png)
 
 - 结果分析
 
@@ -440,14 +440,14 @@ select city,name,age from t where city='杭州' order by name limit 1000  ;
 > 可以看到流程省略了很多
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b3d5a9ce198c6e58da23d04f61dc6d05.png)
+> ![在这里插入图片描述](images/csdn_b3d5a9ce198c6e58da23d04f61dc6d05.png)
 > 
 - 查看执行计划
 
 > 从图中可以看到，Extra 字段中没有 Using filesort 了，也就是不需要排序了。而且由于 (city,name) 这个联合索引本身有序，所以这个查询也不用把 4000 行全都读一遍，只要找到满足条件的前1000条记录就可以退出了。也就是说，在我们这个例子里，只需要扫描 1000 次。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/438c6c7e1d0f80107fcc7fe4524f6738.png)
+> ![在这里插入图片描述](images/csdn_438c6c7e1d0f80107fcc7fe4524f6738.png)
 > 
 
 # 如何正确的使用随机排序
@@ -540,7 +540,7 @@ mysql> select count(*) from tradelog where t_modified='2018-7-1’
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5dd5b7e33e7d8b639c05e6b3c6bfa082.png)
+![在这里插入图片描述](images/csdn_5dd5b7e33e7d8b639c05e6b3c6bfa082.png)
 
 ## 2.隐式类型转换
 
@@ -619,7 +619,7 @@ traideid =CONVERT($R4.tradeid.value USING utf8mb4);
 > 当形如这个的时候，我们就需要查询拿锁的这个线程时那个，然后kill掉就行（注意show processlist可看不出是哪个线程持有锁）
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/80a547435e8174074ce7351b5c952ba7.png)
+> ![在这里插入图片描述](images/csdn_80a547435e8174074ce7351b5c952ba7.png)
 > 
 - 如何查看那个线程持有锁
 
@@ -658,7 +658,7 @@ traideid =CONVERT($R4.tradeid.value USING utf8mb4);
 > kill
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b3314af649fc1c93379feb715547cd54.png)
+> ![在这里插入图片描述](images/csdn_b3314af649fc1c93379feb715547cd54.png)
 > 
 
 ## 等flush
@@ -668,7 +668,7 @@ traideid =CONVERT($R4.tradeid.value USING utf8mb4);
 > 在前面介绍缓冲池的时候，会有脏页集中刷新到磁盘的情况，此时用户线程将会被阻塞直到刷新完成，但是这种情况会很快，如果查询语句很长时间没有返回可能的原因是flush这个语句也被堵住了
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f9c575db2a6d2f4c26255f1c45e677fb.png)
+> ![在这里插入图片描述](images/csdn_f9c575db2a6d2f4c26255f1c45e677fb.png)
 > 
 - MySQL 里面对表做 flush 操作的用法
 
@@ -684,7 +684,7 @@ traideid =CONVERT($R4.tradeid.value USING utf8mb4);
 > 
 > **也许你会想使用MVCC中readView直接读取以前版本的数据就可以了啊，但是注意看语句，B中sql语句显式的说明自己需要共享锁并且B没有显式开启事务！！！，但此时的这个锁被A拿了（A拿了读写锁），所以就要进行等待**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/66d02155fefbd919329322d4ac899355.png)
+> ![在这里插入图片描述](images/csdn_66d02155fefbd919329322d4ac899355.png)
 > 
 - 解决
 
@@ -696,7 +696,7 @@ mysql> select * from sys.innodb_lock_waits where locked_table='`test`.`t`'\\G
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2ed0624471a0c7db7915006368a6ae12.png)
+![在这里插入图片描述](images/csdn_2ed0624471a0c7db7915006368a6ae12.png)
 
 > 可以看到，这个信息很全，4 号线程是造成堵塞的罪魁祸首。而干掉这个罪魁祸首的方式，就是 KILL QUERY 4 或 KILL 4。不过，这里不应该显示“KILL QUERY 4”。这个命令表示停止 4 号线程当前正在执行的语句，而这个方法其实是没有用的。因为占有行锁的是 update 语句，这个语句已经是之前执行完成了的，现在执行 KILL QUERY，无法让这个事务去掉 id=1 上的行锁。实际上，KILL 4 才有效，也就是说直接断开这个连接。这里隐含的一个逻辑就是，连接被断开的时候，会自动回滚这个连接里面正在执行的线程，也就释放了 id=1 上的行锁。
 > 
@@ -708,13 +708,13 @@ mysql> select * from sys.innodb_lock_waits where locked_table='`test`.`t`'\\G
 > 在一张id（主键）和age两个字段的表中，按顺序（从1,1开始）连续插入10000条记录后，开启两个线程会进行如下操作：
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8ff00d8c23583cc1c72f4bbd5c2f47ab.png)
+> ![在这里插入图片描述](images/csdn_8ff00d8c23583cc1c72f4bbd5c2f47ab.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/56f5aa623572b5c0dceb908e2d1c39d4.png)
+> ![在这里插入图片描述](images/csdn_56f5aa623572b5c0dceb908e2d1c39d4.png)
 > 
 - 查询结果
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0eb42c238a63fde4c57cdac8baeb935c.png)
+    ![在这里插入图片描述](images/csdn_0eb42c238a63fde4c57cdac8baeb935c.png)
     
 - 结果分析
 
@@ -765,7 +765,7 @@ insert into t values(0,0,0),(5,5,5),
 > 根据下图的执行表，当在Q1语句进行加锁后，在T2时刻还是会对id为0的值进行修改成功，原因是在 T1 时刻，session A 还只是给 id=5 这一行加了行锁， 并没有给 id=0 这行加上锁。虽然是后面修改的d，但是整体上还是破坏了加锁的语义
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f399fab69fa64e5b3612d6c8d3d98dfc.png)
+> ![在这里插入图片描述](images/csdn_f399fab69fa64e5b3612d6c8d3d98dfc.png)
 > 
 
 ### 2.2 数据一致性的问题
@@ -790,7 +790,7 @@ update t set d=100 where d=5;/*所有d=5的行，d改成100*/
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4853720eaa0d72ec6e6a8093bd6d6d45.png)
+![在这里插入图片描述](images/csdn_4853720eaa0d72ec6e6a8093bd6d6d45.png)
 
 - 原因分析及解决
 
@@ -852,7 +852,7 @@ commit;
 > 3. session B 试图插入一行 (9,9,9)，被 session A 的间隙锁挡住了，只好进入等待；
 > 4. session A 试图插入一行 (9,9,9)，被 session B 的间隙锁挡住了。
 >     
->     ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/feac18c85d09a5527440308fa4f3e61e.png)
+>     ![在这里插入图片描述](images/csdn_feac18c85d09a5527440308fa4f3e61e.png)
 >     
 - 总结
 
@@ -905,9 +905,9 @@ commit;
 > 通过配合show processlist和查 information_schema 库的 innodb_trx 表，来断开事务外的空闲连接，之所以要看innodb_trx 表去确认那个具体是哪个线程，是因为两个语句如下图，在空闲后只查看show processlist是一模一样的，但删除两个连接的后果有不同
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9d7c57143e04e76fb750ea336c059094.png)
+> ![在这里插入图片描述](images/csdn_9d7c57143e04e76fb750ea336c059094.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e7e3e831889d572d245aba8355d368d3.png)
+> ![在这里插入图片描述](images/csdn_e7e3e831889d572d245aba8355d368d3.png)
 > 
 > ```
 > kill connection + id
@@ -1013,7 +1013,7 @@ call query_rewrite.flush_rewrite_rules();
 
 ## 5.类似饮鸩止渴的场景
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/14aae2d751ff0a904520702664849bd0.png)
+![在这里插入图片描述](images/csdn_14aae2d751ff0a904520702664849bd0.png)
 
 # binlog
 
@@ -1021,7 +1021,7 @@ call query_rewrite.flush_rewrite_rules();
 
 [！！！！](https://blog.csdn.net/u010900754/article/details/106630704)
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a78d0756b5004a19f4d73102b3853464.png)
+![在这里插入图片描述](images/csdn_a78d0756b5004a19f4d73102b3853464.png)
 
 ## 1.binlog写入机制
 
@@ -1039,7 +1039,7 @@ call query_rewrite.flush_rewrite_rules();
 > 事务提交的时候，执行器把 binlog cache 里的完整事务写入到 binlog 中，并清空 binlog cache。
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/802da07cd52cabebe69242103bd55028.png)
+> ![在这里插入图片描述](images/csdn_802da07cd52cabebe69242103bd55028.png)
 > 
 - 状态图分析（`fsync`函数同步内存中所有已修改的文件数据到储存设备）
 

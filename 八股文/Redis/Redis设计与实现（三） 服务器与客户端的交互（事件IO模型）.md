@@ -25,7 +25,7 @@ category: 缓存
 > 文件事件处理的内部底层时间其实就是IO多路复用，Redis基于Reactor模式开发了自己的网络事件处理器
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/42d5a4c6dcb7cb89b016388a1f41ff14.png)
+> ![在这里插入图片描述](images/csdn_42d5a4c6dcb7cb89b016388a1f41ff14.png)
 > 
 - 实现的两个核心：通过IO多路复用和文件事件处理器的配合，Redis实现了高性能的网络通信模型，还保持了单线程的简单性
 
@@ -36,14 +36,14 @@ category: 缓存
 
 - 如下图所示，总计有四部分组成：套接字、多路复用器、文件事件分派器和事件处理器
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/36d38c20269936316784ce7a3eb5ad09.png)
+    ![在这里插入图片描述](images/csdn_36d38c20269936316784ce7a3eb5ad09.png)
     
 - 多路复用的工作流程
 
 > 尽管多个套接字可能会并发的出现，但多路复用器会将所有产生事件的套接字放在一个队列中，然后通过这个队列以有序、同步，每次以一个套接字方式向文件分派器传送套接字，当上个套接字与之关联的时间处理器执行完毕，多路复用才会继续向这个类型的事件处理器派送下一个套接字
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b8784170d26a1a37d7cc03d53ef8a086.png)
+> ![在这里插入图片描述](images/csdn_b8784170d26a1a37d7cc03d53ef8a086.png)
 > 
 
 > 这些事件处理器实际上都是一个一个的函数，当某些事件发送时，服务器应该执行某些动作
@@ -56,7 +56,7 @@ category: 缓存
 > 多路复用器的功能就是通过包装简单的select、epoll、evport这些简单的库函数来实现的，每个对应到Redis中都是一个单独的文件
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6e67fa6f56af39616631f12db7ae33fc.png)
+> ![在这里插入图片描述](images/csdn_6e67fa6f56af39616631f12db7ae33fc.png)
 > 
 
 ### 1.1.3 事件的类型
@@ -112,19 +112,19 @@ category: 缓存
 > AE_READABLE
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3a87f386bc5fa812c9fbbd3317ec8282.png)
+> ![在这里插入图片描述](images/csdn_3a87f386bc5fa812c9fbbd3317ec8282.png)
 > 
 1. 命令请求处理器
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ad2570b2518bf3761be479cfcf91e971.png)
+    ![在这里插入图片描述](images/csdn_ad2570b2518bf3761be479cfcf91e971.png)
     
 2. 命令回复处理器
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f10949c0889f009edff440a9a8d47432.png)
+    ![在这里插入图片描述](images/csdn_f10949c0889f009edff440a9a8d47432.png)
     
 3. 整个流程
     
-    ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b1f66dfd093bf9a2f756e11159ec15e2.png)
+    ![在这里插入图片描述](images/csdn_b1f66dfd093bf9a2f756e11159ec15e2.png)
     
 
 ### 1.2 时间事件
@@ -149,7 +149,7 @@ category: 缓存
 > 说的无序并不是指插入不按顺序，而是不按照when属性的顺序，所以你不知道谁到期没到期，即要遍历整个链表
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d2f538afebb204d26fad0519753013dd.png)
+> ![在这里插入图片描述](images/csdn_d2f538afebb204d26fad0519753013dd.png)
 > 
 
 ### 1.2.2 时间事件的应用：serverSron函数
@@ -172,7 +172,7 @@ category: 缓存
 > 由于服务器用时存在两种的时间，那么怎么调度执行，何时处理文件事件又何时处理时间事件等等asProcessEvents函数中就对于这些事件的处理顺序做了定义，放在一个循环中即为Redis的主函数
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/197bfb0eec8f901926f17361d5bb1466.png)
+> ![在这里插入图片描述](images/csdn_197bfb0eec8f901926f17361d5bb1466.png)
 > 
 
 ### 1.3.1 调度和执行规则
@@ -189,7 +189,7 @@ category: 缓存
 > Redis的使用场景中都是一对多的服务器程序，通过服务器的结构中的clients属性，很轻易的就能管理很多个客户端
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1e49f476c357225a7ee71d04e99fa0ff.png)
+> ![在这里插入图片描述](images/csdn_1e49f476c357225a7ee71d04e99fa0ff.png)
 > 
 
 ### 2.1 客户端属性
@@ -222,7 +222,7 @@ typedef struct redisClient{
 > 通过fd属性来关联套接字
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bbb7b5a4056a47fc248ebb24b22aeefa.png)
+> ![在这里插入图片描述](images/csdn_bbb7b5a4056a47fc248ebb24b22aeefa.png)
 > 
 
 ### 2.1.2 剩下的博主做个表格
@@ -243,7 +243,7 @@ typedef struct redisClient{
 > 调用connect函数连接服务器
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3205dca631d7795e3ac24a9bd2b5b787.png)
+> ![在这里插入图片描述](images/csdn_3205dca631d7795e3ac24a9bd2b5b787.png)
 > 
 
 ### 2.2.2 关闭普通服务器
@@ -289,7 +289,7 @@ OK
 > 用户在客户端输入命令，客户端会将这个命令请求转换成协议格式，然后通过套接字，将协议格式的命令请求发送出去
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/98153dac657357975893d99f86c8f61d.png)
+> ![在这里插入图片描述](images/csdn_98153dac657357975893d99f86c8f61d.png)
 > 
 
 ### 3.1.2 读取命令请求
@@ -299,9 +299,9 @@ OK
 > 因为客户端发送命令，这个套接字变得可读，服务器会读取套接字的命令请求，并保存在客户端状态的输入缓冲区里面，然后对缓冲区中的命令进行分析，提取出命令请求的命令参数以及个数，然后保存到客户端状态中的argv和argc属性中，调用命令执行器，执行客户端指定的命令
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/2688712575924dff7ed895112eb0c53c.png)
+> ![在这里插入图片描述](images/csdn_2688712575924dff7ed895112eb0c53c.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/00be50b07fa8233f6662e9c9664a1fb0.png)
+> ![在这里插入图片描述](images/csdn_00be50b07fa8233f6662e9c9664a1fb0.png)
 > 
 
 ### 3.1.3 命令执行器：查找命令实现
@@ -311,7 +311,7 @@ OK
 > 总的来说就是根据客户端状态的argv[0]参数，在命令表中找指定命令，找到的命令保存在客户端状态的cmd属性中。命令是一个字典，字典的键是一个个命令名字，字典的值是一个redisCommand结构，结构中就是命令后面附加的参数个数啊，标示值，命令的执行次数啊等等
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4816303f6ade8ab31bef21f1086e5788.png)
+> ![在这里插入图片描述](images/csdn_4816303f6ade8ab31bef21f1086e5788.png)
 > 
 - 注意
 
@@ -325,7 +325,7 @@ OK
 > 在真正执行命令之前，需要一些预备操作，例如检查cmd的指针是否指向null、命令结构的参数个数属性对应命令带的参数数量是否对应、是否客户端服务端身份验证已经通过、内存是否够用，RDB备份失败，如果现在是一个写命令会返回错误其他的如下
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/95f0df883b795e03dde248c13fb908bf.png)
+> ![在这里插入图片描述](images/csdn_95f0df883b795e03dde248c13fb908bf.png)
 > 
 
 ### 3.1.5 命令执行器：调用命令的实现函数
@@ -335,7 +335,7 @@ OK
 > 上面两步全部完成，那么执行下面的伪代码就好，执行成功后，然后服务器会把OK\r\n写入到客户端状态的buf中
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fd7850116b7f2e1e45e68220160f1218.png)
+> ![在这里插入图片描述](images/csdn_fd7850116b7f2e1e45e68220160f1218.png)
 > 
 
 ### 3.1.6 命令执行器：执行后续工作
@@ -385,9 +385,9 @@ OK
 > 创建一个redisServer类型的实例变量作为服务器的状态，并为结构的各个属性设置默认值，这个赋值初始化是由一个initServerConfig的函数负责的，此函数的主要功能如下
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/83bf9efcf7ab5fd6a6874e891642d8dd.png)
+> ![在这里插入图片描述](images/csdn_83bf9efcf7ab5fd6a6874e891642d8dd.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/482eb317bd2243145c16e2753f6c0355.png)
+> ![在这里插入图片描述](images/csdn_482eb317bd2243145c16e2753f6c0355.png)
 > 
 
 ### 3.3.2 载入配置选项
@@ -408,7 +408,7 @@ OK
 > clients、db
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b8e6da6c79c63e6228092f9964e54ce3.png)
+> ![在这里插入图片描述](images/csdn_b8e6da6c79c63e6228092f9964e54ce3.png)
 > 
 
 ### 3.3.4 还原数据库状态

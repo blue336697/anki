@@ -271,13 +271,13 @@ category: 虚拟机
 
 - 概述
 
-> 在默认情况下，[通过System.ge](http://xn--system-2u3sdu.ge/)()或者Runtime.getRuntime ().gc()的调用，**会显式触发Full GC**，同时对老年代和新生代进行回收，尝试释放被丢弃对象占用的内存。
+> 在默认情况下，通过System.gc()或者Runtime.getRuntime ().gc()的调用，**会显式触发Full GC**，同时对老年代和新生代进行回收，尝试释放被丢弃对象占用的内存。
 > 
 - 注意
 
-> • [在调用System.ge](http://xn--system-200k359qs81b.ge/)()后不一定能立马触发GC
-• 垃圾回收一般都是自己自动触发，不需要手动触发，但有一些特殊情况需要我们手动的去GC，[System.ge](http://system.ge/)()就能应对这种情况
-• [System.ge](http://system.ge/)()的底层调用就是Runtime.getRuntime ().gc()
+> • 在调用System.gc()后不一定能立马触发GC
+• 垃圾回收一般都是自己自动触发，不需要手动触发，但有一些特殊情况需要我们手动的去GC，System.gc()就能应对这种情况
+• System.gc()的底层调用就是Runtime.getRuntime ().gc()
 • System.runFinalization( )强制调用使用引用的对象的finalize()方法
 > 
 - 相关代码演示

@@ -52,7 +52,7 @@ INSERT INTO hero VALUES(1, '刘备', '蜀');
 > 
 > **Session A 和 Session B 各开启了一个事务， Session B 中的事务先将 number 列为 1 的记录的 name 列更新为 '关羽' ，然后 Session A 中的事务接着又把这条 number 列为 1 的记录的 name 列更新为张飞 。如果之后 Session B 中的事务进行了回滚，那么 Session A 中的更新也将不复存在，这种现象就称之为 `脏写`**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8da5bb83dcffd380e819fe03694bc2e6.png)
+> ![在这里插入图片描述](images/csdn_8da5bb83dcffd380e819fe03694bc2e6.png)
 > 
 - 脏读（ Dirty Read）：**`如果一个事务读到了另一个未提交事务修改过的数据，那就意味着发生了 脏读`**
 
@@ -62,7 +62,7 @@ INSERT INTO hero VALUES(1, '刘备', '蜀');
 > **Session A 和 Session B 各开启了一个事务， Session B 中的事务先将 number 列为 1 的记录的
 > name 列更新为 '关羽' ，然后 Session A 中的事务再去查询这条 number 为 1 的记录，如果du到列 name 的值为 '关羽' ，而 Session B 中的事务稍后进行了回滚，那么 Session A 中的事务相当于读到了一个不存在的数据，这种现象就称之为`脏读`。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/25ae3ca246eef50ce6b3cfa6bed2ef43.png)
+> ![在这里插入图片描述](images/csdn_25ae3ca246eef50ce6b3cfa6bed2ef43.png)
 > 
 - 不可重复读（Non-Repeatable Read）: **如果一个事务只能读到另一个已经提交的事务修改过的数据，并且其他事务每对该数据进行一次修改并提交后，该事务都能查询得到最新值，那就意味着发生了 `不可重复读`**
 
@@ -71,7 +71,7 @@ INSERT INTO hero VALUES(1, '刘备', '蜀');
 > 
 > **我们在 Session B 中提交了几个隐式事务（`注意是隐式事务，意味着语句结束事务就提交了`），这些事务都修改了 number 列为 1 的记录的列 name 的值，每次事务提交之后，如果 Session A 中的事务都可以查看到最新的值，这种现象也被称之为 `不可重复读`**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a291cc826df6e0b8d04b6b0bdc361726.png)
+> ![在这里插入图片描述](images/csdn_a291cc826df6e0b8d04b6b0bdc361726.png)
 > 
 - 幻读（Phantom）：**如果一个事务先根据某些条件查询出一些记录，之后另一个事务又向表中插入了符合这些条件的记录，原先的事务再次按照该条件查询时，能把另一个事务插入的记录也读出来，那就意味着发生了 `幻读`**
 
@@ -80,7 +80,7 @@ INSERT INTO hero VALUES(1, '刘备', '蜀');
 > 
 > **Session A 中的事务先根据条件 number > 0 这个条件查询表 hero ，得到了 name 列值为 '刘备' 的记录；之后 Session B 中提交了一个`隐式事务`，该事务向表 hero 中插入了一条新记录；之后Session A 中的事务再根据相同的条件 number > 0 查询表 hero ，得到的结果集中包含 Session B 中的事务新插入的那条记录，这种现象也被称之为 `幻读` 。**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/51bc8029523dd6a54f64c669793274b8.png)
+> ![在这里插入图片描述](images/csdn_51bc8029523dd6a54f64c669793274b8.png)
 > 
 - 幻读注意事项
 
@@ -200,7 +200,7 @@ mysql> SELECT @@transaction_isolation;
 > 比如说我们的表中含有一条记录，并且该记录的对应事务ID为80，如下图展示两个隐藏列的引用关系
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6a7799b5cf655f2b35f758cb36dbd875.png)
+> ![在这里插入图片描述](images/csdn_6a7799b5cf655f2b35f758cb36dbd875.png)
 > 
 - 注意
 
@@ -217,7 +217,7 @@ mysql> SELECT @@transaction_isolation;
 > 
 > **InnoDB使用锁来保证不会有脏写情况的发生，也就是在第一个事务更新了某条记录后，就会给这条记录加锁，另一个事务再次更新时就需要等待第一个事务提交了，把锁释放之后才可以继续更新。`这个真的很重要，当更新操作去执行时，肯定是先读后写，这个读一定是当前读，也就是说必须拿到最新的数据，如果别的事务提前也在更新这条记录并且还未提交事务。那么当前事务会进入锁等待`**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9e348107db80694b58a82c96c2a6b80.png)
+> ![在这里插入图片描述](images/csdn_a9e348107db80694b58a82c96c2a6b80.png)
 > 
 - 流程图解读
 
@@ -226,7 +226,7 @@ mysql> SELECT @@transaction_isolation;
 > 
 > **每条日志也都会有一个 roll_pointer属性**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1d660fb18e9735de80ad3b2d3c1be7de.png)
+> ![在这里插入图片描述](images/csdn_1d660fb18e9735de80ad3b2d3c1be7de.png)
 > 
 > **都会将旧值放到一条 undo日志 中，就算是该记录的一个旧版本，随着更新次数的增多，所有的版本都会被 roll_pointer 属性连接成一个链表，我们把这个链表称之为 版本链**
 > 
@@ -277,7 +277,7 @@ mysql> SELECT @@transaction_isolation;
 > 我们向hero表中添加一条由事务id为80的事务插入的一条记录
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cbb601595d3387822609cb1bec27e554.png)
+> ![在这里插入图片描述](images/csdn_cbb601595d3387822609cb1bec27e554.png)
 > 
 - 过程分析
 

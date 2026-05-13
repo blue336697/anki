@@ -78,7 +78,7 @@ CREATE TABLE t2 (
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bfe2d46b169015f079913d0ea18c0625.png)
+![在这里插入图片描述](images/csdn_bfe2d46b169015f079913d0ea18c0625.png)
 
 - 内外连接的本质
 
@@ -639,7 +639,7 @@ EXISTS (SELECT inner_expr FROM ... WHERE subquery_where AND outer_expr=inner_exp
 > 
 > **可以发现因为有 NULL 值作为操作数的表达式结果往往是 NULL，但是幸运的是，我们大部分使用 IN 子查询的场景是把它放在 WHERE 或者 ON 子句中，而 WHERE 或者 ON 子句是不区分 NULL 和 FALSE 的**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d7f25dd5c3a4d52c40de072c0fee791b.png)
+> ![在这里插入图片描述](images/csdn_d7f25dd5c3a4d52c40de072c0fee791b.png)
 > 
 > ```
 > IN -> EXISTS
@@ -675,7 +675,7 @@ y3 = s1.key1)
 > 就会如图进行转换
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1de95f53ce29c90e38f12c9016a85b32.png)
+> ![在这里插入图片描述](images/csdn_1de95f53ce29c90e38f12c9016a85b32.png)
 > 
 
 ### 5.[NOT] EXISTS子查询的执行

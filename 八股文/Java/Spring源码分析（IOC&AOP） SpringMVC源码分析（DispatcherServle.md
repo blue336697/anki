@@ -989,7 +989,7 @@ public void invokeAndHandle(ServletWebRequest webRequest, ModelAndViewContainer 
 > 一个是变量占位（？），一个是静态占位（需要的值）
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/89a6ea242e0833b1d1e7dcd65378d3e6.png)
+> ![在这里插入图片描述](images/csdn_89a6ea242e0833b1d1e7dcd65378d3e6.png)
 > 
 1. 当我向mybatis输入一条带有#{}的语句时：
 

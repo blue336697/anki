@@ -31,7 +31,7 @@ category: 技术栈
 > Java将操作系统中的运行和就绪两个状态合并称为运行状态。阻塞状态是线程 阻塞在进入`synchronized`关键字修饰的方法或代码块（获取锁）时的状态，但是阻塞在 `java.concurrent`包中Lock接口的线程状态却是等待状态，因为`java.concurrent`包中Lock接口对于 阻塞的实现均使用了`LockSupport`类中的相关方法
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0d3893803201963dcb32ea03d5907f57.png)
+> ![在这里插入图片描述](images/csdn_0d3893803201963dcb32ea03d5907f57.png)
 > 
 - 线程状态转换图
 

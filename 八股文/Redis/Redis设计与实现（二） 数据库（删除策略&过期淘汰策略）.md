@@ -48,7 +48,7 @@ struct redisServer {
 > redisClient.db
 > ```
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e5df0274ef008517871a65ea65179689.png)
+> ![在这里插入图片描述](images/csdn_e5df0274ef008517871a65ea65179689.png)
 > 
 
 ### 1.2 数据库键空间
@@ -89,7 +89,7 @@ redis>HSET book publisher "Manning"
 
 ```
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/4aaa7cc93de042c92b6a37c1cc56fc54.png)
+![在这里插入图片描述](images/csdn_4aaa7cc93de042c92b6a37c1cc56fc54.png)
 
 ### 查找键的过程（❤）
 
@@ -116,16 +116,16 @@ redis>HSET book publisher "Manning"
 > 
 > **这个是设置一个字符串键的同时为键设置过期时间，`setex`只限于字符串键**
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/99f699a9ed92a910ca711be4c17fbdb0.png)
+> ![在这里插入图片描述](images/csdn_99f699a9ed92a910ca711be4c17fbdb0.png)
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fb074b61529459ae9fabcfae3cdf052f.png)
+> ![在这里插入图片描述](images/csdn_fb074b61529459ae9fabcfae3cdf052f.png)
 > 
 - 得到键的过期时间
 
 > TTL和PTTL命令可以得到一个键的剩余过期时间，这些剩余的过期时间被保存在redisDB的expires字典（过期字典）中
 > 
 > 
-> ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/88a9a9bf1a6c7a805b97beeb360e9a17.png)
+> ![在这里插入图片描述](images/csdn_88a9a9bf1a6c7a805b97beeb360e9a17.png)
 > 
 
 ==过期键的判定==：
@@ -147,7 +147,7 @@ redis>HSET book publisher "Manning"
 > 虽然有多种不同单位和不同形式的设置命令，但实际上EXPIRE、PEXPIRE、EXPIREAT三个命令都是使用PEXPIREAT命令来实现的：无论客户端执行的是以上四个命令中的哪一个，经过转换之后，最终的执行效果都和执行PEXPIREAT命令一样。
 > 
 
-![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1563f926275ab1e03bf77a1f0cbd7270.png)
+![在这里插入图片描述](images/csdn_1563f926275ab1e03bf77a1f0cbd7270.png)
 
 - 移除过期时间
 
