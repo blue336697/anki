@@ -1,0 +1,10 @@
+﻿属性名,作用,分类,文件
+名字,给客户端命名使之更加清晰，如果不命名为NULL,\,
+标志（flags）,每个标志位使用一个常量表示，一部分记录客户端的角色，另外则记录一些状态,单个标志：flags=<flag>多个标志：flags=<flag1>..,
+命令与命令参数(argv和argc),服务器对客户端输入缓冲区进行分析后，将得出的这两个参数值保存回来,argv指向具体命令的数组，argc是数组的长度,https://i-blog.csdnimg.cn/blog_migrate/39f3a27505370b9aff4223bca62804db.png
+输入缓冲区(querybuf),客户端状态的输入缓冲区用于保存客户端发送的命令请求,该属性是一个的值就是你的命令值,https://i-blog.csdnimg.cn/blog_migrate/0754dc59dc74cbe2601ddce8788fa46d.png
+可变输出缓冲区（reply链表）,同理上面的作用,可变,https://i-blog.csdnimg.cn/blog_migrate/ea6aca88caf5ab9e4f986a16d1bb2e67.png
+固定输出缓冲区（buf数组和bufpos表示使用的容量）,执行命令所得回复会保存在客户端的输出缓冲区,固定长度,https://i-blog.csdnimg.cn/blog_migrate/3c065b80816029e6a0a0056dd05dae74.png
+命令的实现函数（redisCommend）,根据上面两个参数服务器选出对应命令执行,cmd指向这个结构,https://i-blog.csdnimg.cn/blog_migrate/347823ca94b7a394e0632c8d091d0f09.png
+身份验证（authenicated）,用于记录客户端是否通过身份验证,属性值为0（未通过）或1（通过）,
+时间,,很多,
