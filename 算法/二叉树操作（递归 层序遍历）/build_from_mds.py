@@ -9,12 +9,15 @@ import sys
 import urllib.parse
 from pathlib import Path
 
-sys.path.insert(0, r'D:\anki\.claude\skills\anki-apkg-generator\scripts')
+TOPIC_DIR = Path(__file__).resolve().parent
+REPO_ROOT = TOPIC_DIR.parent.parent
+SKILL_DIR = REPO_ROOT / '.agents' / 'skills' / 'anki-apkg-generator'
+
+sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_deck, add_basic, add_cloze, img, code, build, make_front
 
-TOPIC_DIR = Path(r'D:\anki\算法\二叉树操作（递归 层序遍历）')
 PROBLEMS_DIR = TOPIC_DIR / 'problems'
-OUTPUT_PATH = TOPIC_DIR.parent.parent / '牌组' / '二叉树.apkg'
+OUTPUT_PATH = REPO_ROOT / '牌组' / '算法' / '二叉树.apkg'
 
 
 def parse_md(md_path: Path) -> dict:
@@ -48,7 +51,7 @@ def process_body_with_images(text: str) -> str:
         lang = m.group(1) or ''
         inner = m.group(2)
         if 'java' in lang:
-            code_blocks.append(code(inner))
+            code_blocks.append(code(_html.unescape(inner)))
         else:
             code_blocks.append(f'<pre><code>{_html.escape(inner)}</code></pre>')
         return f'\x00CODE{len(code_blocks) - 1}\x00'
@@ -85,7 +88,13 @@ def process_body_with_images(text: str) -> str:
     return text
 
 
-def process_complexity(content: str) -> tuple[str | None, str | None]:
+def process_basic_text(text: str) -> str:
+    """Escape plain text while preserving explicit <br> line breaks."""
+    escaped = _html.escape(_html.unescape(text))
+    return escaped.replace('&lt;br&gt;', '<br>')
+
+
+def process_complexity(content: str) -> tuple:
     """Handle complexity section: cloze if {{c markers exist, else basic."""
     if not content.strip():
         return None, None
@@ -111,8 +120,8 @@ def build_apkg() -> str:
         '二叉树递归与迭代<br>'
         '递归：隐式使用系统栈，代码简洁<br>'
         '迭代：显式使用{{c1::Stack}}模拟递归<br>'
-        '层序遍历：使用{{c2::Queue}}，for循环按层处理<br>'
-        'Morris遍历：{{c3::O(1)}}空间，利用叶子节点空闲指针')
+        '层序遍历：使用{{c1::Queue}}，for循环按层处理<br>'
+        'Morris遍历：{{c1::O(1)}}空间，利用叶子节点空闲指针')
     add_basic(d0, '二叉树常用技巧',
         '自顶向下：传递状态参数（如前缀和、当前深度）<br>'
         '自底向上：汇总子树结果返回给父节点<br>'
@@ -140,25 +149,26 @@ def build_apkg() -> str:
 
             elif sec_name == '遍历策略':
                 if sec_content.strip():
-                    add_basic(d, make_front(title, '遍历策略'), sec_content)
+                    add_basic(d, make_front(title, '遍历策略'), process_basic_text(sec_content))
 
             elif sec_name == '复杂度':
                 cloze_text, hint = process_complexity(sec_content)
                 if cloze_text:
                     add_cloze(d, make_front(title, '复杂度') + '<br>' + cloze_text, hint or '')
                 elif hint:
-                    add_basic(d, make_front(title, '复杂度'), hint)
+                    add_basic(d, make_front(title, '复杂度'), process_basic_text(hint))
 
             elif sec_name.startswith('题解'):
                 _add_solution(d, title, sec_name, sec_content)
 
             elif sec_name == '关键技巧':
                 if sec_content.strip():
-                    add_basic(d, make_front(title, '关键技巧'), sec_content)
+                    add_basic(d, make_front(title, '关键技巧'), process_basic_text(sec_content))
 
         total_problems += 1
         total_cards += len(d.notes)
 
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     result = build(str(OUTPUT_PATH))
     print(f'\n{total_problems} problems, {total_cards} cards -> {OUTPUT_PATH}')
     return result
@@ -169,14 +179,14 @@ def _add_solution(d, title: str, sec_name: str, content: str) -> None:
     parts: list[str] = []
     code_match = re.search(r'```(?:java)?\n(.*?)```', content, re.DOTALL)
     if code_match:
-        java_code = code_match.group(1).strip()
+        java_code = _html.unescape(code_match.group(1).strip())
         desc = content[:code_match.start()].strip()
         if desc and len(desc) < 300:
-            parts.append(desc)
+            parts.append(process_basic_text(desc))
         parts.append(code(java_code))
     else:
         if content.strip():
-            parts.append(content.strip())
+            parts.append(process_basic_text(content.strip()))
 
     if parts:
         add_basic(d, make_front(title, sec_name), '<br>'.join(parts))

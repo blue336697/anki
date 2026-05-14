@@ -631,4 +631,4 @@ add_basic(d, make_front(p, '题解(逆向双指针)'),
     ))
 
 if __name__ == '__main__':
-    print(build('../../牌组/双指针.apkg'))
+    print(build('../../牌组/算法/双指针.apkg'))

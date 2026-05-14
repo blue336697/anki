@@ -2,7 +2,9 @@
 import sys
 from pathlib import Path
 
-SKILL_DIR = Path(r'D:\anki\.claude\skills\anki-apkg-generator')
+TOPIC_DIR = Path(__file__).resolve().parent
+REPO_ROOT = TOPIC_DIR.parent.parent
+SKILL_DIR = REPO_ROOT / '.agents' / 'skills' / 'anki-apkg-generator'
 sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_front, make_deck, add_basic, add_cloze, img, build
 
@@ -31,7 +33,7 @@ add_cloze(d, '模板 | 手写堆 核心代码' + '<br><code>'
     + '&nbsp;&nbsp;&nbsp;&nbsp;index = (index-1)/2;<br>'
     + '&nbsp;&nbsp;}<br>}<br>'
     + 'void heapify(int index, int heapSize){<br>'
-    + '&nbsp;&nbsp;int left = {{c2::index*2+1}};<br>'
+    + '&nbsp;&nbsp;int left = {{c1::index*2+1}};<br>'
     + '&nbsp;&nbsp;while(left &lt; heapSize){<br>'
     + '&nbsp;&nbsp;&nbsp;&nbsp;int best = left+1&lt;heapSize &&<br>'
     + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comp(left+1,left)&lt;0 ? left+1 : left;<br>'
@@ -129,7 +131,7 @@ add_cloze(d, '模板 | 反转链表(迭代)' + '<br><code>'
     + '&nbsp;&nbsp;cur.next = pre;<br>'
     + '&nbsp;&nbsp;pre = cur;<br>'
     + '&nbsp;&nbsp;cur = tail;<br>}<br>'
-    + 'return {{c2::pre}};</code>', '三指针：pre/cur/tail，tail保存下一个，cur.next指向前一个')
+    + 'return {{c1::pre}};</code>', '三指针：pre/cur/tail，tail保存下一个，cur.next指向前一个')
 
 add_basic(d, make_front('模板', '反转链表完整代码'),
     '三指针迭代法：pre/cur/tail，O(n) 时间，O(1) 空间。<br>'
@@ -252,7 +254,7 @@ add_cloze(d, '模板 | 手撕堆排序' + '<br><code>'
     + '// 2. n-1趟排序<br>'
     + 'for(i=n-1; i&gt;=1; i--){<br>'
     + '&nbsp;&nbsp;swap(nums,0,i);<br>'
-    + '&nbsp;&nbsp;heapify(nums,{{c2::0,i-1}});<br>}<br>'
+    + '&nbsp;&nbsp;heapify(nums,{{c1::0,i-1}});<br>}<br>'
     + '// heapify: 大根堆，left=2*i+1，选三者最大交换并下沉</code>',
     '建堆从最后一个非叶节点开始；排序每次交换堆顶和末尾，缩小堆再调整')
 
@@ -338,7 +340,7 @@ add_cloze(d, '模板 | 手撕归并排序(递归)' + '<br><code>'
     + '&nbsp;&nbsp;mergeSort(l,m); mergeSort(m+1,r);<br>'
     + '&nbsp;&nbsp;int i=l, j=m+1, k=0;<br>'
     + '&nbsp;&nbsp;while(i&lt;=m && j&lt;=r)<br>'
-    + '&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]=nums[i]&lt;=nums[j]?{{c2::nums[i++]}}:nums[j++];<br>'
+    + '&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]=nums[i]&lt;=nums[j]?{{c1::nums[i++]}}:nums[j++];<br>'
     + '&nbsp;&nbsp;while(i&lt;=m) temp[k++]=nums[i++];<br>'
     + '&nbsp;&nbsp;while(j&lt;=r) temp[k++]=nums[j++];<br>'
     + '&nbsp;&nbsp;for(i=l,k=0;i&lt;=r;) nums[i++]=temp[k++];<br>}</code>',
@@ -464,7 +466,7 @@ add_cloze(d, '模板 | 手撕冒泡排序' + '<br><code>'
     + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(nums,j,j+1); flag=true;<br>'
     + '&nbsp;&nbsp;&nbsp;&nbsp;}<br>'
     + '&nbsp;&nbsp;}<br>'
-    + '&nbsp;&nbsp;if(!flag) {{c2::break}};<br>}</code>',
+    + '&nbsp;&nbsp;if(!flag) {{c1::break}};<br>}</code>',
     'flag 提前退出优化：若某一趟无交换，说明已有序')
 
 add_basic(d, make_front('模板', '冒泡排序完整代码'),
@@ -567,7 +569,7 @@ add_cloze(d, '模板 | 滑动窗口' + '<br><code>'
     + 'while(right &lt; N){<br>'
     + '&nbsp;&nbsp;sums += nums[{{c1::right++}}];<br>'
     + '&nbsp;&nbsp;while(!isValid(sums,left,right)){<br>'
-    + '&nbsp;&nbsp;&nbsp;&nbsp;sums -= nums[{{c2::left++}}];<br>'
+    + '&nbsp;&nbsp;&nbsp;&nbsp;sums -= nums[{{c1::left++}}];<br>'
     + '&nbsp;&nbsp;}<br>'
     + '&nbsp;&nbsp;res = Math.max(res, right-left);<br>}</code>',
     'right扩张→while收缩left→更新结果。need数组：正=还需要，0=刚好，负=多余')
@@ -625,4 +627,6 @@ add_basic(d, '模板 | DFS',
     + img('image 3.png') + img('image 4.png') + img('image 5.png'))
 
 if __name__ == '__main__':
-    print(build('../../牌组/算法模板.apkg'))
+    output_path = REPO_ROOT / '牌组' / '算法' / '算法模板.apkg'
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    print(build(str(output_path)))

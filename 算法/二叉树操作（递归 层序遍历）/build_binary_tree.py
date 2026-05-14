@@ -2897,4 +2897,4 @@ add_basic(d, make_front(p, f'题解(方法2)'),
 
 
 if __name__ == '__main__':
-    print(build('../../牌组/二叉树.apkg'))
+    print(build('../../牌组/算法/二叉树.apkg'))

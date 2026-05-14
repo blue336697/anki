@@ -5,14 +5,18 @@ Run: python build_from_mds.py
 """
 import re
 import sys
+import html
 from pathlib import Path
 
-sys.path.insert(0, r'D:\anki\.claude\skills\anki-apkg-generator\scripts')
+TOPIC_DIR = Path(__file__).resolve().parent
+REPO_ROOT = TOPIC_DIR.parent.parent
+SKILL_DIR = REPO_ROOT / '.agents' / 'skills' / 'anki-apkg-generator'
+
+sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_deck, add_basic, add_cloze, img, build, make_front, code
 
-TOPIC_DIR = Path(r'D:\anki\算法\动态规划')
 PROBLEMS_DIR = TOPIC_DIR / 'problems'
-OUTPUT_PATH = TOPIC_DIR.parent.parent / '牌组' / '动态规划.apkg'
+OUTPUT_PATH = REPO_ROOT / '牌组' / '算法' / '动态规划.apkg'
 
 
 def parse_md(md_path: Path) -> dict:
@@ -47,7 +51,7 @@ def process_body_with_images(text: str) -> str:
         lang = m.group(1) or ''
         inner = m.group(2)
         if 'java' in lang:
-            code_blocks.append(code(inner))
+            code_blocks.append(code(html.unescape(inner)))
         else:
             code_blocks.append(f'<pre><code>{_html_mod.escape(inner)}</code></pre>')
         return f'\x00CODE{len(code_blocks) - 1}\x00'
@@ -93,10 +97,10 @@ def build_apkg() -> str:
     # Template deck
     d0 = make_deck(1747300100, '算法::动态规划::算法模板')
     add_cloze(d0,
-        '状态转移核心模式：dp[i] = {{c1::max/min}}( {{c2::dp[i-1]}}, {{c3::dp[i-2] + ...}} )',
+        '状态转移核心模式：dp[i] = {{c1::max/min}}( {{c1::dp[i-1]}}, {{c1::dp[i-2] + ...}} )',
         '最值型 DP：分类讨论"选或不选"取最优')
     add_cloze(d0,
-        '降维关键：倒序防 {{c1::重复使用}}，正序允许 {{c2::无限次使用}}',
+        '降维关键：倒序防 {{c1::重复使用}}，正序允许 {{c1::无限次使用}}',
         '0-1 背包倒序，完全背包正序')
 
     md_files = sorted(PROBLEMS_DIR.glob('*.md'))
@@ -137,6 +141,7 @@ def build_apkg() -> str:
         total_problems += 1
         total_cards += len(d.notes)
 
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     result = build(str(OUTPUT_PATH))
     print(f'\n{total_problems} problems, {total_cards} cards -> {OUTPUT_PATH}')
     return result
@@ -160,7 +165,7 @@ def _add_solution(d, title: str, sec_name: str, content: str) -> None:
     parts: list[str] = []
     code_match = re.search(r'```(?:java)?\n(.*?)```', content, re.DOTALL)
     if code_match:
-        java_code = code_match.group(1).strip()
+        java_code = html.unescape(code_match.group(1).strip())
         desc = content[:code_match.start()].strip()
         if desc:
             parts.append(desc)

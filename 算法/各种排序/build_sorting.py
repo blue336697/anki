@@ -1064,4 +1064,4 @@ add_basic(pc, '排序可视化对比',
     '希尔 → gap序列影响性能，理解"预排序"思想')
 
 if __name__ == '__main__':
-    print(build('../../牌组/各种排序.apkg'))
+    print(build('../../牌组/算法/各种排序.apkg'))

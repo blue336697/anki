@@ -816,4 +816,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '返回 right-1 是因为 sum 从索引1开始映射到w的索引0。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/哈希表.apkg'))
+    print(build('../../牌组/算法/哈希表.apkg'))

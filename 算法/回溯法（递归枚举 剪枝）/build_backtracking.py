@@ -736,4 +736,4 @@ add_basic(d, make_front(p, '对比'),
     '剪枝用 Set 去重更直观但更慢，排序+used才是最优解。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/回溯法.apkg'))
+    print(build('../../牌组/算法/回溯法.apkg'))

@@ -505,4 +505,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '使用 &gt;&gt;&gt; 无符号右移，避免负数高位补 1 导致的无限循环。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/其他.apkg'))
+    print(build('../../牌组/算法/其他.apkg'))

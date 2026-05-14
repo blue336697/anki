@@ -381,4 +381,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '最后判断：若 index == numCourses 则返回结果数组，否则返回 new int[0]。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/图并查集拓扑.apkg'))
+    print(build('../../牌组/算法/图并查集拓扑.apkg'))

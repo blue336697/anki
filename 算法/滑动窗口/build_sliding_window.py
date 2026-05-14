@@ -248,4 +248,4 @@ add_basic(d, make_front(p, '题解(可变窗口)'),
 }'''))
 
 if __name__ == '__main__':
-    print(build('../../牌组/滑动窗口.apkg'))
+    print(build('../../牌组/算法/滑动窗口.apkg'))

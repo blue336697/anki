@@ -889,4 +889,4 @@ add_basic(d, make_front(p, '题解(二分)'),
     ))
 
 if __name__ == '__main__':
-    print(build('../../牌组/力扣简单.apkg'))
+    print(build('../../牌组/算法/力扣简单.apkg'))

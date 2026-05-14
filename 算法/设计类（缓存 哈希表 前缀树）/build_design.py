@@ -912,4 +912,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '构建 next：i 从 2 开始（next[1]=0），匹配成功 j++，匹配失败 j=next[j]。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/设计类.apkg'))
+    print(build('../../牌组/算法/设计类.apkg'))

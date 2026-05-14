@@ -464,4 +464,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '贪心更简洁，空间 O(1)，因为当前状态只依赖前一个元素。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/贪心算法.apkg'))
+    print(build('../../牌组/算法/贪心算法.apkg'))

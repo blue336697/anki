@@ -399,6 +399,6 @@ total = sum(len(d.notes) for d in ALL_DECKS)
 pkg = genanki.Package(ALL_DECKS)
 pkg.media_files = list(USED_IMAGES)
 
-out = '../../牌组/动态规划.apkg'
+out = '../../牌组/算法/动态规划.apkg'
 pkg.write_to_file(out)
 print(f'Done: {len(ALL_DECKS)} decks, {total} cards, {len(USED_IMAGES)} images -> {out}')

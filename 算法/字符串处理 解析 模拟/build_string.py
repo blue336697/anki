@@ -893,4 +893,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '注意：Java 中 int 是有符号的，IP 最高段可能 &gt;=128，所以用 long 避免符号问题。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/字符串.apkg'))
+    print(build('../../牌组/算法/字符串.apkg'))

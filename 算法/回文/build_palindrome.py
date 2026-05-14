@@ -453,4 +453,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '注意：反转后比较时，odd长度链表中间节点不需要比较（被包含在反转部分中）。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/回文.apkg'))
+    print(build('../../牌组/算法/回文.apkg'))

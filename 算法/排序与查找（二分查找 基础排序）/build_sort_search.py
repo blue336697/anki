@@ -768,4 +768,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '数学本质：(A^R B^R)^R = BA，其中 A=前n-k个，B=后k个')
 
 if __name__ == '__main__':
-    print(build('../../牌组/排序与查找.apkg'))
+    print(build('../../牌组/算法/排序与查找.apkg'))

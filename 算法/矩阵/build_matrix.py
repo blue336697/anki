@@ -759,4 +759,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '核心：边界上的 O 及其相邻 O 永远不会被围绕，它们是与外界连通的"安全区"')
 
 if __name__ == '__main__':
-    print(build('../../牌组/矩阵.apkg'))
+    print(build('../../牌组/算法/矩阵.apkg'))

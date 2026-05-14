@@ -2,7 +2,7 @@
 Build APKG for Dynamic Programming (37 problems, 7-9 cards each).
 Run from 算法/动态规划/ directory (where images live).
 Usage: python build_dp.py
-Output: ../../牌组/动态规划.apkg
+Output: ../../牌组/算法/动态规划.apkg
 """
 import sys
 from pathlib import Path
@@ -2189,5 +2189,5 @@ add_basic(d, make_front(p, '题解'),
 # ============================================================
 
 if __name__ == '__main__':
-    result = build('../../牌组/动态规划.apkg')
+    result = build('../../牌组/算法/动态规划.apkg')
     print(result)

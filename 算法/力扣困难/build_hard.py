@@ -1199,4 +1199,4 @@ add_basic(d, make_front(p, '关键技巧'),
     '5. 与不重复版本的区别：不重复版用 Map&lt;Integer,Integer&gt;；重复版用 Map&lt;Integer,Set&lt;Integer&gt;&gt;')
 
 if __name__ == '__main__':
-    print(build(r'../../牌组/力扣困难.apkg'))
+    print(build(r'../../牌组/算法/力扣困难.apkg'))

@@ -857,4 +857,4 @@ add_basic(d, make_front(p, '关键技巧'),
     + '遍历完pushed后，若栈为空则说明弹出序列合法。')
 
 if __name__ == '__main__':
-    print(build('../../牌组/栈队列堆.apkg'))
+    print(build('../../牌组/算法/栈队列堆.apkg'))

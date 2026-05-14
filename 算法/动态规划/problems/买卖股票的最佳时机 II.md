@@ -10,15 +10,15 @@
 
 
 ## 定义状态
-dp[i][0] = {{c1::第 i 天不持股的最大现金}}<br>dp[i][1] = {{c2::第 i 天持股的最大现金}}
+dp[i][0] = {{c1::第 i 天不持股的最大现金}}<br>dp[i][1] = {{c1::第 i 天持股的最大现金}}
 > 与 I 的状态定义完全相同
 
 ## 转移方程
-dp[i][0] = max(dp[i-1][0], {{c1::dp[i-1][1]+prices[i]}})<br>dp[i][1] = max(dp[i-1][1], {{c2::dp[i-1][0]-prices[i]}})
+dp[i][0] = max(dp[i-1][0], {{c1::dp[i-1][1]+prices[i]}})<br>dp[i][1] = max(dp[i-1][1], {{c1::dp[i-1][0]-prices[i]}})
 > 不限制交易次数：买入时可用之前卖出赚的钱（dp[i-1][0]）
 
 ## 初始化
-dp[0][0] = {{c1::0}}, dp[0][1] = {{c2::-prices[0]}}
+dp[0][0] = {{c1::0}}, dp[0][1] = {{c1::-prices[0]}}
 > 同 I
 
 ## 计算顺序
@@ -50,4 +50,18 @@ class Solution {
 ```
 
 ## 题解(贪心)
+只要今天价格高于昨天，就把这段上涨利润吃掉；多段上涨累加等价于无限次交易的最优解。
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+        return profit;
+    }
+}
+```
 
