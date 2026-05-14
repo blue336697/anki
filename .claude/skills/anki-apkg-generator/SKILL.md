@@ -1,56 +1,56 @@
 ---
 name: anki-apkg-generator
-description: Generate Anki APKG flashcard decks from algorithm study notes. Handles note analysis, card design (Basic/Cloze), image embedding, and APKG packaging. Use when the user asks to create Anki cards, APKG files, or study decks from algorithm/technical notes.
+description: 从算法学习笔记生成 Anki APKG 牌组。处理笔记分析、卡片设计（Basic/Cloze）、图片嵌入和 APKG 打包。当用户要求创建 Anki 卡片、APKG 文件或从算法/技术笔记生成学习牌组时使用。
 version: 3.0.0
 ---
 
-# Anki APKG Generator
+# Anki APKG 生成器
 
-Generate `.apkg` flashcard decks from algorithm study notes for spaced-repetition review.
+从算法学习笔记生成 `.apkg` 牌组，用于间隔重复复习。
 
-## Prerequisites
+## 环境准备
 
 ```bash
 pip install genanki
 ```
 
-## When to Invoke
+## 何时调用
 
-Invoke this skill when the user:
-- Asks to "生成 Anki 牌组" or "create Anki cards"
-- Wants to build APKG files from algorithm notes
-- Needs flashcards for interview preparation review
-- Mentions a specific algorithm topic (e.g., "把回溯的卡片也生成一下")
-- Asks to fix or improve existing APKGs
+当用户出现以下情况时调用此技能：
+- 要求"生成 Anki 牌组"或"create Anki cards"
+- 想从算法笔记构建 APKG 文件
+- 需要用于面试准备复习的闪卡
+- 提到具体的算法主题（如"把回溯的卡片也生成一下"）
+- 要求修复或改进现有 APKG
 
-## Skill Structure
+## 技能结构
 
 ```
 .claude/skills/anki-apkg-generator/
-├── SKILL.md                          # This file
+├── SKILL.md                          # 本文件
 ├── scripts/
-│   └── apkg_builder.py              # Reusable genanki helper module
+│   └── apkg_builder.py              # 可复用的 genanki 辅助模块
 └── examples/
-    └── build_dp.py                  # Reference: legacy monolithic DP build script
+    └── build_dp.py                  # 参考：旧版单体 DP 构建脚本
 ```
 
 ---
 
-## Core Module: `apkg_builder.py`
+## 核心模块：`apkg_builder.py`
 
-The reusable module at `scripts/apkg_builder.py` provides 7 functions:
+位于 `scripts/apkg_builder.py` 的可复用模块提供 7 个函数：
 
-| Function | Signature | Purpose |
-|----------|-----------|---------|
-| `make_front` | `(problem: str, category: str) -> str` | Build standardized `题目名 \| 分类` prefix |
-| `make_deck` | `(deck_id: int, name: str) -> Deck` | Create a deck; `name` uses `::` hierarchy |
-| `add_basic` | `(deck, front: str, back: str)` | Add a Basic Q&A card |
-| `add_cloze` | `(deck, text: str, extra: str)` | Add a Cloze fill-in-blank card |
-| `img` | `(name: str) -> str` | Track image + return HTML `<img>` tag |
-| `code` | `(java: str) -> str` | Wrap Java in `<pre><code class="language-java">` with HTML escaping |
-| `build` | `(output_path: str) -> str` | Write APKG, return summary |
+| 函数 | 签名 | 用途 |
+|-----------|---------|---------|
+| `make_front` | `(problem: str, category: str) -> str` | 构建标准化的 `题目名 \| 分类` 前缀 |
+| `make_deck` | `(deck_id: int, name: str) -> Deck` | 创建牌组；`name` 使用 `::` 层级结构 |
+| `add_basic` | `(deck, front: str, back: str)` | 添加 Basic 问答卡片 |
+| `add_cloze` | `(deck, text: str, extra: str)` | 添加 Cloze 填空卡片 |
+| `img` | `(name: str) -> str` | 跟踪图片并返回 HTML `<img>` 标签 |
+| `code` | `(java: str) -> str` | 用 `<pre><code class="language-java">` 包裹 Java 代码并进行 HTML 转义 |
+| `build` | `(output_path: str) -> str` | 写入 APKG 文件，返回摘要 |
 
-### Import Pattern
+### 导入方式
 
 ```python
 import sys
@@ -61,28 +61,28 @@ sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_front, make_deck, add_basic, add_cloze, img, code, build
 ```
 
-### img() Behavior
+### img() 行为
 
-`img('image 5.png')` returns an HTML `<img>` tag and registers the file in the package's media manifest. The image file must exist relative to the **CWD when the build script runs** (not relative to the script file). Always run build scripts from the topic directory where image files live.
+`img('image 5.png')` 返回 HTML `<img>` 标签，并将文件注册到包的媒体清单中。图片文件必须相对于**运行构建脚本时的当前工作目录**存在（而非相对于脚本文件）。始终从图片文件所在的主题目录运行构建脚本。
 
-### code() Behavior
+### code() 行为
 
-`code(java_str)` wraps Java source in `<pre><code class="language-java">` with proper HTML escaping via `html.escape()`. The `HLJS_HEAD` in card templates auto-highlights with highlight.js v11.6.0 CDN.
+`code(java_str)` 将 Java 源代码包裹在 `<pre><code class="language-java">` 中，并通过 `html.escape()` 进行正确的 HTML 转义。卡片模板中的 `HLJS_HEAD` 使用 highlight.js v11.6.0 CDN 自动高亮。
 
 ---
 
-## Recommended Architecture: Split-MD-Then-Build
+## 推荐架构：先拆分 md 再构建
 
-**CRITICAL**: Do NOT write a monolithic build script that hardcodes every card. Instead, follow the two-phase approach:
+**关键**：不要写一个硬编码所有卡片的单体构建脚本。应采用两阶段方案：
 
-### Phase 1: Split source md into individual problem mds
+### 阶段 1：将源 md 拆分为独立题目 md
 
-Write a `_split_to_mds.py` script that:
-1. Reads the monolithic source `.md` file
-2. Extracts each problem into a separate `problems/<题目名>.md` file
-3. Each md follows the standard `## section` template below
+编写 `_split_to_mds.py` 脚本：
+1. 读取单体源 `.md` 文件
+2. 将每道题提取为独立的 `problems/<题目名>.md` 文件
+3. 每个 md 遵循下方标准的 `## 分区` 模板
 
-**Recording shim pattern** for extracting data from legacy build scripts:
+**录制 shim 模式** — 用于从旧版构建脚本中提取数据：
 
 ```python
 import sys, types, html as _html
@@ -96,158 +96,158 @@ def _record_make_deck(deck_id: int, name: str):
     _record[_current_p[0]] = {'deck_id': deck_id, 'cards': []}
     return type('_D', (), {'add_note': lambda s, n: None})()
 
-# Inject mock modules into sys.modules
+# 将 mock 模块注入 sys.modules
 _apkg = types.ModuleType('apkg_builder')
 _apkg.make_deck = _record_make_deck
-# ... assign all mock functions similarly ...
+# ... 类似地赋值所有 mock 函数 ...
 sys.modules['apkg_builder'] = _apkg
 sys.modules['genanki'] = _genanki
 
-# Execute the legacy build script — all calls are captured
+# 执行旧版构建脚本 — 所有调用被捕获
 exec(source_code, {'__name__': '__main__'})
-# _record now contains all captured card data
+# _record 现在包含所有捕获的卡片数据
 ```
 
-Reference: `D:\anki\算法\动态规划\_split_to_mds.py`
+参考：`算法/动态规划/_split_to_mds.py`
 
-### Phase 2: Write a generic `build_from_mds.py`
+### 阶段 2：编写通用的 `build_from_mds.py`
 
-A reusable script that:
-1. Globs `problems/*.md`
-2. Parses `# Title` and `## Sections` from each
-3. Maps sections to card types automatically (题干→Basic, 定义状态→Cloze, etc.)
-4. Generates the APKG
+一个可复用的脚本：
+1. 通配 `problems/*.md`
+2. 解析每个文件的 `# 标题` 和 `## 分区`
+3. 自动将分区映射为卡片类型（题干→Basic，定义状态→Cloze 等）
+4. 生成 APKG
 
-This separation means: **edit the md → rebuild**. No need to touch Python code for content changes.
+这种分离意味着：**编辑 md → 重新构建**。修改内容无需触碰 Python 代码。
 
-Reference: `D:\anki\算法\动态规划\build_from_mds.py`
+参考：`算法/动态规划/build_from_mds.py`
 
 ---
 
-## Individual Problem MD Template
+## 独立题目 MD 模板
 
-Every problem MUST be in its own `.md` file at `<主题>/problems/<题目名>.md` with these exact `##` sections:
+每道题必须放在独立的 `.md` 文件中，路径为 `<主题>/problems/<题目名>.md`，包含以下精确的 `##` 分区：
 
 ```markdown
 # 题目名
 
 ## 题干
-Problem description text. Can include images (`![...](image.png)`) and inline code (`nums`).
-**Must NOT contain solution code blocks (` ```java ``` `).** Solution code belongs in 题解 sections.
+题目描述文本。可包含图片（`![...](image.png)`）和内联代码（`nums`）。
+**不得包含题解代码块（` ```java ``` `）。** 题解代码应放在题解分区。
 
 ## 定义状态
-dp[i] = {{c1::state definition}}
-> optional hint for the answer side
+dp[i] = {{c1::状态定义}}
+> 可选的提示，显示在答案面
 
 ## 转移方程
-dp[i] = {{c1::recurrence formula}}
-> optional hint
+dp[i] = {{c1::递推公式}}
+> 可选提示
 
 ## 初始化
-dp[0] = {{c1::base case}}
-> optional hint
+dp[0] = {{c1::基本情况}}
+> 可选提示
 
 ## 计算顺序
-Plain text describing loop direction and rationale.
+描述循环方向和理由的纯文本。
 
 ## 返回结果
-Plain text describing what to return and why.
+描述返回什么以及为什么的纯文本。
 
 ## 复杂度
-Time and space complexity WITH derivation steps (not just the answer).
+时间复杂度和空间复杂度，必须包含推导步骤（不能只写答案）。
 
 ## 题解(DP)
-Brief description of the approach.
+方法的简要描述。
 ```java
 class Solution { ... }
 ```
 
-## 题解(分治)   ← only if multiple solutions exist
-Brief description.
+## 题解(分治)   ← 仅当存在多种解法时
+简要描述。
 ```java
 class Solution { ... }
 ```
 ```
 
-### Section→Card Mapping
+### 分区→卡片映射
 
-The build_from_mds.py maps sections to card types as follows:
+`build_from_mds.py` 按以下规则将分区映射为卡片类型：
 
-| Section | Card Type | Processing |
+| 分区 | 卡片类型 | 处理方式 |
 |---------|-----------|-------------|
-| `题干` | Basic | Markdown→HTML: code blocks→`code()`, images→`img()`, rest escaped |
-| `定义状态` | Cloze | `{{c1::...}}` in text, `> hint` lines → Back Extra |
-| `转移方程` | Cloze | Same as above |
-| `初始化` | Cloze | Same as above |
-| `计算顺序` | Basic | Plain text as-is |
-| `返回结果` | Basic | Plain text as-is |
-| `复杂度` | Basic | Plain text as-is |
-| `题解(*)` | Basic | Extracts ` ```java ``` ` → `code()`, description text as intro |
+| `题干` | Basic | Markdown→HTML：代码块→`code()`，图片→`img()`，其余转义 |
+| `定义状态` | Cloze | `{{c1::...}}` 在文本中，`> 提示` 行 → Back Extra |
+| `转移方程` | Cloze | 同上 |
+| `初始化` | Cloze | 同上 |
+| `计算顺序` | Basic | 纯文本原样保留 |
+| `返回结果` | Basic | 纯文本原样保留 |
+| `复杂度` | Basic | 纯文本原样保留 |
+| `题解(*)` | Basic | 提取 ` ```java ``` ` → `code()`，描述文本作为引言 |
 
-Sections `定义状态`, `转移方程`, `初始化` are treated as Cloze. All others are Basic.
+`定义状态`、`转移方程`、`初始化` 分区为 Cloze 类型。其余均为 Basic。
 
-### MD Content Rules (CRITICAL)
+### MD 内容规则（关键）
 
-**题干 section:**
-- MUST contain: problem description, images, examples, mathematical explanation
-- MUST NOT contain: solution code (` ```java ``` ` blocks)
-- Rationale: The 题干 card presents the problem — solution code spoils the answer
+**题干分区：**
+- 必须包含：题目描述、图片、示例、数学解释
+- 不得包含：题解代码（` ```java ``` ` 块）
+- 原因：题干卡片呈现的是题目 — 题解代码会剧透答案
 
-**复杂度 section:**
-- MUST include derivation steps, not just the answer
-- Format: `时间 O(f(n))：具体推导过程（每步做什么 × 做多少次） → O(f(n))<br>空间 O(g(n))：哪些数据随n增长`
-- Bad: `时间 O(n)，空间 O(1)` — no derivation
-- Good: `时间 O(n)：遍历一次，每步做O(1)的min+加法，共n次 → O(n)<br>空间 O(1)：只需dp和res两个变量，不随n增长`
-- **Must be self-contained** — never write "同最大子数组和" (reference another problem)
+**复杂度分区：**
+- 必须包含推导步骤，不能只写答案
+- 格式：`时间 O(f(n))：具体推导过程（每步做什么 × 做多少次） → O(f(n))<br>空间 O(g(n))：哪些数据随n增长`
+- 错误示例：`时间 O(n)，空间 O(1)` — 没有推导
+- 正确示例：`时间 O(n)：遍历一次，每步做O(1)的min+加法，共n次 → O(n)<br>空间 O(1)：只需dp和res两个变量，不随n增长`
+- **必须自包含** — 不能写"同最大子数组和"（引用其他题目）
 
-**题解 section:**
-- Section header: `题解` (single solution) or `题解(DP)`, `题解(分治)`, `题解(BFS)` (named variants)
-- Contains: optional description + mandatory ` ```java ``` ` code block
-- Description text before the code block becomes the card intro
-- The build script wraps extracted code with `code()` for highlight.js
+**题解分区：**
+- 分区标题：`题解`（单一解法）或 `题解(DP)`、`题解(分治)`、`题解(BFS)`（命名变体）
+- 包含：可选描述 + 必需的 ` ```java ``` ` 代码块
+- 代码块前的描述文本成为卡片的引言
+- 构建脚本用 `code()` 包裹提取的代码以支持 highlight.js
 
-**Cloze sections** (定义状态, 转移方程, 初始化):
-- Cloze markers: `{{c1::answer}}`, `{{c2::answer}}`, etc.
-- Lines starting with `> ` are hints → Anki "Back Extra" field
-- Multi-line cloze content with `<br>` is supported
+**Cloze 分区**（定义状态、转移方程、初始化）：
+- Cloze 标记：`{{c1::答案}}`、`{{c2::答案}}` 等
+- 以 `> ` 开头的行 → Anki 的"Back Extra"字段
+- 支持带 `<br>` 的多行 cloze 内容
 
-**Line endings:** Use LF (`\n`) consistently. CRLF can cause regex failures.
+**换行符：** 统一使用 LF (`\n`)。CRLF 可能导致正则表达式失败。
 
 ---
 
-## Section Completeness Audit
+## 分区完整性审查
 
-Before building, verify every md has all required sections:
+构建前，验证每个 md 包含所有必需分区：
 
 ```python
 required = ['题干', '定义状态', '转移方程', '初始化', '计算顺序', '返回结果', '复杂度']
 for name in required:
     if f'## {name}' not in text:
-        print(f'MISSING: {name}')
+        print(f'缺失: {name}')
 ```
 
-Also check:
-- 题干 is not empty after stripping code blocks and whitespace
-- 复杂度 is not a bare "同XXX" reference
-- 定义状态/转移方程/初始化 have cloze markers `{{c1::...}}`
+还需检查：
+- 去除代码块和空白后，题干不为空
+- 复杂度不是简单的"同XXX"引用
+- 定义状态/转移方程/初始化包含 cloze 标记 `{{c1::...}}`
 
 ---
 
-## Card Design Rules
+## 卡片设计规则
 
-### CRITICAL: Every card MUST include the problem name
+### 关键：每张卡片必须包含题目名
 
-Use `make_front(problem_name, category)` to build the card front prefix. Format: `题目名 | 分类`.
+使用 `make_front(problem_name, category)` 构建卡片正面前缀。格式：`题目名 | 分类`。
 
-### Deck Naming
+### 牌组命名
 
-`算法::<主题>::<题目名>` — the `::` separator creates Anki's hierarchical deck tree.
+`算法::<主题>::<题目名>` — `::` 分隔符创建 Anki 的层级牌组树。
 
-Template deck (if any): `算法::<主题>::原理通识` — must be skipped from individual-problem builds.
+模板牌组（如有）：`算法::<主题>::原理通识` — 必须在独立题目构建中跳过。
 
-### Card Count Guidelines
+### 卡片数量指南
 
-| Topic Type | Cards per Problem |
+| 题目类型 | 每道题卡片数 |
 |-----------|------------------|
 | 动态规划 (DP) | 7-9 |
 | 回溯法 | 5-6 |
@@ -258,119 +258,119 @@ Template deck (if any): `算法::<主题>::原理通识` — must be skipped fro
 
 ---
 
-## Card Templates by Problem Type
+## 各题型的卡片模板
 
-### Type A: 动态规划 (DP) — 7-9 cards/problem
+### 类型 A：动态规划 (DP) — 每题 7-9 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement + images. **No solution code.** |
+| 1 | `题干` | Basic | 题目描述 + 图片。**无题解代码。** |
 | 2 | `定义状态` | Cloze | `dp[i] = {{c1::含义}}` |
-| 3 | `转移方程` | Cloze | `dp[i] = {{c1::recurrence}}` |
-| 4 | `初始化` | Cloze | `dp[0] = {{c1::base case}}` |
-| 5 | `计算顺序` | Basic | Loop direction and rationale |
-| 6 | `返回结果` | Basic | What to return and why |
-| 7 | `复杂度` | Basic | Time + Space with derivation steps |
-| 8 | `题解` | Basic | Java code. Named variants: `题解(DP)`, `题解(分治)`, etc. |
+| 3 | `转移方程` | Cloze | `dp[i] = {{c1::递推式}}` |
+| 4 | `初始化` | Cloze | `dp[0] = {{c1::基本情况}}` |
+| 5 | `计算顺序` | Basic | 循环方向和理由 |
+| 6 | `返回结果` | Basic | 返回什么及为什么 |
+| 7 | `复杂度` | Basic | 时间 + 空间及推导步骤 |
+| 8 | `题解` | Basic | Java 代码。命名变体：`题解(DP)`、`题解(分治)` 等 |
 
-### Type B: 回溯法 (Backtracking) — 5-6 cards/problem
+### 类型 B：回溯法 — 每题 5-6 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement. No solution code. |
+| 1 | `题干` | Basic | 题目描述。无题解代码。 |
 | 2 | `回溯-选择列表` | Cloze | `选择列表 = {{c1::...}}` |
 | 3 | `回溯-终止+剪枝` | Cloze | `终止条件：{{c1::...}}，剪枝策略：{{c2::...}}` |
-| 4 | `复杂度` | Basic | Time & Space with derivation |
-| 5 | `题解` | Basic | Code |
-| 6 | `对比` (optional) | Basic | Difference from similar problem |
+| 4 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 5 | `题解` | Basic | 代码 |
+| 6 | `对比`（可选） | Basic | 与相似题目的区别 |
 
-### Type C: 双指针/滑动窗口 — 4-5 cards/problem
+### 类型 C：双指针/滑动窗口 — 每题 4-5 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement |
+| 1 | `题干` | Basic | 题目描述 |
 | 2 | `指针策略` | Cloze | `left移动：{{c1::...}}，right移动：{{c2::...}}` |
-| 3 | `复杂度` | Basic | Time & Space with derivation |
-| 4 | `题解` | Basic | Code |
+| 3 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 4 | `题解` | Basic | 代码 |
 
-### Type D: 链表 — 4-5 cards/problem
+### 类型 D：链表 — 每题 4-5 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement |
-| 2 | `关键技巧` | Basic/Cloze | dummy node, fast/slow pointer, recursion strategy |
-| 3 | `复杂度` | Basic | Time & Space with derivation |
-| 4 | `题解` | Basic | Code |
+| 1 | `题干` | Basic | 题目描述 |
+| 2 | `关键技巧` | Basic/Cloze | 哑节点、快慢指针、递归策略 |
+| 3 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 4 | `题解` | Basic | 代码 |
 
-### Type E: 二叉树 — 4-5 cards/problem
+### 类型 E：二叉树 — 每题 4-5 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement |
-| 2 | `递归策略` | Basic | Pre/in/post/level order? Recursion 3-step |
-| 3 | `复杂度` | Basic | Time & Space with derivation |
-| 4 | `题解` | Basic | Code |
+| 1 | `题干` | Basic | 题目描述 |
+| 2 | `递归策略` | Basic | 前/中/后/层序？递归三部曲 |
+| 3 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 4 | `题解` | Basic | 代码 |
 
-### Type F: 栈/队列/堆 / 单调栈 — 4-5 cards/problem
+### 类型 F：栈/队列/堆 / 单调栈 — 每题 4-5 张卡片
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement |
+| 1 | `题干` | Basic | 题目描述 |
 | 2 | `栈策略` | Cloze | `栈维护{{c1::递增/递减}}，弹出条件：{{c2::...}}` |
-| 3 | `复杂度` | Basic | Time & Space with derivation |
-| 4 | `题解` | Basic | Code |
+| 3 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 4 | `题解` | Basic | 代码 |
 
-### Type G: 通用题型 — 3-4 cards/problem
+### 类型 G：通用题型 — 每题 3-4 张卡片
 
-For 贪心、哈希表、前缀和、矩阵、字符串、图、并查集、拓扑、设计类 etc.
+适用于贪心、哈希表、前缀和、矩阵、字符串、图、并查集、拓扑、设计类等。
 
-| # | Category | Type | Content |
+| # | 分类 | 类型 | 内容 |
 |---|----------|------|---------|
-| 1 | `题干` | Basic | Problem statement. No solution code. |
-| 2 | `复杂度` | Basic | Time & Space with derivation |
-| 3 | `题解` | Basic | Code |
-| 4 | `关键技巧` (optional) | Basic/Cloze | Key insight or trick |
+| 1 | `题干` | Basic | 题目描述。无题解代码。 |
+| 2 | `复杂度` | Basic | 时间 & 空间及推导 |
+| 3 | `题解` | Basic | 代码 |
+| 4 | `关键技巧`（可选） | Basic/Cloze | 关键思路或技巧 |
 
 ---
 
-## Workflow
+## 工作流
 
-### For a New Topic
+### 新建主题
 
-**Step 1: Split source md** — Write `_split_to_mds.py` to split the monolithic source into `problems/*.md`
+**步骤 1：拆分源 md** — 编写 `_split_to_mds.py` 将单体源文件拆分为 `problems/*.md`
 
 ```bash
 cd 算法/<主题>
 python _split_to_mds.py
 ```
 
-**Step 2: Audit the mds** — Check every file for missing sections, code in 题干, empty complexity, etc.
+**步骤 2：审查 md** — 检查每个文件是否有缺失分区、题干中有代码、空白复杂度等。
 
-**Step 3: Write `build_from_mds.py`** — A thin script that reads mds and maps sections to cards. Copy and adapt from the DP reference.
+**步骤 3：编写 `build_from_mds.py`** — 一个薄脚本，读取 md 并将分区映射为卡片。从 DP 参考中复制并适配。
 
-**Step 4: Build**
+**步骤 4：构建**
 
 ```bash
 python build_from_mds.py
 ```
 
-Expected: `N problems, M cards -> <output>.apkg`
+期望输出：`N 道题, M 张卡片 -> <output>.apkg`
 
-### For Updating Existing Cards
+### 更新已有卡片
 
-Edit the problem's `.md` in `problems/`, then re-run `build_from_mds.py`. No Python code changes needed.
+编辑 `problems/` 中题目的 `.md` 文件，然后重新运行 `build_from_mds.py`。无需修改 Python 代码。
 
 ---
 
-## Common Pitfalls & Fixes
+## 常见陷阱及修复
 
-### 1. Code blocks in 题干 sections
+### 1. 题干分区中有代码块
 
-**Symptom**: Anki 题干 cards show solution Java code alongside the problem description.
+**现象**：Anki 题干卡片在题目描述旁边显示了题解 Java 代码。
 
-**Root cause**: The original source md mixes solution code into problem descriptions. During split, all content under the problem heading goes into 题干.
+**根因**：原始源 md 将题解代码混入了题目描述。拆分时，题目标题下的所有内容都进入了题干。
 
-**Fix**: Write a cleanup script that removes ` ```java ``` ` blocks from 题干 sections only. Pattern:
+**修复**：编写清理脚本，仅从题干分区中移除 ` ```java ``` ` 块。模式：
 
 ```python
 in_tigan = False; in_code = False
@@ -383,99 +383,95 @@ for line in lines:
     result.append(line)
 ```
 
-### 2. Empty or "同XXX" complexity sections
+### 2. 空白或"同XXX"的复杂度分区
 
-**Symptom**: 复杂度 section is empty or just says "同最大子数组和".
+**现象**：复杂度分区为空或只写了"同最大子数组和"。
 
-**Fix**: Every problem must have its own self-contained complexity derivation. Audit all mds before building:
+**修复**：每道题必须有自己独立的复杂度推导。构建前审查所有 md。
 
-```bash
-python -c "check every md's 复杂度 section is not empty and doesn't contain '同'"
-```
+### 3. 正则表达式分组 IndexError
 
-### 3. Regex group IndexError
+**现象**：`m.group(2)` 处报 `IndexError: no such group`。
 
-**Symptom**: `IndexError: no such group` at `m.group(2)`.
+**根因**：正则 `r'!\[.*?\]\((.*?)\)'` 只有一个捕获组（括号中的路径）。调用 `m.group(2)` 会失败。
 
-**Root cause**: Regex `r'!\[.*?\]\((.*?)\)'` has only one capture group (the path in parens). Calling `m.group(2)` fails.
+**修复**：使用 `m.group(1)`。仔细数捕获组。在全部文件上运行正则前，先用示例文本测试。
 
-**Fix**: Use `m.group(1)`. Count capture groups carefully. Test regex patterns with sample text before running on all files.
+### 4. HTML 实体双重编码
 
-### 4. HTML entity double-encoding
+**现象**：Anki 卡片中 Java 代码显示 `&amp;lt;` 而非 `<`。
 
-**Symptom**: Java code shows `&amp;lt;` instead of `<` in Anki cards.
+**根因**：代码先被 HTML 转义，存入 HTML，再被反转义，又重新转义。
 
-**Root cause**: Code was HTML-escaped, then stored in HTML, then unescaped, then re-escaped.
+**修复**：从 HTML 上下文中提取代码时使用 `_html.unescape()`。将代码包裹为 HTML 显示时使用 `html.escape()`（即 `code()` 函数）。永远不要连续应用两者。
 
-**Fix**: Use `_html.unescape()` when extracting code FROM HTML context. Use `html.escape()` (the `code()` function) when wrapping code FOR HTML display. Never apply both in sequence.
+### 5. 原理通识被当成真实题目
 
-### 5. 原理通识 treated as a real problem
+**现象**：APKG 中出现一个空的"原理通识"牌组。
 
-**Symptom**: An empty deck for "原理通识" appears in the APKG.
-
-**Fix**: Add a skip list in `build_from_mds.py`:
+**修复**：在 `build_from_mds.py` 中添加跳过列表：
 ```python
 skip_files = {'原理通识.md'}
 md_files = [f for f in md_files if f.name not in skip_files]
 ```
 
-### 6. Line ending mismatches
+### 6. 换行符不匹配
 
-**Symptom**: `re.DOTALL` regex fails to match `^## ...` boundaries.
+**现象**：`re.DOTALL` 正则无法匹配 `^## ...` 边界。
 
-**Root cause**: Windows CRLF (`\r\n`) vs LF (`\n`). `^` in multiline mode may not behave as expected with CRLF.
+**根因**：Windows CRLF (`\r\n`) vs LF (`\n`)。多行模式下的 `^` 在 CRLF 中可能行为不符合预期。
 
-**Fix**: Normalize line endings: `text = text.replace('\r\n', '\n')` before processing. Or ensure `.md` files use LF only.
+**修复**：处理前统一换行符：`text = text.replace('\r\n', '\n')`。或确保 `.md` 文件仅使用 LF。
 
-### 7. String slicing truncates section names
+### 7. 字符串切片截断分区名
 
-**Symptom**: Section header `初始化(3/5)` becomes `初始化(` after `section[:4]`.
+**现象**：分区标题 `初始化(3/5)` 在 `section[:4]` 后变成 `初始化(`。
 
-**Fix**: Use explicit mapping dicts instead of string slicing:
+**修复**：使用显式映射字典而非字符串切片：
 ```python
 step_map = {'初始化(3/5)': '初始化', '定义状态(1/5)': '定义状态', ...}
 ```
 
-### 8. Markdown→HTML double-escaping (题干 body)
+### 8. Markdown→HTML 双重转义（题干正文）
 
-**Symptom**: Inline code and formatted text in 题干 becomes escaped HTML (`&lt;code&gt;`).
+**现象**：题干中的内联代码和格式化文本变成转义的 HTML（`&lt;code&gt;`）。
 
-**Fix**: Use the placeholder-based approach in `process_body_with_images()`:
-1. Extract ` ``` ``` ` code blocks → replace with `\x00CODE{N}\x00`
-2. Extract `` `inline` `` code → replace with `\x00INLINE{N}\x00`
-3. Extract `![](images)` → replace with `\x00IMG{N}\x00`
-4. `html.escape()` remaining text
-5. Restore placeholders in reverse order (IMG → INLINE → CODE)
-6. Convert `\n` to `<br>`
+**修复**：使用 `process_body_with_images()` 中的占位符方案：
+1. 提取 ` ``` ``` ` 代码块 → 替换为 `\x00CODE{N}\x00`
+2. 提取 `` `inline` `` 内联代码 → 替换为 `\x00INLINE{N}\x00`
+3. 提取 `![](images)` 图片 → 替换为 `\x00IMG{N}\x00`
+4. 对剩余文本执行 `html.escape()`
+5. 按逆序恢复占位符（IMG → INLINE → CODE）
+6. 将 `\n` 转换为 `<br>`
 
-### 9. Orphan bold headings after code removal
+### 9. 移除代码后的孤立加粗标题
 
-**Symptom**: After removing code blocks from 题干, standalone bold lines like `**动态规划**` remain with no content under them.
+**现象**：从题干中移除代码块后，独立的加粗行如 `**动态规划**` 下面没有内容。
 
-**Fix**: Remove short bold-only lines in 题干 after removing code blocks. Keep longer descriptive bold text.
+**修复**：移除代码块后，删除题干中的短加粗行。保留较长的描述性加粗文本。
 
 ---
 
-## Cloze Best Practices
+## Cloze 最佳实践
 
-- Number clozes per-card: `c1, c2, c3...` within each card
-- Code clozes: blank out **key logic** (transition equation, loop bounds, conditions), not boilerplate
-- Never cloze the problem name — it's already in `make_front()`
-- Use `> hint text` for the Back Extra field (shown on answer side)
+- 每张卡片的 cloze 编号：每张卡片内使用 `c1, c2, c3...`
+- 代码 cloze：填空**关键逻辑**（转移方程、循环边界、条件），而非样板代码
+- 永远不要 cloze 题目名 — 它已经在 `make_front()` 中了
+- 使用 `> 提示文本` 作为 Back Extra 字段（显示在答案面）
 
-## CSS Defaults
+## CSS 默认值
 
-Applied automatically:
-- Font: Microsoft YaHei, 20px, centered, dark gray (#333)
-- Cloze blanks: bold, blue (#2563eb)
-- Images: max-width 100%, auto height, 10px top margin, 4px border-radius
-- Code: pre-wrap, overflow-x auto, max-width 95%
+自动应用：
+- 字体：Microsoft YaHei，20px，居中，深灰色 (#333)
+- Cloze 填空：加粗，蓝色 (#2563eb)
+- 图片：max-width 100%，自动高度，上边距 10px，圆角 4px
+- 代码：pre-wrap，overflow-x auto，max-width 95%
 
-## Reference
+## 参考
 
-- [Anki Manual (Chinese)](https://open-spaced-repetition.github.io/anki-manual-zh-CN/editing.html)
+- [Anki 手册（中文）](https://open-spaced-repetition.github.io/anki-manual-zh-CN/editing.html)
 - [genanki on PyPI](https://pypi.org/project/genanki/)
-- DP reference (split-md-then-build pattern): `D:\anki\算法\动态规划\`
-  - `_split_to_mds.py` — data extraction via recording shim
-  - `build_from_mds.py` — generic build from individual mds
-  - `problems/*.md` — individual problem files
+- DP 参考（先拆分 md 再构建模式）：`算法/动态规划/`
+  - `_split_to_mds.py` — 通过录制 shim 提取数据
+  - `build_from_mds.py` — 从独立 md 通用构建
+  - `problems/*.md` — 独立题目文件

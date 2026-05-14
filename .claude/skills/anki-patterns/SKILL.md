@@ -6,7 +6,7 @@ source: local-git-analysis
 analyzed_commits: 1
 ---
 
-# anki Patterns
+# anki 模式
 
 ## 提交约定
 
