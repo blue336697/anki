@@ -11,7 +11,25 @@ Usage pattern (write a topic-specific build script):
     build('回溯.apkg')
 """
 
+import html
+
 import genanki
+
+# ============================================================
+# highlight.js boilerplate — prepended to every card template
+# so code blocks wrapped in <pre><code class="language-java"> are
+# syntax-highlighted on all Anki platforms (desktop, Android, iOS
+# with MutationObserver fallback).
+# ============================================================
+
+HLJS_HEAD = (
+    '<head>'
+    '<link rel="stylesheet"'
+    ' href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">'
+    '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>'
+    '<script>hljs.highlightAll();</script>'
+    '</head>'
+)
 
 # ============================================================
 # Anki Models (shared across all build scripts)
@@ -23,13 +41,15 @@ BASIC_MODEL = genanki.Model(
     fields=[{'name': 'Front'}, {'name': 'Back'}],
     templates=[{
         'name': 'Card 1',
-        'qfmt': '{{Front}}',
-        'afmt': '{{FrontSide}}<hr id="answer">{{Back}}',
+        'qfmt': HLJS_HEAD + '{{Front}}',
+        'afmt': HLJS_HEAD + '{{FrontSide}}<hr id="answer">{{Back}}',
     }],
     css=(
         '.card{font-family:"Microsoft YaHei",sans-serif;font-size:20px;'
         'text-align:center;color:#333;padding:20px}'
         'img{max-width:100%;height:auto;margin-top:10px;border-radius:4px}'
+        'pre,code{white-space:pre-wrap;overflow-x:auto;max-width:95%;'
+        'box-sizing:border-box;padding:10px}'
     ),
 )
 
@@ -40,14 +60,16 @@ CLOZE_MODEL = genanki.Model(
     fields=[{'name': 'Text'}, {'name': 'Back Extra'}],
     templates=[{
         'name': 'Cloze',
-        'qfmt': '{{cloze:Text}}',
-        'afmt': '{{cloze:Text}}<br>{{Back Extra}}',
+        'qfmt': HLJS_HEAD + '{{cloze:Text}}',
+        'afmt': HLJS_HEAD + '{{cloze:Text}}<br>{{Back Extra}}',
     }],
     css=(
         '.card{font-family:"Microsoft YaHei",sans-serif;font-size:20px;'
         'text-align:center;color:#333;padding:20px}'
         '.cloze{font-weight:bold;color:#2563eb}'
         'img{max-width:100%;height:auto;margin-top:10px;border-radius:4px}'
+        'pre,code{white-space:pre-wrap;overflow-x:auto;max-width:95%;'
+        'box-sizing:border-box;padding:10px}'
     ),
 )
 
@@ -57,6 +79,20 @@ CLOZE_MODEL = genanki.Model(
 
 _decks: list[genanki.Deck] = []
 _images: set[str] = set()
+
+
+def make_front(problem: str, category: str) -> str:
+    """Build standardized card front with problem name prefix.
+
+    All cards start with '题目名 | 分类' so the user knows which problem
+    they're reviewing even when deep in the deck hierarchy.
+    """
+    return f'{problem} | {category}'
+
+
+def code(java: str) -> str:
+    """Wrap Java code in <pre><code> with HTML escaping for highlight.js."""
+    return f'<pre><code class="language-java">{html.escape(java)}</code></pre>'
 
 
 def img(name: str) -> str:
