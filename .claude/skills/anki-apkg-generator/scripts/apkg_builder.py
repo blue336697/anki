@@ -97,8 +97,10 @@ def code(java: str) -> str:
 
 def img(name: str) -> str:
     """Track image file and return HTML <img> tag to embed in card text."""
+    import os as _os
     _images.add(name)
-    return f'<br><img src="{name}" style="max-width:100%;margin-top:12px">'
+    display_name = _os.path.basename(name) if _os.path.sep in name or '/' in name else name
+    return f'<br><img src="{display_name}" style="max-width:100%;margin-top:12px">'
 
 
 def make_deck(deck_id: int, name: str) -> genanki.Deck:

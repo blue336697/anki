@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260">
+<rect width="900" height="260" fill="white"/>
+<text x="450" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">MySQL 两阶段提交 (Redo Log + Binlog)</text>
+<rect x="230" y="110" width="120" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="290" y="138" text-anchor="middle" font-size="10" fill="#4a3000">Prepare</text>
+<text x="290" y="156" text-anchor="middle" font-size="8" fill="#888">写入Redo Log
+事务状态=prepare
+(先写redo)</text>
+<line x1="350" y1="140" x2="390" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="385,136 390,140 385,144" fill="#999"/>
+<rect x="390" y="110" width="120" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="450" y="138" text-anchor="middle" font-size="10" fill="#1a1a2e">Write Binlog</text>
+<text x="450" y="156" text-anchor="middle" font-size="8" fill="#888">写入Binlog
+(Server层日志)</text>
+<line x1="510" y1="140" x2="550" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="545,136 550,140 545,144" fill="#999"/>
+<rect x="550" y="110" width="120" height="60" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="610" y="138" text-anchor="middle" font-size="10" fill="#1b4a1b">Commit</text>
+<text x="610" y="156" text-anchor="middle" font-size="8" fill="#888">Redo Log
+事务状态=commit
+(两阶段完成)</text>
+</svg>

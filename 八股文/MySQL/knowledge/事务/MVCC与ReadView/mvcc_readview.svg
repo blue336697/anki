@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 260">
+<rect width="850" height="260" fill="white"/>
+<text x="425" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">MVCC ReadView 可见性判断</text>
+<rect x="125" y="110" width="120" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="185" y="138" text-anchor="middle" font-size="10" fill="#1a1a2e">事务开始</text>
+<text x="185" y="156" text-anchor="middle" font-size="8" fill="#888">分配唯一trx_id
+(事务ID递增)</text>
+<line x1="245" y1="140" x2="285" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="280,136 285,140 280,144" fill="#999"/>
+<rect x="285" y="110" width="120" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="345" y="138" text-anchor="middle" font-size="10" fill="#4a3000">生成ReadView</text>
+<text x="345" y="156" text-anchor="middle" font-size="8" fill="#888">m_ids:活跃事务列表
+min/max_trx_id
+creator_trx_id</text>
+<line x1="405" y1="140" x2="445" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="440,136 445,140 440,144" fill="#999"/>
+<rect x="445" y="110" width="120" height="60" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="505" y="138" text-anchor="middle" font-size="10" fill="#2d1b4e">判断可见性</text>
+<text x="505" y="156" text-anchor="middle" font-size="8" fill="#888">trx_id &lt; min→可见
+trx_id &gt; max→不可见
+trx_id在m_ids中→不可见</text>
+<line x1="565" y1="140" x2="605" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="600,136 605,140 600,144" fill="#999"/>
+<rect x="605" y="110" width="120" height="60" rx="8" fill="#f5f5f5" stroke="#666666" stroke-width="1.5"/>
+<text x="665" y="138" text-anchor="middle" font-size="10" fill="#333333">读undo日志版本</text>
+<text x="665" y="156" text-anchor="middle" font-size="8" fill="#888">不可见时沿着
+roll_pointer回滚段
+读历史版本</text>
+</svg>

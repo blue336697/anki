@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<rect width="800" height="300" fill="white"/>
+<text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">Lombok 常用注解分类</text>
+<rect x="23" y="55" width="247" height="28" rx="4" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="146" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">构造/访问器</text>
+<rect x="23" y="90" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="105" text-anchor="middle" font-size="9" fill="#333">@Getter / @Setter</text>
+<rect x="23" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="135" text-anchor="middle" font-size="9" fill="#333">@ToString</text>
+<rect x="23" y="150" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="165" text-anchor="middle" font-size="9" fill="#333">@EqualsAndHashCode</text>
+<rect x="23" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="195" text-anchor="middle" font-size="9" fill="#333">@NoArgsConstructor</text>
+<rect x="23" y="210" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="225" text-anchor="middle" font-size="9" fill="#333">@AllArgsConstructor</text>
+<rect x="23" y="240" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="255" text-anchor="middle" font-size="9" fill="#333">@RequiredArgsConstructor</text>
+<rect x="276" y="55" width="247" height="28" rx="4" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="399" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b4a1b">简化模式</text>
+<rect x="276" y="90" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="105" text-anchor="middle" font-size="9" fill="#333">@Data (组合注解)</text>
+<rect x="276" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="135" text-anchor="middle" font-size="9" fill="#333">@Builder (建造者)</text>
+<rect x="276" y="150" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="165" text-anchor="middle" font-size="9" fill="#333">@Value (不可变)</text>
+<rect x="276" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="195" text-anchor="middle" font-size="9" fill="#333">@Slf4j (日志)</text>
+<rect x="276" y="210" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="225" text-anchor="middle" font-size="9" fill="#333">@Accessors(fluent)</text>
+<rect x="529" y="55" width="247" height="28" rx="4" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="652" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3000">高级特性</text>
+<rect x="529" y="90" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="105" text-anchor="middle" font-size="9" fill="#333">@SneakyThrows</text>
+<rect x="529" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="135" text-anchor="middle" font-size="9" fill="#333">@Synchronized</text>
+<rect x="529" y="150" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="165" text-anchor="middle" font-size="9" fill="#333">@Cleanup</text>
+<rect x="529" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="195" text-anchor="middle" font-size="9" fill="#333">@With (不可变更新)</text>
+<rect x="529" y="210" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="225" text-anchor="middle" font-size="9" fill="#333">@Singular (集合Builder)</text>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="shortest_path_choice">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1040" pageHeight="480" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="先看边权" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="390" y="40" width="160" height="54" as="geometry" /></mxCell>
+        <mxCell id="3" value="无权 / 等权&#xa;最少步数" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="70" y="160" width="150" height="60" as="geometry" /></mxCell>
+        <mxCell id="4" value="非负权&#xa;单源最短代价" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="160" width="170" height="60" as="geometry" /></mxCell>
+        <mxCell id="5" value="有负权边&#xa;单源最短路" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="540" y="160" width="160" height="60" as="geometry" /></mxCell>
+        <mxCell id="6" value="多源 / 任意两点&#xa;点数较小" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="770" y="160" width="170" height="60" as="geometry" /></mxCell>
+        <mxCell id="7" value="BFS / 多源 BFS&#xa;O(V+E)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="70" y="290" width="170" height="70" as="geometry" /></mxCell>
+        <mxCell id="8" value="Dijkstra + 堆&#xa;O((V+E)logV)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="290" width="190" height="70" as="geometry" /></mxCell>
+        <mxCell id="9" value="Bellman-Ford&#xa;O(VE)&#xa;可检测负环" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="540" y="290" width="180" height="80" as="geometry" /></mxCell>
+        <mxCell id="10" value="Floyd&#xa;O(V^3)&#xa;所有点对" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="780" y="290" width="160" height="80" as="geometry" /></mxCell>
+        <mxCell id="11" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="12" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="13" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="14" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="15" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="3" target="7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="16" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="4" target="8"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="17" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="5" target="9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="18" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="10"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

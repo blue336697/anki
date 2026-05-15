@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220">
+<rect width="800" height="220" fill="white"/>
+<text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">Maven 依赖传递与仲裁</text>
+<rect x="40" y="90" width="112" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="96" y="118" text-anchor="middle" font-size="10" fill="#1a1a2e">声明依赖</text>
+<text x="96" y="136" text-anchor="middle" font-size="8" fill="#888">pom.xml dependency</text>
+<line x1="152" y1="120" x2="192" y2="120" stroke="#999" stroke-width="1.5"/>
+<polygon points="187,116 192,120 187,124" fill="#999"/>
+<rect x="192" y="90" width="112" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="248" y="118" text-anchor="middle" font-size="10" fill="#4a3000">传递依赖</text>
+<text x="248" y="136" text-anchor="middle" font-size="8" fill="#888">A→B→C</text>
+<line x1="304" y1="120" x2="344" y2="120" stroke="#999" stroke-width="1.5"/>
+<polygon points="339,116 344,120 339,124" fill="#999"/>
+<rect x="344" y="90" width="112" height="60" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="400" y="118" text-anchor="middle" font-size="10" fill="#1b4a1b">仲裁策略</text>
+<text x="400" y="136" text-anchor="middle" font-size="8" fill="#888">最短路径优先
+先声明优先</text>
+<line x1="456" y1="120" x2="496" y2="120" stroke="#999" stroke-width="1.5"/>
+<polygon points="491,116 496,120 491,124" fill="#999"/>
+<rect x="496" y="90" width="112" height="60" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="552" y="118" text-anchor="middle" font-size="10" fill="#2d1b4e">依赖管理</text>
+<text x="552" y="136" text-anchor="middle" font-size="8" fill="#888">dependencyManagement</text>
+<line x1="608" y1="120" x2="648" y2="120" stroke="#999" stroke-width="1.5"/>
+<polygon points="643,116 648,120 643,124" fill="#999"/>
+<rect x="648" y="90" width="112" height="60" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="704" y="118" text-anchor="middle" font-size="10" fill="#4a1b1b">排除/可选</text>
+<text x="704" y="136" text-anchor="middle" font-size="8" fill="#888">exclusions
+optional=true</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="425" viewBox="0 0 1140 425">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<line x1="135.0" y1="129.0" x2="305.0" y2="129.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="305.0" y1="129.0" x2="475.0" y2="129.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="475.0" y1="129.0" x2="695.0" y2="130.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="695.0" y1="130.0" x2="955.0" y2="130.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="695.0" y1="130.0" x2="555.0" y2="307.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="955.0" y1="130.0" x2="555.0" y2="307.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<rect x="60.0" y="100.0" width="150.0" height="58.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="135.0" y="134.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="135.0" dy="0">预处理</tspan>
+</text>
+<rect x="230.0" y="100.0" width="150.0" height="58.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="305.0" y="134.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="305.0" dy="0">编译</tspan>
+</text>
+<rect x="400.0" y="100.0" width="150.0" height="58.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="475.0" y="125.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="475.0" dy="0">汇编</tspan>
+<tspan x="475.0" dy="17">目标文件</tspan>
+</text>
+<rect x="590.0" y="100.0" width="210.0" height="60.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="695.0" y="126.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="695.0" dy="0">链接</tspan>
+<tspan x="695.0" dy="17">符号解析/重定位</tspan>
+</text>
+<rect x="850.0" y="100.0" width="210.0" height="60.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="955.0" y="126.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="955.0" dy="0">装载</tspan>
+<tspan x="955.0" dy="17">映射进地址空间</tspan>
+</text>
+<rect x="390.0" y="270.0" width="330.0" height="75.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="555.0" y="304.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="555.0" dy="0">text / data / bss</tspan>
+<tspan x="555.0" dy="17">动态库 / 运行时栈堆</tspan>
+</text>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<line x1="170.0" y1="87.0" x2="490.0" y2="87.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="170.0" y1="225.0" x2="490.0" y2="225.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="490.0" y1="225.0" x2="810.0" y2="225.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="810.0" y1="225.0" x2="480.0" y2="400.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="490.0" y1="87.0" x2="490.0" y2="225.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<rect x="60.0" y="60.0" width="220.0" height="54.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="170.0" y="91.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="170.0" dy="0">pattern = ABABAC</tspan></text>
+<rect x="360.0" y="60.0" width="260.0" height="54.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="490.0" y="91.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="490.0" dy="0">lps = [0,0,1,2,3,0]</tspan></text>
+<rect x="60.0" y="190.0" width="220.0" height="70.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="170.0" y="221.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="170.0" dy="0">已匹配：ABABA</tspan><tspan x="170.0" dy="17">下一位失配</tspan></text>
+<rect x="360.0" y="190.0" width="260.0" height="70.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="490.0" y="221.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="490.0" dy="0">最长相同前后缀：ABA</tspan><tspan x="490.0" dy="17">j 从 5 跳到 3</tspan></text>
+<rect x="700.0" y="190.0" width="220.0" height="70.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="810.0" y="221.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="810.0" dy="0">文本指针 i 不回退</tspan><tspan x="810.0" dy="17">复用已匹配信息</tspan></text>
+<rect x="330.0" y="360.0" width="300.0" height="80.0" rx="10" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6"/>
+<text x="480.0" y="387.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="480.0" dy="0">构建 lps：O(m)</tspan><tspan x="480.0" dy="17">匹配：O(n)</tspan><tspan x="480.0" dy="17">总计：O(n+m)</tspan></text>
+</svg>

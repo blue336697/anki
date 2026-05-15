@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400">
+<rect width="900" height="400" fill="white"/>
+<text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">多级页表 + TLB 地址翻译流程</text>
+<text x="135" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">CPU</text>
+<rect x="35" y="205" width="200" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="135" y="230" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="0.0">虚拟地址</tspan><tspan x="0" dy="16">页号|页内偏移</tspan></text></text>
+<line x1="240" y1="235" x2="252" y2="235" stroke="#999" stroke-width="1.5"/>
+<polygon points="248,231 254,235 248,239" fill="#999"/>
+<text x="345" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">TLB缓存</text>
+<rect x="245" y="175" width="200" height="50" rx="5" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="345" y="200" text-anchor="middle" font-size="10" fill="#1b4a1b"><text text-anchor="middle"><tspan x="0" dy="8.0">TLB 命中 → 直接翻译</tspan></text></text>
+<rect x="245" y="235" width="200" height="50" rx="5" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="345" y="260" text-anchor="middle" font-size="10" fill="#4a1b1b"><text text-anchor="middle"><tspan x="0" dy="8.0">TLB Miss ↓</tspan></text></text>
+<line x1="450" y1="235" x2="462" y2="235" stroke="#999" stroke-width="1.5"/>
+<polygon points="458,231 464,235 458,239" fill="#999"/>
+<text x="555" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">页表遍历</text>
+<rect x="455" y="145" width="200" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="555" y="170" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="0.0">一级页表</tspan><tspan x="0" dy="16">(页目录)</tspan></text></text>
+<rect x="455" y="205" width="200" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="555" y="230" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="8.0">二级页表</tspan></text></text>
+<rect x="455" y="265" width="200" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="555" y="290" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="0.0">三级页表</tspan><tspan x="0" dy="16">(可选)</tspan></text></text>
+<line x1="660" y1="235" x2="672" y2="235" stroke="#999" stroke-width="1.5"/>
+<polygon points="668,231 674,235 668,239" fill="#999"/>
+<text x="765" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">物理内存</text>
+<rect x="665" y="175" width="200" height="50" rx="5" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="765" y="200" text-anchor="middle" font-size="10" fill="#2d1b4e"><text text-anchor="middle"><tspan x="0" dy="0.0">PTE → 物理页框号</tspan><tspan x="0" dy="16">权限位 R/W/X</tspan></text></text>
+<rect x="665" y="235" width="200" height="50" rx="5" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="765" y="260" text-anchor="middle" font-size="10" fill="#1b4a1b"><text text-anchor="middle"><tspan x="0" dy="0.0">物理地址</tspan><tspan x="0" dy="16">访问数据</tspan></text></text>
+</svg>

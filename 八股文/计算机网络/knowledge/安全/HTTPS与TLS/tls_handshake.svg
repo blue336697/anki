@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 260">
+<rect width="950" height="260" fill="white"/>
+<text x="475" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">TLS 1.2 握手流程 (ECDHE密钥交换)</text>
+<rect x="175" y="110" width="120" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="235" y="138" text-anchor="middle" font-size="10" fill="#1a1a2e">ClientHello</text>
+<text x="235" y="156" text-anchor="middle" font-size="8" fill="#888">支持的密码套件
+随机数 client_random</text>
+<line x1="295" y1="140" x2="335" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="330,136 335,140 330,144" fill="#999"/>
+<rect x="335" y="110" width="120" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="395" y="138" text-anchor="middle" font-size="10" fill="#4a3000">ServerHello</text>
+<text x="395" y="156" text-anchor="middle" font-size="8" fill="#888">选定密码套件+证书
+随机数 server_random
+ServerKeyExchange(ECDHE)</text>
+<line x1="455" y1="140" x2="495" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="490,136 495,140 490,144" fill="#999"/>
+<rect x="495" y="110" width="120" height="60" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="555" y="138" text-anchor="middle" font-size="10" fill="#2d1b4e">客户端密钥交换</text>
+<text x="555" y="156" text-anchor="middle" font-size="8" fill="#888">ClientKeyExchange(ECDHE)
+双方计算预主密钥
+→ 生成会话密钥</text>
+<line x1="615" y1="140" x2="655" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="650,136 655,140 650,144" fill="#999"/>
+<rect x="655" y="110" width="120" height="60" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="715" y="138" text-anchor="middle" font-size="10" fill="#1b4a1b">Finished</text>
+<text x="715" y="156" text-anchor="middle" font-size="8" fill="#888">加密握手完成消息
+后续对称加密通信</text>
+</svg>

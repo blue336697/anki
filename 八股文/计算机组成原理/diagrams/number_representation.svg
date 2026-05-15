@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="400" viewBox="0 0 860 400">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<line x1="210.0" y1="132.5" x2="210.0" y2="285.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="630.0" y1="132.5" x2="640.0" y2="285.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<rect x="100.0" y="100.0" width="220.0" height="65.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="210.0" y="129.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="210.0" dy="0">整数补码</tspan>
+<tspan x="210.0" dy="17">统一加减法</tspan>
+</text>
+<rect x="80.0" y="250.0" width="260.0" height="70.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="210.0" y="281.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="210.0" dy="0">n 位范围</tspan>
+<tspan x="210.0" dy="17">-2^(n-1) 到 2^(n-1)-1</tspan>
+</text>
+<rect x="500.0" y="100.0" width="260.0" height="65.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="630.0" y="129.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="630.0" dy="0">浮点 IEEE754</tspan>
+<tspan x="630.0" dy="17">符号 + 指数 + 尾数</tspan>
+</text>
+<rect x="500.0" y="250.0" width="280.0" height="70.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="640.0" y="281.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="640.0" dy="0">0.1 等十进制小数</tspan>
+<tspan x="640.0" dy="17">无法总是精确二进制表示</tspan>
+</text>
+</svg>

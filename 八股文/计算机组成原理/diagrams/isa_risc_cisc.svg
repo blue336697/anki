@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="480" viewBox="0 0 1020 480">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<line x1="510.0" y1="60.0" x2="210.0" y2="210.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="510.0" y1="60.0" x2="810.0" y2="210.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="510.0" y1="60.0" x2="510.0" y2="337.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="810.0" y1="210.0" x2="815.0" y2="365.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="815.0" y1="365.0" x2="510.0" y2="337.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<rect x="400.0" y="30.0" width="220.0" height="60.0" rx="10" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6"/>
+<text x="510.0" y="56.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="510.0" dy="0">ISA</tspan>
+<tspan x="510.0" dy="17">软件可见契约</tspan>
+</text>
+<rect x="100.0" y="170.0" width="220.0" height="80.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="210.0" y="198.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="210.0" dy="0">RISC</tspan>
+<tspan x="210.0" dy="17">简单固定指令</tspan>
+<tspan x="210.0" dy="17">Load/Store</tspan>
+</text>
+<rect x="700.0" y="170.0" width="220.0" height="80.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="810.0" y="198.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="810.0" dy="0">CISC</tspan>
+<tspan x="810.0" dy="17">复杂变长指令</tspan>
+<tspan x="810.0" dy="17">寻址方式多</tspan>
+</text>
+<rect x="400.0" y="300.0" width="220.0" height="75.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="510.0" y="334.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="510.0" dy="0">微架构</tspan>
+<tspan x="510.0" dy="17">流水线/乱序/缓存</tspan>
+</text>
+<rect x="690.0" y="330.0" width="250.0" height="70.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="815.0" y="361.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="815.0" dy="0">现代 x86</tspan>
+<tspan x="815.0" dy="17">复杂指令 -&gt; micro-ops</tspan>
+</text>
+</svg>

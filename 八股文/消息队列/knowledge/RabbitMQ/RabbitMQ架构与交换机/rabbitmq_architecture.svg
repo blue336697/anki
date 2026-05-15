@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 320">
+<rect width="850" height="320" fill="white"/>
+<text x="425" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">RabbitMQ AMQP 模型</text>
+<text x="128" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">发送</text>
+<rect x="35" y="165" width="187" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="128" y="190" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="0.0">Producer</tspan><tspan x="0" dy="16">生产者</tspan></text></text>
+<line x1="227" y1="195" x2="239" y2="195" stroke="#999" stroke-width="1.5"/>
+<polygon points="235,191 241,195 235,199" fill="#999"/>
+<text x="325" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">路由</text>
+<rect x="232" y="165" width="187" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="325" y="190" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="0.0">Exchange</tspan><tspan x="0" dy="16">交换机</tspan></text></text>
+<text x="325" y="211" text-anchor="middle" font-size="8" fill="#888">direct | topic | fanout | headers</text>
+<line x1="424" y1="195" x2="436" y2="195" stroke="#999" stroke-width="1.5"/>
+<polygon points="432,191 438,195 432,199" fill="#999"/>
+<text x="522" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">存储</text>
+<rect x="429" y="105" width="187" height="50" rx="5" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="522" y="130" text-anchor="middle" font-size="10" fill="#1b4a1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Queue 1</tspan></text></text>
+<rect x="429" y="165" width="187" height="50" rx="5" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="522" y="190" text-anchor="middle" font-size="10" fill="#1b4a1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Queue 2</tspan></text></text>
+<rect x="429" y="225" width="187" height="50" rx="5" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="522" y="250" text-anchor="middle" font-size="10" fill="#1b4a1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Queue 3</tspan></text></text>
+<line x1="621" y1="195" x2="633" y2="195" stroke="#999" stroke-width="1.5"/>
+<polygon points="629,191 635,195 629,199" fill="#999"/>
+<text x="719" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">消费</text>
+<rect x="626" y="105" width="187" height="50" rx="5" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="719" y="130" text-anchor="middle" font-size="10" fill="#4a1b1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Consumer 1</tspan></text></text>
+<rect x="626" y="165" width="187" height="50" rx="5" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="719" y="190" text-anchor="middle" font-size="10" fill="#4a1b1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Consumer 2</tspan></text></text>
+<rect x="626" y="225" width="187" height="50" rx="5" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="719" y="250" text-anchor="middle" font-size="10" fill="#4a1b1b"><text text-anchor="middle"><tspan x="0" dy="8.0">Consumer 3</tspan></text></text>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+<diagram name="number_representation">
+<mxGraphModel page="1" pageWidth="1000" pageHeight="620" grid="1" gridSize="10"><root>
+<mxCell id="0" />
+<mxCell id="1" parent="0" />
+<mxCell id="2" value="整数补码&#xa;统一加减法" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="100" y="100" width="220" height="65" as="geometry" /></mxCell>
+<mxCell id="3" value="n 位范围&#xa;-2^(n-1) 到 2^(n-1)-1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="80" y="250" width="260" height="70" as="geometry" /></mxCell>
+<mxCell id="4" value="浮点 IEEE754&#xa;符号 + 指数 + 尾数" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="500" y="100" width="260" height="65" as="geometry" /></mxCell>
+<mxCell id="5" value="0.1 等十进制小数&#xa;无法总是精确二进制表示" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="500" y="250" width="280" height="70" as="geometry" /></mxCell>
+<mxCell id="6" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="7" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="4" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+</root></mxGraphModel>
+</diagram>
+</mxfile>

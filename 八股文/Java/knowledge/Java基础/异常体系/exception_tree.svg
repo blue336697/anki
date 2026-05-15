@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 400">
+<rect width="750" height="400" fill="white"/>
+<text x="375" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Java 异常体系层次结构</text>
+<rect x="315" y="40" width="120" height="32" rx="6" fill="#f5f5f5" stroke="#666666" stroke-width="1.5"/>
+<text x="375" y="56" text-anchor="middle" font-size="9" fill="#333333">Throwable</text>
+<line x1="375" y1="72" x2="207" y2="107" stroke="#999" stroke-width="1"/>
+<rect x="147" y="107" width="120" height="32" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="207" y="123" text-anchor="middle" font-size="9" fill="#4a1b1b">Error (严重系统问题)</text>
+<line x1="207" y1="139" x2="123" y2="174" stroke="#999" stroke-width="1"/>
+<rect x="63" y="174" width="120" height="32" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="123" y="190" text-anchor="middle" font-size="9" fill="#4a1b1b">OutOfMemoryError</text>
+<line x1="207" y1="139" x2="290" y2="174" stroke="#999" stroke-width="1"/>
+<rect x="230" y="174" width="120" height="32" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="290" y="190" text-anchor="middle" font-size="9" fill="#4a1b1b">StackOverflowError</text>
+<line x1="375" y1="72" x2="542" y2="107" stroke="#999" stroke-width="1"/>
+<rect x="482" y="107" width="120" height="32" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="542" y="123" text-anchor="middle" font-size="9" fill="#1a1a2e">Exception (可处理)</text>
+<line x1="542" y1="139" x2="458" y2="174" stroke="#999" stroke-width="1"/>
+<rect x="398" y="174" width="120" height="32" rx="6" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="458" y="190" text-anchor="middle" font-size="9" fill="#4a3000">Checked Exception
+编译期强制处理</text>
+<line x1="458" y1="206" x2="416" y2="241" stroke="#999" stroke-width="1"/>
+<rect x="356" y="241" width="120" height="32" rx="6" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="416" y="257" text-anchor="middle" font-size="9" fill="#4a3000">IOException</text>
+<line x1="458" y1="206" x2="499" y2="241" stroke="#999" stroke-width="1"/>
+<rect x="439" y="241" width="120" height="32" rx="6" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="499" y="257" text-anchor="middle" font-size="9" fill="#4a3000">SQLException</text>
+<line x1="542" y1="139" x2="625" y2="174" stroke="#999" stroke-width="1"/>
+<rect x="565" y="174" width="120" height="32" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="625" y="190" text-anchor="middle" font-size="9" fill="#1b4a1b">RuntimeException
+非检查型异常</text>
+<line x1="625" y1="206" x2="583" y2="241" stroke="#999" stroke-width="1"/>
+<rect x="523" y="241" width="120" height="32" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="583" y="257" text-anchor="middle" font-size="9" fill="#1b4a1b">NullPointerException</text>
+<line x1="625" y1="206" x2="666" y2="241" stroke="#999" stroke-width="1"/>
+<rect x="606" y="241" width="120" height="32" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="666" y="257" text-anchor="middle" font-size="9" fill="#1b4a1b">IllegalArgumentException</text>
+</svg>

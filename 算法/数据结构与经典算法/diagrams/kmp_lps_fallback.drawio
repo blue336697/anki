@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="kmp_lps_fallback">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="540" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="pattern = ABABAC" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="60" y="60" width="220" height="54" as="geometry" /></mxCell>
+        <mxCell id="3" value="lps = [0,0,1,2,3,0]" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="360" y="60" width="260" height="54" as="geometry" /></mxCell>
+        <mxCell id="4" value="已匹配：ABABA&#xa;下一位失配" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="190" width="220" height="70" as="geometry" /></mxCell>
+        <mxCell id="5" value="最长相同前后缀：ABA&#xa;j 从 5 跳到 3" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="360" y="190" width="260" height="70" as="geometry" /></mxCell>
+        <mxCell id="6" value="文本指针 i 不回退&#xa;复用已匹配信息" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="700" y="190" width="220" height="70" as="geometry" /></mxCell>
+        <mxCell id="7" value="构建 lps：O(m)&#xa;匹配：O(n)&#xa;总计：O(n+m)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="330" y="360" width="300" height="80" as="geometry" /></mxCell>
+        <mxCell id="8" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="9" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="4" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="10" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="5" target="6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="11" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="12" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="3" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

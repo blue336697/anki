@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 330">
+<rect width="800" height="330" fill="white"/>
+<text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">Java 时间类型选择指南</text>
+<rect x="23" y="55" width="247" height="28" rx="4" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="146" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Instant (时间戳)</text>
+<rect x="23" y="90" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="105" text-anchor="middle" font-size="9" fill="#333">时间线上的瞬间</text>
+<rect x="23" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="135" text-anchor="middle" font-size="9" fill="#333">无时区概念</text>
+<rect x="23" y="150" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="165" text-anchor="middle" font-size="9" fill="#333">适合存储和传输</text>
+<rect x="23" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="195" text-anchor="middle" font-size="9" fill="#333">与 Date 可互转</text>
+<rect x="23" y="210" width="247" height="28" rx="2" fill="#dae8fc" stroke="none"/>
+<text x="146" y="225" text-anchor="middle" font-size="9" fill="#333">服务端统一用 UTC 存储</text>
+<rect x="276" y="55" width="247" height="28" rx="4" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="399" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3000">LocalDateTime (本地)</text>
+<rect x="276" y="90" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="399" y="105" text-anchor="middle" font-size="9" fill="#333">不带时区的日期时间</text>
+<rect x="276" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="135" text-anchor="middle" font-size="9" fill="#333">无法唯一定位时刻</text>
+<rect x="276" y="150" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="399" y="165" text-anchor="middle" font-size="9" fill="#333">适合日历展示</text>
+<rect x="276" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="195" text-anchor="middle" font-size="9" fill="#333">不适合跨时区比较</text>
+<rect x="276" y="210" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="399" y="225" text-anchor="middle" font-size="9" fill="#333">存储需补充时区信息</text>
+<rect x="529" y="55" width="247" height="28" rx="4" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="652" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b4a1b">ZonedDateTime (带时区)</text>
+<rect x="529" y="90" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="652" y="105" text-anchor="middle" font-size="9" fill="#333">带地区时区规则</text>
+<rect x="529" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="135" text-anchor="middle" font-size="9" fill="#333">处理夏令时切换</text>
+<rect x="529" y="150" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="652" y="165" text-anchor="middle" font-size="9" fill="#333">适合用户展示</text>
+<rect x="529" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="195" text-anchor="middle" font-size="9" fill="#333">适合跨时区计算</text>
+<rect x="529" y="210" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="652" y="225" text-anchor="middle" font-size="9" fill="#333">存储成本高于 Instant</text>
+</svg>

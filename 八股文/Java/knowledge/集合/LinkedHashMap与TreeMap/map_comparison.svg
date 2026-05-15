@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<rect width="800" height="300" fill="white"/>
+<text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">LinkedHashMap vs TreeMap</text>
+<rect x="23" y="55" width="247" height="28" rx="4" fill="#f5f5f5" stroke="#666666" stroke-width="1.5"/>
+<text x="146" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#333333">HashMap</text>
+<rect x="23" y="90" width="247" height="28" rx="2" fill="#f5f5f5" stroke="none"/>
+<text x="146" y="105" text-anchor="middle" font-size="9" fill="#333">数组+链表+红黑树</text>
+<rect x="23" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="135" text-anchor="middle" font-size="9" fill="#333">O(1) 增删查</text>
+<rect x="23" y="150" width="247" height="28" rx="2" fill="#f5f5f5" stroke="none"/>
+<text x="146" y="165" text-anchor="middle" font-size="9" fill="#333">无序</text>
+<rect x="23" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="146" y="195" text-anchor="middle" font-size="9" fill="#333">允许null key/value</text>
+<rect x="276" y="55" width="247" height="28" rx="4" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="399" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b4a1b">LinkedHashMap</text>
+<rect x="276" y="90" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="105" text-anchor="middle" font-size="9" fill="#333">继承HashMap</text>
+<rect x="276" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="135" text-anchor="middle" font-size="9" fill="#333">双向链表维护顺序</text>
+<rect x="276" y="150" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="165" text-anchor="middle" font-size="9" fill="#333">accessOrder=false→插入序</text>
+<rect x="276" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="399" y="195" text-anchor="middle" font-size="9" fill="#333">accessOrder=true→访问序</text>
+<rect x="276" y="210" width="247" height="28" rx="2" fill="#d5e8d4" stroke="none"/>
+<text x="399" y="225" text-anchor="middle" font-size="9" fill="#333">实现LRU缓存基础</text>
+<rect x="529" y="55" width="247" height="28" rx="4" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="652" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3000">TreeMap</text>
+<rect x="529" y="90" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="105" text-anchor="middle" font-size="9" fill="#333">红黑树实现</text>
+<rect x="529" y="120" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="135" text-anchor="middle" font-size="9" fill="#333">O(log n) 增删查</text>
+<rect x="529" y="150" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="165" text-anchor="middle" font-size="9" fill="#333">key自然排序/Comparator</text>
+<rect x="529" y="180" width="247" height="28" rx="2" fill="white" stroke="none"/>
+<text x="652" y="195" text-anchor="middle" font-size="9" fill="#333">key不允许null</text>
+<rect x="529" y="210" width="247" height="28" rx="2" fill="#ffe6cc" stroke="none"/>
+<text x="652" y="225" text-anchor="middle" font-size="9" fill="#333">NavigableMap接口</text>
+</svg>

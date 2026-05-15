@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+<diagram name="control_unit_design">
+<mxGraphModel page="1" pageWidth="1040" pageHeight="620" grid="1" gridSize="10"><root>
+<mxCell id="0" />
+<mxCell id="1" parent="0" />
+<mxCell id="2" value="指令译码" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="410" y="40" width="180" height="55" as="geometry" /></mxCell>
+<mxCell id="3" value="硬布线控制&#xa;组合逻辑/状态机" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="120" y="180" width="230" height="75" as="geometry" /></mxCell>
+<mxCell id="4" value="微程序控制&#xa;微指令序列" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="650" y="180" width="230" height="75" as="geometry" /></mxCell>
+<mxCell id="5" value="速度快&#xa;设计复杂" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="120" y="330" width="230" height="65" as="geometry" /></mxCell>
+<mxCell id="6" value="灵活易扩展&#xa;多一层执行" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="650" y="330" width="230" height="65" as="geometry" /></mxCell>
+<mxCell id="7" value="控制信号&#xa;驱动数据通路" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="390" y="460" width="240" height="70" as="geometry" /></mxCell>
+<mxCell id="8" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="9" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="4"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="10" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="3" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="11" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="4" target="6"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="12" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="5" target="7"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="13" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="7"><mxGeometry relative="1" as="geometry" /></mxCell>
+</root></mxGraphModel>
+</diagram>
+</mxfile>

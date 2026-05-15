@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1010" height="580" viewBox="0 0 1010 580">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<line x1="155.0" y1="282.5" x2="490.0" y2="302.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="322.5" y="286.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">输入</text>
+<line x1="490.0" y1="302.5" x2="830.0" y2="282.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="660.0" y="286.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">输出</text>
+<line x1="375.0" y1="115.0" x2="490.0" y2="302.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="432.5" y="202.75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">取指</text>
+<line x1="490.0" y1="302.5" x2="645.0" y2="115.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="567.5" y="202.75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">读数据</text>
+<line x1="645.0" y1="115.0" x2="490.0" y2="302.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="567.5" y="202.75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">写结果</text>
+<line x1="375.0" y1="115.0" x2="645.0" y2="115.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="510.0" y="109.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">控制</text>
+<line x1="510.0" y1="207.5" x2="375.0" y2="115.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="510.0" y1="207.5" x2="645.0" y2="115.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="490.0" y1="302.5" x2="495.0" y2="465.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<rect x="60.0" y="250.0" width="190.0" height="65.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="155.0" y="279.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="155.0" dy="0">输入设备</tspan>
+<tspan x="155.0" dy="17">Keyboard / Network</tspan>
+</text>
+<rect x="730.0" y="250.0" width="200.0" height="65.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="830.0" y="279.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="830.0" dy="0">输出设备</tspan>
+<tspan x="830.0" dy="17">Display / Disk / Network</tspan>
+</text>
+<rect x="380.0" y="260.0" width="220.0" height="85.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="490.0" y="290.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="490.0" dy="0">存储器</tspan>
+<tspan x="490.0" dy="17">指令 + 数据</tspan>
+<tspan x="490.0" dy="17">统一存放</tspan>
+</text>
+<rect x="270.0" y="70.0" width="210.0" height="90.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="375.0" y="103.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="375.0" dy="0">控制器</tspan>
+<tspan x="375.0" dy="17">PC / IR</tspan>
+<tspan x="375.0" dy="17">取指译码发控制信号</tspan>
+</text>
+<rect x="540.0" y="70.0" width="210.0" height="90.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="645.0" y="103.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="645.0" dy="0">运算器</tspan>
+<tspan x="645.0" dy="17">ALU / 寄存器</tspan>
+<tspan x="645.0" dy="17">算术逻辑运算</tspan>
+</text>
+<rect x="395.0" y="180.0" width="230.0" height="55.0" rx="10" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6"/>
+<text x="510.0" y="212.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="510.0" dy="0">CPU = 控制器 + 运算器</tspan>
+</text>
+<rect x="345.0" y="430.0" width="300.0" height="70.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="495.0" y="461.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="495.0" dy="0">存储程序思想</tspan>
+<tspan x="495.0" dy="17">程序也是内存中的数据</tspan>
+</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="650" viewBox="0 0 950 650">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<line x1="210.0" y1="127.5" x2="210.0" y2="277.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="210.0" y1="127.5" x2="760.0" y2="277.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<text x="485.0" y="196.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">跨节点</text>
+<line x1="760.0" y1="127.5" x2="760.0" y2="277.5" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<line x1="500.0" y1="395.0" x2="500.0" y2="535.0" stroke="#555" stroke-width="1.8" marker-end="url(#arrow)" opacity=".8"/>
+<rect x="100.0" y="90.0" width="220.0" height="75.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="210.0" y="124.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="210.0" dy="0">CPU Node 0</tspan>
+<tspan x="210.0" dy="17">本地内存</tspan>
+</text>
+<rect x="650.0" y="90.0" width="220.0" height="75.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="760.0" y="124.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="760.0" dy="0">CPU Node 1</tspan>
+<tspan x="760.0" dy="17">本地内存</tspan>
+</text>
+<rect x="120.0" y="250.0" width="180.0" height="55.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="210.0" y="282.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="210.0" dy="0">本地访问快</tspan>
+</text>
+<rect x="670.0" y="250.0" width="180.0" height="55.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="760.0" y="282.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="760.0" dy="0">远端访问慢</tspan>
+</text>
+<rect x="380.0" y="360.0" width="240.0" height="70.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="500.0" y="391.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="500.0" dy="0">内存屏障</tspan>
+<tspan x="500.0" dy="17">约束读写顺序</tspan>
+</text>
+<rect x="370.0" y="500.0" width="260.0" height="70.0" rx="10" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6"/>
+<text x="500.0" y="531.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">
+<tspan x="500.0" dy="0">JMM happens-before</tspan>
+<tspan x="500.0" dy="17">语言级语义</tspan>
+</text>
+</svg>

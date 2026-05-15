@@ -9,15 +9,16 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 ## 目录结构
 
 ```
-算法/                           # 算法题解，按主题分目录（共18个主题）
+算法/                           # 算法题解，按主题分目录（含题解与经典算法原理）
   动态规划/                     # 示例：含 Python 构建脚本 + problems/*.md
   二叉树操作（递归 层序遍历）/
   回溯法（递归枚举 剪枝）/
+  数据结构与经典算法/             # 面向五年后端面试的算法原理卡
   ...
 八股文/                         # 技术面试基础笔记
   Java/（JVM、并发、集合、Dubbo、Spring 等）
   Go/（类型系统、并发、编译原理等）
-  MySQL/ Redis/ Linux/ 计算机网络/
+  MySQL/ Redis/ Linux/ 计算机组成原理/ 计算机网络/
   分布式系统/ 设计模式/ 消息队列/ ...
 面试/                           # 面试经历记录
 项目/                           # 项目文档（流水智能体等）

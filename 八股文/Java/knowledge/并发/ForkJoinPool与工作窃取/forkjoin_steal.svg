@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240">
+<rect width="800" height="240" fill="white"/>
+<text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">ForkJoinPool 工作窃取 (Work Stealing)</text>
+<rect x="40" y="100" width="112" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="96" y="128" text-anchor="middle" font-size="10" fill="#1a1a2e">Fork Task</text>
+<text x="96" y="146" text-anchor="middle" font-size="8" fill="#888">递推分解任务</text>
+<line x1="152" y1="130" x2="192" y2="130" stroke="#999" stroke-width="1.5"/>
+<polygon points="187,126 192,130 187,134" fill="#999"/>
+<rect x="192" y="100" width="112" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="248" y="128" text-anchor="middle" font-size="10" fill="#4a3000">双端队列</text>
+<text x="248" y="146" text-anchor="middle" font-size="8" fill="#888">每个线程有WorkQueue</text>
+<line x1="304" y1="130" x2="344" y2="130" stroke="#999" stroke-width="1.5"/>
+<polygon points="339,126 344,130 339,134" fill="#999"/>
+<rect x="344" y="100" width="112" height="60" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="400" y="128" text-anchor="middle" font-size="10" fill="#1b4a1b">LIFO执行</text>
+<text x="400" y="146" text-anchor="middle" font-size="8" fill="#888">从队头取任务</text>
+<line x1="456" y1="130" x2="496" y2="130" stroke="#999" stroke-width="1.5"/>
+<polygon points="491,126 496,130 491,134" fill="#999"/>
+<rect x="496" y="100" width="112" height="60" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="552" y="128" text-anchor="middle" font-size="10" fill="#4a1b1b">Steal FIFO</text>
+<text x="552" y="146" text-anchor="middle" font-size="8" fill="#888">空闲线程从队尾窃取</text>
+<line x1="608" y1="130" x2="648" y2="130" stroke="#999" stroke-width="1.5"/>
+<polygon points="643,126 648,130 643,134" fill="#999"/>
+<rect x="648" y="100" width="112" height="60" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="704" y="128" text-anchor="middle" font-size="10" fill="#2d1b4e">Join结果</text>
+<text x="704" y="146" text-anchor="middle" font-size="8" fill="#888">合并计算结果</text>
+</svg>

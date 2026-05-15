@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1010" height="648" viewBox="0 0 1010 648">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<line x1="500.0" y1="63.0" x2="195.0" y2="195.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="500.0" y1="63.0" x2="505.0" y2="195.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="500.0" y1="63.0" x2="815.0" y2="195.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="195.0" y1="195.0" x2="195.0" y2="345.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="505.0" y1="195.0" x2="505.0" y2="345.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="815.0" y1="195.0" x2="815.0" y2="350.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="195.0" y1="345.0" x2="515.0" y2="524.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="505.0" y1="345.0" x2="515.0" y2="524.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="815.0" y1="350.0" x2="515.0" y2="524.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<rect x="390.0" y="35.0" width="220.0" height="56.0" rx="10" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6"/>
+<text x="500.0" y="67.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="500.0" dy="0">有序数据结构选择</tspan></text>
+<rect x="80.0" y="160.0" width="230.0" height="70.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="195.0" y="191.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="195.0" dy="0">红黑树</tspan><tspan x="195.0" dy="17">二叉搜索树 + 颜色平衡</tspan></text>
+<rect x="390.0" y="160.0" width="230.0" height="70.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="505.0" y="191.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="505.0" dy="0">跳表</tspan><tspan x="505.0" dy="17">多级链表 + 随机层高</tspan></text>
+<rect x="700.0" y="160.0" width="230.0" height="70.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="815.0" y="191.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="815.0" dy="0">B+树</tspan><tspan x="815.0" dy="17">多路平衡树 + 叶子链表</tspan></text>
+<rect x="80.0" y="310.0" width="230.0" height="70.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="195.0" y="341.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="195.0" dy="0">TreeMap / TreeSet</tspan><tspan x="195.0" dy="17">频繁增删查 O(logn)</tspan></text>
+<rect x="390.0" y="310.0" width="230.0" height="70.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="505.0" y="341.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="505.0" dy="0">Redis ZSet / KV 索引</tspan><tspan x="505.0" dy="17">范围扫描友好</tspan></text>
+<rect x="700.0" y="310.0" width="230.0" height="80.0" rx="10" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="815.0" y="337.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="815.0" dy="0">数据库索引</tspan><tspan x="815.0" dy="17">降低树高，减少页 IO</tspan><tspan x="815.0" dy="17">范围查询强</tspan></text>
+<rect x="300.0" y="480.0" width="430.0" height="88.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="515.0" y="511.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="515.0" dy="0">Hash：等值快但不支持范围</tspan><tspan x="515.0" dy="17">红黑树：分叉少，磁盘 IO 多</tspan><tspan x="515.0" dy="17">B+树：更贴合页存储</tspan></text>
+</svg>

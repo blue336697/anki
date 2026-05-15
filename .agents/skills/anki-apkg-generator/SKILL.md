@@ -272,6 +272,22 @@ Template deck (if any): `算法::<主题>::原理通识` — must be skipped fro
 
 八股文 does not map to "one problem, one solution". Convert it into **knowledge-point groups**. One knowledge point should usually produce **4-6 Basic cards**; fewer than 3 cards often means the concept is under-specified, more than 8 cards usually means the topic should be split.
 
+### Senior Interview Coverage Workflow
+
+When the user asks to process or improve a whole 八股文 folder/category for interview readiness, do **not** only convert existing md files. Default to "interview ability construction" mode:
+
+1. Build a knowledge map for the category first: what a 5-year backend interview candidate should be able to explain, including adjacent high-frequency topics even if the source md omits them.
+2. Audit current `knowledge/`: existing files, card counts, whether each topic has mechanism/boundary/misconception coverage, and whether any answers are only definitions.
+3. Classify gaps:
+   - `P0`: must-have for 5-year ByteDance/Meituan-style backend interviews; missing it creates obvious risk.
+   - `P1`: depth and differentiation; useful for follow-up questions and senior signal.
+   - `P2`: lower-frequency or specialty topics; add only after P0/P1 if scope allows.
+4. Create missing knowledge-point md files instead of forcing unrelated content into existing files.
+5. Each important knowledge point should normally include: `概念卡`, `机制卡`, `边界卡`, `工程实践卡` or `对比追问卡`, and `正确性审查卡`.
+6. Finish with a coverage report: files/cards added, APKG build result, remaining risks, and whether the category can handle a 10-minute senior-interview drill.
+
+Senior-readiness acceptance question: **If an interviewer keeps asking "why, how, boundary, failure mode, production use" for this category, would the learner still have a structured answer?** If not, keep filling gaps before calling the folder done.
+
 ### Knowledge Point MD Template
 
 Use one `.md` per knowledge point under a topic-specific `knowledge/<原文标题>/` directory:

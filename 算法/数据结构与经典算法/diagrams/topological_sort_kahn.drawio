@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="topological_sort_kahn">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1040" pageHeight="560" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="统计入度" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="70" y="70" width="150" height="56" as="geometry" /></mxCell>
+        <mxCell id="3" value="入度为 0 入队" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="280" y="70" width="170" height="56" as="geometry" /></mxCell>
+        <mxCell id="4" value="弹出节点&#xa;加入结果" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="520" y="70" width="170" height="60" as="geometry" /></mxCell>
+        <mxCell id="5" value="遍历出边&#xa;后继入度 -1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="760" y="70" width="170" height="60" as="geometry" /></mxCell>
+        <mxCell id="6" value="新入度为 0？" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#fff2cc;strokeColor=#d6b656;rhombus;rounded=0;" vertex="1" parent="1"><mxGeometry x="520" y="220" width="170" height="70" as="geometry" /></mxCell>
+        <mxCell id="7" value="输出数 == V&#xa;存在拓扑序" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="250" y="380" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="8" value="输出数 &lt; V&#xa;存在有向环" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeWidth=1.5;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="580" y="380" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="9" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="2" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="10" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="3" target="4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="11" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="4" target="5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="12" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="5" target="6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="13" value="是" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="14" value="队列最终空" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="15" value="仍有点未输出" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;fontSize=12;" edge="1" parent="1" source="6" target="8"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

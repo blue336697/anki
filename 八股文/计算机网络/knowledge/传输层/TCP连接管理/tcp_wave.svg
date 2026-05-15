@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 260">
+<rect width="750" height="260" fill="white"/>
+<text x="375" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">TCP 四次挥手</text>
+<rect x="75" y="110" width="120" height="60" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="135" y="138" text-anchor="middle" font-size="10" fill="#4a1b1b">FIN</text>
+<text x="135" y="156" text-anchor="middle" font-size="8" fill="#888">主动方→被动方
+FIN=1</text>
+<line x1="195" y1="140" x2="235" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="230,136 235,140 230,144" fill="#999"/>
+<rect x="235" y="110" width="120" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="295" y="138" text-anchor="middle" font-size="10" fill="#4a3000">ACK</text>
+<text x="295" y="156" text-anchor="middle" font-size="8" fill="#888">被动方→主动方
+ACK=1</text>
+<line x1="355" y1="140" x2="395" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="390,136 395,140 390,144" fill="#999"/>
+<rect x="395" y="110" width="120" height="60" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="455" y="138" text-anchor="middle" font-size="10" fill="#4a1b1b">FIN</text>
+<text x="455" y="156" text-anchor="middle" font-size="8" fill="#888">被动方→主动方
+FIN=1</text>
+<line x1="515" y1="140" x2="555" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="550,136 555,140 550,144" fill="#999"/>
+<rect x="555" y="110" width="120" height="60" rx="8" fill="#f5f5f5" stroke="#666666" stroke-width="1.5"/>
+<text x="615" y="138" text-anchor="middle" font-size="10" fill="#333333">ACK</text>
+<text x="615" y="156" text-anchor="middle" font-size="8" fill="#888">主动方→被动方
+ACK=1→TIME_WAIT</text>
+</svg>

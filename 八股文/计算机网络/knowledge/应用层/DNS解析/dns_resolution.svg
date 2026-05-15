@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260">
+<rect width="900" height="260" fill="white"/>
+<text x="450" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">DNS 解析流程 (递归+迭代)</text>
+<rect x="150" y="110" width="120" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="210" y="138" text-anchor="middle" font-size="10" fill="#1a1a2e">浏览器</text>
+<text x="210" y="156" text-anchor="middle" font-size="8" fill="#888">检查缓存
+(浏览器→OS→hosts)</text>
+<line x1="270" y1="140" x2="310" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="305,136 310,140 305,144" fill="#999"/>
+<rect x="310" y="110" width="120" height="60" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="370" y="138" text-anchor="middle" font-size="10" fill="#4a3000">本地DNS</text>
+<text x="370" y="156" text-anchor="middle" font-size="8" fill="#888">路由器/ISP
+递归查询</text>
+<line x1="430" y1="140" x2="470" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="465,136 470,140 465,144" fill="#999"/>
+<rect x="470" y="110" width="120" height="60" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="530" y="138" text-anchor="middle" font-size="10" fill="#2d1b4e">根域名服务器</text>
+<text x="530" y="156" text-anchor="middle" font-size="8" fill="#888">返回顶级域
+(.com)服务器IP</text>
+<line x1="590" y1="140" x2="630" y2="140" stroke="#999" stroke-width="1.5"/>
+<polygon points="625,136 630,140 625,144" fill="#999"/>
+<rect x="630" y="110" width="120" height="60" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="690" y="138" text-anchor="middle" font-size="10" fill="#1b4a1b">权威DNS</text>
+<text x="690" y="156" text-anchor="middle" font-size="8" fill="#888">返回最终IP
+(迭代查询)</text>
+</svg>

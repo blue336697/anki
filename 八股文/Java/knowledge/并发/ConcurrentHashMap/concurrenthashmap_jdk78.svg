@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380">
+<rect width="800" height="380" fill="white"/>
+<text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">ConcurrentHashMap JDK7 vs JDK8</text>
+<text x="215" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">JDK7</text>
+<rect x="35" y="105" width="360" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="215" y="130" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="8.0">Segment[] (ReentrantLock)</tspan></text></text>
+<rect x="35" y="165" width="360" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="215" y="190" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="8.0">HashEntry[]  per segment</tspan></text></text>
+<rect x="35" y="225" width="360" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="215" y="250" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="8.0">锁粒度=Segment级别</tspan></text></text>
+<rect x="35" y="285" width="360" height="50" rx="5" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="215" y="310" text-anchor="middle" font-size="10" fill="#4a3000"><text text-anchor="middle"><tspan x="0" dy="8.0">并发度=segment数量</tspan></text></text>
+<line x1="400" y1="225" x2="412" y2="225" stroke="#999" stroke-width="1.5"/>
+<polygon points="408,221 414,225 408,229" fill="#999"/>
+<text x="585" y="58" text-anchor="middle" font-size="11" fill="#888" font-style="italic">JDK8</text>
+<rect x="405" y="105" width="360" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="585" y="130" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="8.0">Node[] table (CAS + synchronized)</tspan></text></text>
+<rect x="405" y="165" width="360" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="585" y="190" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="8.0">链表 + 红黑树 (TreeBin)</tspan></text></text>
+<rect x="405" y="225" width="360" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="585" y="250" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="8.0">锁粒度=单个hash桶</tspan></text></text>
+<rect x="405" y="285" width="360" height="50" rx="5" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="585" y="310" text-anchor="middle" font-size="10" fill="#1a1a2e"><text text-anchor="middle"><tspan x="0" dy="8.0">协作扩容 + CounterCell计数</tspan></text></text>
+</svg>

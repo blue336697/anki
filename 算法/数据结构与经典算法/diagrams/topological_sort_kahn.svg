@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1010" height="530" viewBox="0 0 1010 530">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<line x1="145.0" y1="98.0" x2="365.0" y2="98.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="365.0" y1="98.0" x2="605.0" y2="100.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="605.0" y1="100.0" x2="845.0" y2="100.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="845.0" y1="100.0" x2="605.0" y2="255.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<line x1="605.0" y1="255.0" x2="365.0" y2="98.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<text x="485.0" y="170.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">是</text>
+<line x1="605.0" y1="255.0" x2="355.0" y2="415.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<text x="480.0" y="329.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">队列最终空</text>
+<line x1="605.0" y1="255.0" x2="685.0" y2="415.0" stroke="#555555" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.82"/>
+<text x="645.0" y="329.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">仍有点未输出</text>
+<rect x="70.0" y="70.0" width="150.0" height="56.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="145.0" y="102.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="145.0" dy="0">统计入度</tspan></text>
+<rect x="280.0" y="70.0" width="170.0" height="56.0" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6"/>
+<text x="365.0" y="102.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="365.0" dy="0">入度为 0 入队</tspan></text>
+<rect x="520.0" y="70.0" width="170.0" height="60.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="605.0" y="96.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="605.0" dy="0">弹出节点</tspan><tspan x="605.0" dy="17">加入结果</tspan></text>
+<rect x="760.0" y="70.0" width="170.0" height="60.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="845.0" y="96.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="845.0" dy="0">遍历出边</tspan><tspan x="845.0" dy="17">后继入度 -1</tspan></text>
+<polygon points="605.0,220.0 690.0,255.0 605.0,290.0 520.0,255.0" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6"/>
+<text x="605.0" y="259.5" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="605.0" dy="0">新入度为 0？</tspan></text>
+<rect x="250.0" y="380.0" width="210.0" height="70.0" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6"/>
+<text x="355.0" y="411.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="355.0" dy="0">输出数 == V</tspan><tspan x="355.0" dy="17">存在拓扑序</tspan></text>
+<rect x="580.0" y="380.0" width="210.0" height="70.0" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.6"/>
+<text x="685.0" y="411.0" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333333"><tspan x="685.0" dy="0">输出数 &lt; V</tspan><tspan x="685.0" dy="17">存在有向环</tspan></text>
+</svg>
