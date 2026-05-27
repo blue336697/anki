@@ -1505,6 +1505,148 @@ POST /api/roster/contains {rosterCode, entityType, entityId, token}
 5. **审核与状态解耦**: 名单/条目的status和auditStatus独立管理，需人工配合操作（先提交审核→通过→手动启用）。
 6. **软删除唯一约束处理**: 采用name+时间戳后缀避免唯一约束冲突，但无法完全防止并发删除。
 
+### 6.11 Zero 监控与运维模块
+
+Zero 是 Kestrel 的核心运营子系统（6 个 Maven 子模块），提供 IRP 平台**唯一的集中式监控和运维能力**。
+
+#### 6.11.1 告警引擎
+
+五层体系：**指标定义 → 规则配置 → 信号触发 → 模板渲染 → 多渠道发送**：
+
+```
+AlarmIndex (指标: 归属/统计方法/时间维度/过滤条件 → 动态SQL)
+  → AlarmRule (规则: 绑定指标+阈值+Cron+渠道+严重级别, Redis自增编号)
+    → AlarmCronService.timeExecute() (Quartz定时评估)
+      → 动态生成SQL → 对比阈值(>, >=, =, <, <=, !=)
+        → AlarmSignal (告警事件: 创建→认领→转派→关闭, 批量操作)
+          → AlarmSendService + AlarmTemplate (多渠道+模板发送)
+```
+
+| 能力 | 实现 |
+|------|------|
+| 渠道 | 短信、邮件、钉钉、飞书、企业微信、站内信(Nest) — `AlarmChannelConfig` CRUD 管理 |
+| 模板 | `AlarmTemplate` CRUD，消息内容可复用 |
+| 延迟发送 | 告警消息存 Redis Hash → 延迟 Cron 后发送，避免瞬时抖动误报 |
+| 防重 | Redis 分布式锁防重复执行 |
+| 生命周期 | 创建→认领→转派→关闭（含原因），全状态追踪 |
+
+**关键文件**: `zero-service/.../service/AlarmCronService.java`, `zero-app/.../controller/Alarm{Index,Rule,Signal,ChannelConfig,Template}Controller.java`
+
+#### 6.11.2 交易策略监控 BI
+
+`TradeStrategyMonitorController` 提供风控业务专属监控仪表盘，数据源来自 RocketMQ 消费 Peregrine 的 `peregrine-inboundMonitor-topic`：
+
+| 监控维度 | API | 说明 |
+|---------|-----|------|
+| 调用量趋势 | `tradeVolumeMonitor` | 按时段统计决策服务调用量 |
+| 决策结果分布 | `tradeResultMonitor` | 通过/拒绝/人工审核 比例 |
+| 风险事件趋势 | `tradeResultRiskMonitorChar` + `tradeResultRiskCount` | 风险事件明细+计数 |
+| 规则命中排名 | `ruleHitRank` | Top N 命中规则分析 |
+| PSI 统计 | `psiStatistical` | 群体稳定性指标（模型漂移检测） |
+| 分箱管理 | `getBinning/updateBinning` | 风险评分分段配置 |
+| 回捞分析 | `backScoreDistribution` | 回捞策略效果分析 |
+
+**每日聚合作业** (`TradeStrategyMonitorJob.java`):
+```
+@Scheduled(cron = "0 0 3 * * ?")  // 每天凌晨3点
+Redis分布式锁(key=zero.scheduler.trade.monitor)
+逐笔交易数据 → TradeStrategyMonitorDay 日汇总表
+支持 compensateHistoryMonitorDay() 历史数据补偿
+```
+
+#### 6.11.3 RocketMQ 数据消费
+
+Kestrel Zero 通过 5 个 Consumer 消费各服务生产的监控数据：
+
+| Consumer | Topic | 数据用途 |
+|----------|-------|---------|
+| `InboundMonitorConsumer` | `peregrine-inboundMonitor-topic` | 交易策略入站 → TradeStrategyMonitor |
+| `InboundExceptionConsumer` | `peregrine-inboundException-topic` | 入站异常记录 |
+| `DataServicePubCallRecordConsumer` | `owl-dataservicepub-callrecord-topic` | Owl 数据服务调用记录 |
+| `ChildRuleHitConsumer` | `risk-report-common-topic` | Raptor 规则命中详情 |
+| （通过 Feign 查询） | — | 业务基础调用记录 |
+
+所有记录支持分页查询、详情查看、Excel 导出。
+
+#### 6.11.4 Quartz 定时任务管理
+
+`SysJobController` + `SysJobLogController`（RuoYi 风格）：
+
+| 能力 | 说明 |
+|------|------|
+| 任务 CRUD | 创建/更新/删除，Cron 表达式验证 |
+| 生命周期控制 | 暂停/恢复/立即触发 |
+| 执行日志 | 开始/结束时间、成功/失败、异常信息、耗时 |
+| 错误策略 | 默认/忽略/触发并继续/不执行 |
+| 并发控制 | 支持并发和非并发执行 |
+| 自动启动 | `@PostConstruct init()` 启动所有已启用任务 |
+
+#### 6.11.5 数据补偿修复
+
+`CompensateDataController` 提供管理员后门，当定时任务因数据延迟或异常导致缺失时重新处理：
+
+| API | 功能 |
+|-----|------|
+| `compensateHistoryMonitorDay` | 重新生成所有历史日汇总 |
+| `compensateHistoryMonitorDayForTenantCode` | 按租户+日期精确补偿 |
+| `compensateHistoryMonitor` | 按租户+时间范围补偿监控数据 |
+| `compensateStrategyHitRule` | 重新处理规则命中数据 |
+
+#### 6.11.6 Flowable BPMN 审批流引擎
+
+运营审批流程管理（非风控决策流）:
+
+| 组件 | 功能 |
+|------|------|
+| `FlowController` | BPMN 定义管理：创建/部署/撤回/删除 |
+| `FlowTaskExtController` | 任务管理：启动流程、查询表单、获取待办 |
+| `FormExtController` | 表单 CRUD |
+| `MqOaMessageReceiver` | 流程完成事件 → RocketMQ 回调 OA 系统 |
+
+#### 6.11.7 RocketMQ 管理工具
+
+`MqAdminService`: 查询消费者客户端 IP 和订阅信息、测试消息发送。
+
+#### 6.11.8 监控数据流全景
+
+整个 IRP 平台的监控数据通过 **RocketMQ 异步生产-消费** 汇聚到 Kestrel Zero：
+
+```
+生产端（各服务）                          消费端（Kestrel Zero）
+─────────────────                       ──────────────────────
+peregrine  → peregrine-inboundMonitor-topic    → InboundMonitorConsumer  → BI仪表盘
+peregrine  → peregrine-inboundException-topic  → InboundExcpConsumer     → 异常统计
+owl        → owl-dataservicepub-callrecord-topic → OwlCallRecordConsumer  → 调用记录报表
+raptor     → risk-report-common-topic           → ReportCommonConsumer   → 决策报告
+raptor     → risk-report-alarm-email-topic       → AlarmEmailConsumer    → 告警邮件
+```
+
+**关键特征**：
+- **Kestrel Zero 是唯一监控聚合点**：Raptor 和 Owl 自身不具备独立监控能力，只生产数据到 RocketMQ
+- **Peregrine 是进件监控数据源**：在调用 owl-execution 前后采集进件请求/响应/异常数据
+- **全异步解耦**：监控数据生产与业务调用同事务但不阻塞
+
+#### 6.11.9 Raptor 和 Owl 的自身可观测性
+
+| 服务 | 监控机制 | 覆盖范围 |
+|------|---------|---------|
+| **Owl** | `OwlCallResultAdvice` AOP — 记录所有 Feign 调用耗时(StopWatch)、参数、结果 | owl-common 全局拦截 |
+| **Owl** | `OwlExecInvokerAspect` AOP — 记录执行器调用耗时、成功/失败 | owl-execution 调用入口 |
+| **Owl** | `OwlLogAdvice` AOP — 请求日志 + StopWatch 耗时 | owl-execution Controller 层 |
+| **Raptor** | `@Trace` (SkyWalking) — `fireRules()` 和 `startProcess()` 方法追踪 | KnowledgeSessionImpl 核心方法 |
+| **Raptor** | `CacheController` — Caffeine 缓存统计 REST 端点 | 缓存命中率/大小 |
+| **Raptor** | `PingController` — 基础存活检查 | 健康探针 |
+| **Raptor** | `ReportMqMessage` — 决策报告写入 RocketMQ | 每次决策执行 |
+
+**关键缺失**：
+- **无 Micrometer/Prometheus 指标暴露**：没有任何 `/actuator/metrics` 端点，无法对接 Prometheus + Grafana
+- **无 Spring Boot Actuator 健康检查**：无 `/actuator/health`、`/actuator/info` 端点（Raptor 仅有一个简陋 PingController）
+- **无分布式追踪**：Raptor 使用了 SkyWalking `@Trace` 注解但 Owl 未使用，跨服务调用链的完整 trace 不可见
+- **无熔断/降级监控**：owl-execution 的 `invokeAPi()` 无超时、无重试、无熔断，调用失败直接抛异常，没有熔断器状态可观测
+- **无 JVM 指标暴露**：堆内存、GC、线程池状态等在服务内部不可见
+- **无业务 SLA 指标**：决策耗时 P99/P95/P50、各节点耗时分布不可见
+- **seagull-web 零监控**：指标引擎无任何 AOP、埋点、耗时统计，调用完全黑盒
+
 ---
 
 ## 七、Tamer — API网关
