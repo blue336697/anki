@@ -69,7 +69,7 @@ add_basic(d, make_front(p, '题解（复用数组）'),
 '''class Solution {
     public int[] getModifiedArray(int length, int[][] updates) {
         int[] res = new int[length];
-        // Build diff array in-place
+        // 原地构建差分数组
         for (int[] update : updates) {
             int start = update[0];
             int end = update[1];
@@ -79,7 +79,7 @@ add_basic(d, make_front(p, '题解（复用数组）'),
                 res[end + 1] -= inc;
             }
         }
-        // Prefix sum to restore original array
+        // 前缀和还原原始数组
         for (int i = 1; i < length; i++) {
             res[i] += res[i - 1];
         }
@@ -116,17 +116,17 @@ add_basic(d, make_front(p, '题解（差分数组）'),
 '''class Solution {
     public int[] corpFlightBookings(int[][] bookings, int n) {
         int[] ans = new int[n];
-        // Apply difference array updates
+        // 应用差分数组更新
         for (int[] booking : bookings) {
-            int first = booking[0] - 1; // 1-based to 0-based
-            int last = booking[1];       // last+1 position in 0-based
+            int first = booking[0] - 1; // 1-based 转 0-based
+            int last = booking[1];       // 0-based 下的 last+1 位置
             int seats = booking[2];
             ans[first] += seats;
             if (last < n) {
                 ans[last] -= seats;
             }
         }
-        // Prefix sum to restore
+        // 前缀和还原
         for (int i = 1; i < n; i++) {
             ans[i] += ans[i - 1];
         }
@@ -165,21 +165,21 @@ add_basic(d, make_front(p, '题解（差分数组）'),
     + code(
 '''class Solution {
     public boolean carPooling(int[][] trips, int capacity) {
-        // Find the furthest stop to size the diff array
+        // 找到最远站点，确定差分数组大小
         int maxTo = 0;
         for (int[] trip : trips) {
             maxTo = Math.max(maxTo, trip[2]);
         }
-        int[] diff = new int[maxTo + 2]; // +2 for safety
-        // Apply difference array updates
+        int[] diff = new int[maxTo + 2]; // +2 防止越界
+        // 应用差分数组更新
         for (int[] trip : trips) {
             int num = trip[0];
             int from = trip[1];
             int to = trip[2];
-            diff[from] += num; // board at from
-            diff[to] -= num;   // alight at to (right-open interval)
+            diff[from] += num; // 在 from 处上车
+            diff[to] -= num;   // 在 to 处下车（左闭右开区间）
         }
-        // Prefix sum + capacity check
+        // 前缀和 + 容量检查
         int cur = 0;
         for (int i = 0; i <= maxTo; i++) {
             cur += diff[i];

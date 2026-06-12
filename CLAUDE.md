@@ -52,6 +52,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### 算法笔记
 
 - 代码块使用 Java 语言标注
+- **代码注释使用中文**（包括行内注释 `//` 和块注释）
 - 配图放在同目录，命名 `image.png`、`image N.png`
 - 图片引用中空格需转义为 `%20`
 
