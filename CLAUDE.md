@@ -43,6 +43,52 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 部分主题（如各排序、滑动窗口等）只有一个 `build_*.py`，直接从代码逻辑生成卡片，没有 md 管道。
 
+### Cloze 卡片规范：一次 add = 一个 Note = 一张卡片
+
+**核心原则：每张卡片必须是独立的 Note，确保删除互不影响。**
+
+Anki 中 Card ≠ Note。`add_cloze()` 一次调用创建一个 Note。若文本中含多个不同编号的 `{{c1::}}`、`{{c2::}}`、`{{c3::}}`，一个 Note 会生成多张卡片——但这些卡片共享同一个 Note，删除任意一张会删掉整个 Note，导致所有关联卡片消失。
+
+**必须遵守**：
+- 每个 `add_cloze()` 调用中**只使用 `{{c1::}}`**（全部同一编号），确保 1 Note = 1 Card
+- 需要多张独立卡片时，**拆成多个 `add_cloze()` 调用**
+- `build_from_mds.py` 中的 `normalize_cloze()` 已自动将所有 `{{cN::` 统一为 `{{c1::`，确保从 md 生成的卡片符合规范
+
+**错误示例**（一个 Note 产出 3 张卡片，删除互相关联）：
+```python
+add_cloze(d, 'Step1: {{c1::A}}<br>Step2: {{c2::B}}<br>Step3: {{c3::C}}')
+```
+
+**正确示例**（3 个独立 Note，各自独立）：
+```python
+add_cloze(d, 'Step1: {{c1::A}}')
+add_cloze(d, 'Step2: {{c1::B}}')
+add_cloze(d, 'Step3: {{c1::C}}')
+```
+
+### add_cloze 参数顺序易错点
+
+`add_cloze(deck, text, extra="")` 的签名是 `(deck, text, extra)`：
+
+- 第一个参数 `text` → 映射到 Cloze Note 的 **Text 字段**，由 `{{cloze:Text}}` 模板渲染，**只有这个字段中的 `{{c1::...}}` 会被解析为填空**
+- 第二个参数 `extra` → 映射到 **Back Extra 字段**，仅在背面展示，**填空标记不会被处理**
+
+**错误示例**（标题放在 text，填空放 extra → 正面只有一个光秃秃的标题，填空全部无效）：
+```python
+add_cloze(d, 'AVL四种旋转场景速查',   # text → 正面只有这个标题，没有任何填空
+    'LL → {{c1::右旋}}...'             # extra → 背面补充，{{c1::}} 被当成字面文本
+)
+```
+
+**正确示例**（填空文本放在 text 参数，标题融入其中，extra 留空或放补充说明）：
+```python
+add_cloze(d,
+    'AVL四种旋转场景速查<br><br>'
+    'LL → {{c1::右旋(root)}}<br>'
+    'RR → {{c1::左旋(root)}}'
+)
+```
+
 ### 路径注意事项
 
 构建脚本中包含硬编码的绝对路径（如 `D:\anki\算法\...`），在不同机器上运行时需修改 `TOPIC_DIR`、`OUTPUT_PATH` 等路径常量。
