@@ -16,8 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   数据结构与经典算法/             # 面向五年后端面试的算法原理卡
   ...
 八股文/                         # 技术面试基础笔记
-  Java/（JVM、并发、集合、Dubbo、Spring 等）
-  Go/（类型系统、并发、编译原理等）
+  Java/（JVM、并发、集合、Spring 等）
   MySQL/ Redis/ Linux/ 计算机组成原理/ 计算机网络/
   分布式系统/ 设计模式/ 消息队列/ ...
 面试/                           # 面试经历记录
@@ -104,9 +103,16 @@ add_cloze(d,
 
 ### 八股文笔记
 
-- 按技术栈分一级子目录（Java、Go、MySQL 等），每个 `.md` 文件是一个独立主题
+- 按技术栈分一级子目录（Java、MySQL、Redis 等），每个 `.md` 文件是一个独立主题
 - 配图放在与 `.md` 同名的子目录或 `images/` 中
 - 内容为中文，代码示例使用对应语言标注
+
+### Java 单一知识源
+
+- `八股文/Java/knowledge/<大类>/<知识点>/<知识点>.md` 是 Java 卡片内容的唯一知识源
+- Java 根目录不再保留原始长文、摘录或重复专题；仅保留 `JAVA_KNOWLEDGE_MAP.md`、统一构建脚本和必要构建元数据
+- Java 卡片必须先修改 knowledge MD，再运行 `build_java_all.py` 生成 APKG；禁止把 Python 硬编码卡片或直接写入 Anki 当作知识源
+- knowledge 中只保留 MD 实际引用的媒体文件；未引用的复制图片应清理
 
 ## 仓库 Skills
 

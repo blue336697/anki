@@ -1,10 +1,11 @@
-"""Build APKG from message-queue interview notes."""
+"""Build the message-queue APKG exclusively from knowledge/**/*.md."""
 
 import html
 import os
 import re
 import sys
 from pathlib import Path
+from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TOPIC_DIR = Path(__file__).resolve().parent
@@ -18,6 +19,14 @@ from apkg_builder import add_basic, build, code, img, make_deck  # noqa: E402
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 CODE_RE = re.compile(r"```(\w+)?\n(.*?)```", re.S)
 
+CATEGORY_MAP: dict[str, str] = {
+    "MQ基础": "八股文::消息队列::MQ基础",
+    "可靠性": "八股文::消息队列::可靠性",
+    "RocketMQ": "八股文::消息队列::RocketMQ",
+    "RabbitMQ": "八股文::消息队列::RabbitMQ",
+    "对比选型": "八股文::消息队列::对比选型",
+}
+
 
 def deck_id_for(name: str) -> int:
     return 3_600_000_000 + sum((i + 1) * ord(ch) for i, ch in enumerate(name)) % 100_000_000
@@ -29,10 +38,14 @@ def split_sections(text: str) -> tuple[str, list[tuple[str, str]]]:
     title = title_match.group(1).strip() if title_match else "未命名"
     matches = list(re.finditer(r"^##\s+(.+?)\s*$", text, re.M))
     sections: list[tuple[str, str]] = []
+    header = text[: matches[0].start()].strip() if matches else ""
     for i, match in enumerate(matches):
         start = match.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        sections.append((match.group(1).strip(), text[start:end].strip()))
+        body = text[start:end].strip()
+        if i == 0 and header:
+            body = header + "\n" + body
+        sections.append((match.group(1).strip(), body))
     return title, sections
 
 
@@ -43,7 +56,7 @@ def inline_markup(line: str) -> str:
     return escaped
 
 
-def text_to_html(text: str) -> str:
+def text_to_html(text: str, base_dir: Optional[Path] = None) -> str:
     rendered: list[str] = []
     for raw_line in text.splitlines():
         line = raw_line.strip()
@@ -51,7 +64,10 @@ def text_to_html(text: str) -> str:
             continue
         image_match = IMAGE_RE.search(line)
         if image_match:
-            rendered.append(img(image_match.group(1)))
+            image_path = image_match.group(1)
+            if base_dir and not image_path.startswith(("http://", "https://", "/")):
+                image_path = str(base_dir / image_path)
+            rendered.append(img(image_path))
             continue
         if line.startswith("- "):
             rendered.append("• " + inline_markup(line[2:]) + "<br>")
@@ -62,27 +78,60 @@ def text_to_html(text: str) -> str:
     return "".join(rendered)
 
 
-def mdish_to_html(body: str) -> str:
+def mdish_to_html(body: str, base_dir: Optional[Path] = None) -> str:
     parts: list[str] = []
     pos = 0
     for match in CODE_RE.finditer(body):
         before = body[pos : match.start()]
-        parts.append(text_to_html(before))
+        parts.append(text_to_html(before, base_dir))
         raw = html.unescape(match.group(2).strip("\n"))
-        parts.append(code(raw))
+        lang = (match.group(1) or "").lower()
+        if lang in {"java", ""}:
+            parts.append(code(raw))
+        else:
+            parts.append(f"<pre><code>{html.escape(raw)}</code></pre>")
         pos = match.end()
-    parts.append(text_to_html(body[pos:]))
+    parts.append(text_to_html(body[pos:], base_dir))
     return "".join(part for part in parts if part)
 
 
-def parse_qa(body: str) -> tuple[str, str]:
+def parse_qa(body: str, base_dir: Optional[Path] = None) -> tuple[str, str]:
     q_match = re.search(r"^Q:\s*(.+?)\s*$", body, re.M)
     a_match = re.search(r"^A:\s*$", body, re.M)
     if not q_match or not a_match:
-        return "这个知识点要怎么理解？", mdish_to_html(body)
+        return "这个知识点要怎么理解？", mdish_to_html(body, base_dir)
     question = q_match.group(1).strip()
     answer = body[a_match.end():].strip()
-    return question, mdish_to_html(answer)
+    preamble = body[:q_match.start()].strip()
+    if preamble:
+        answer = preamble + "\n" + answer
+    return question, mdish_to_html(answer, base_dir)
+
+
+def validate_source(md_path: Path, title: str, sections: list[tuple[str, str]]) -> list[str]:
+    errors: list[str] = []
+    if title == "未命名":
+        errors.append("missing H1 title")
+    if len(sections) < 4:
+        errors.append(f"only {len(sections)} cards; expected at least 4")
+    for section_title, body in sections:
+        q_count = len(re.findall(r"^Q:\s*.+$", body, re.M))
+        a_count = len(re.findall(r"^A:\s*$", body, re.M))
+        if q_count != 1 or a_count != 1:
+            errors.append(
+                f"{section_title}: expected exactly one Q/A pair, got Q={q_count}, A={a_count}"
+            )
+        if a_count == 1:
+            answer_start = re.search(r"^A:\s*$", body, re.M)
+            answer = body[answer_start.end() :].strip() if answer_start else ""
+            if len(answer) < 80:
+                errors.append(f"{section_title}: answer is too shallow ({len(answer)} chars)")
+    for match in IMAGE_RE.finditer(md_path.read_text(encoding="utf-8")):
+        image_path = match.group(1)
+        if not image_path.startswith(("http://", "https://", "/")):
+            if not (md_path.parent / image_path).exists():
+                errors.append(f"missing image: {image_path}")
+    return errors
 
 
 def main() -> None:
@@ -92,10 +141,16 @@ def main() -> None:
 
     total_cards = 0
     total_files = 0
+    validation_errors: list[str] = []
+    used_deck_ids: dict[int, str] = {}
 
     try:
         for category_dir in sorted(KNOWLEDGE_ROOT.iterdir()):
             if not category_dir.is_dir() or category_dir.name.startswith("."):
+                continue
+            parent_deck = CATEGORY_MAP.get(category_dir.name)
+            if parent_deck is None:
+                print(f"  skip unknown category: {category_dir.name}")
                 continue
             for topic_dir in sorted(category_dir.iterdir()):
                 if not topic_dir.is_dir() or topic_dir.name.startswith("."):
@@ -103,14 +158,29 @@ def main() -> None:
                 for md_path in sorted(topic_dir.glob("*.md")):
                     raw = md_path.read_text(encoding="utf-8")
                     title, sections = split_sections(raw)
-                    deck_name = f"八股文::消息队列::{category_dir.name}::{title}"
-                    deck = make_deck(deck_id_for(deck_name), deck_name)
+                    for error in validate_source(md_path, title, sections):
+                        validation_errors.append(f"{md_path.relative_to(TOPIC_DIR)}: {error}")
+                    deck_name = f"{parent_deck}::{title}"
+                    deck_id = deck_id_for(deck_name)
+                    previous = used_deck_ids.get(deck_id)
+                    if previous and previous != deck_name:
+                        validation_errors.append(
+                            f"deck id collision {deck_id}: {previous} vs {deck_name}"
+                        )
+                    used_deck_ids[deck_id] = deck_name
+                    deck = make_deck(deck_id, deck_name)
                     for section_title, body in sections:
-                        question, answer_html = parse_qa(body)
+                        question, answer_html = parse_qa(body, md_path.parent)
                         front = f"{title} | {section_title}<br><br>{html.escape(question)}"
                         add_basic(deck, front, answer_html)
                         total_cards += 1
                     total_files += 1
+
+        if validation_errors:
+            print("Source validation failed:")
+            for error in validation_errors:
+                print(f"  - {error}")
+            raise SystemExit(1)
 
         result = build(str(OUTPUT_PATH))
         print(result)

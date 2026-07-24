@@ -19,6 +19,7 @@ TOPIC_NAME = '排序与查找'
 TEMPLATE_DECK_ID = 1747301000
 START_DECK_ID = 1747301001
 PROBLEMS_DIR = TOPIC_DIR / 'problems'
+KNOWLEDGE_DIR = TOPIC_DIR / 'knowledge'
 OUTPUT_PATH = REPO_ROOT / '牌组' / '算法' / f'{TOPIC_NAME}.apkg'
 
 
@@ -27,6 +28,7 @@ def parse_md(md_path: Path) -> dict:
     title_match = re.search(r'^# (.+)$', text, re.MULTILINE)
     if not title_match:
         raise ValueError(f'No title in {md_path}')
+    deck_match = re.search(r'<!--\s*anki-deck:\s*(.+?)\s*-->', text)
     heads = list(re.finditer(r'^## (.+)$', text, re.MULTILINE))
     sections = {}
     for i, head in enumerate(heads):
@@ -34,7 +36,11 @@ def parse_md(md_path: Path) -> dict:
         start = head.end()
         end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
         sections[name] = text[start:end].strip()
-    return {'title': title_match.group(1).strip(), 'sections': sections}
+    return {
+        'title': title_match.group(1).strip(),
+        'deck_title': deck_match.group(1).strip() if deck_match else title_match.group(1).strip(),
+        'sections': sections,
+    }
 
 
 def normalize_cloze(text: str) -> str:
@@ -111,11 +117,14 @@ def build_apkg() -> str:
     deck_id = START_DECK_ID
     total_cards = 0
     total_problems = 0
-    md_files = sorted(PROBLEMS_DIR.glob('*.md'))
+    md_files = sorted([
+        *PROBLEMS_DIR.glob('*.md'),
+        *KNOWLEDGE_DIR.glob('*.md'),
+    ])
     for md_path in md_files:
         data = parse_md(md_path)
         title = data['title']
-        deck = make_deck(deck_id, f'算法::{TOPIC_NAME}::{title}')
+        deck = make_deck(deck_id, f'算法::{TOPIC_NAME}::{data["deck_title"]}')
         deck_id += 1
         for sec_name, sec_content in data['sections'].items():
             if not sec_content.strip():

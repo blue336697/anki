@@ -1,4 +1,5 @@
 # K 个一组翻转链表
+<!-- tags: source::字节 variant::不足K也翻转 -->
 
 ## 题干
 给定一个链表，每 k 个节点一组进行翻转，返回修改后的链表。
@@ -61,6 +62,49 @@ class Solution {
             cur = tail;
         }
         return pre;
+    }
+}
+```
+
+## 题解(字节变形：不足K也翻转)
+母题在最后不足 `k` 个节点时保持原顺序；这个变体要求剩余节点也翻转。寻找分组尾节点时只走“最多 k 步”，不再因数量不足而 `break`，其余断开、翻转和重连逻辑不变。
+
+```java
+class Solution {
+    public ListNode reverseEvenIfLessThanK(ListNode head, int k) {
+        if (k <= 0) {
+            throw new IllegalArgumentException("k must be positive");
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
+
+        while (pre.next != null) {
+            ListNode end = pre;
+            for (int i = 0; i < k && end.next != null; i++) {
+                end = end.next;
+            }
+
+            ListNode nextGroup = end.next;
+            end.next = null;
+            ListNode start = pre.next;
+            pre.next = reverse(start);
+            start.next = nextGroup;
+            pre = start;
+        }
+        return dummy.next;
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
     }
 }
 ```

@@ -1,4 +1,8 @@
-"""Unified build script: reads all knowledge/ category dirs and generates one big Java APKG."""
+"""Build Java APKG exclusively from knowledge/**/*.md.
+
+knowledge/ is the single content source of truth. Root-level maps/reports are
+metadata only and are never parsed into cards.
+"""
 
 import html
 import os
@@ -23,7 +27,6 @@ CATEGORY_MAP: dict[str, str] = {
     "Java基础": "八股文::Java::Java基础",
     "并发": "八股文::Java::并发",
     "JVM": "八股文::Java::JVM",
-    "Dubbo": "八股文::Java::Dubbo",
     "Spring": "八股文::Java::Spring",
     "集合": "八股文::Java::集合",
     "JDK演进": "八股文::Java::JDK演进",
@@ -115,6 +118,32 @@ def parse_qa(body: str, base_dir: Optional[Path] = None) -> tuple[str, str]:
     return question, mdish_to_html(answer, base_dir)
 
 
+def validate_source(md_path: Path, title: str, sections: list[tuple[str, str]]) -> list[str]:
+    errors: list[str] = []
+    if title == "未命名":
+        errors.append("missing H1 title")
+    if len(sections) < 4:
+        errors.append(f"only {len(sections)} cards; expected at least 4")
+    for section_title, body in sections:
+        q_count = len(re.findall(r"^Q:\s*.+$", body, re.M))
+        a_count = len(re.findall(r"^A:\s*$", body, re.M))
+        if q_count != 1 or a_count != 1:
+            errors.append(
+                f"{section_title}: expected exactly one Q/A pair, got Q={q_count}, A={a_count}"
+            )
+        if re.search(r"^A:\s*$", body, re.M):
+            answer = body[re.search(r"^A:\s*$", body, re.M).end():].strip()
+            if len(answer) < 80:
+                errors.append(f"{section_title}: answer is too shallow ({len(answer)} chars)")
+    for match in IMAGE_RE.finditer(md_path.read_text(encoding="utf-8")):
+        image_path = match.group(1)
+        if not image_path.startswith(("http://", "https://", "/")):
+            resolved = md_path.parent / image_path
+            if not resolved.exists():
+                errors.append(f"missing image: {image_path}")
+    return errors
+
+
 def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     old_cwd = Path.cwd()
@@ -122,6 +151,8 @@ def main() -> None:
 
     total_cards = 0
     total_files = 0
+    validation_errors: list[str] = []
+    used_deck_ids: dict[int, str] = {}
 
     try:
         for category_dir in sorted(KNOWLEDGE_ROOT.iterdir()):
@@ -139,14 +170,29 @@ def main() -> None:
                 for md_path in sorted(topic_dir.glob("*.md")):
                     raw = md_path.read_text(encoding="utf-8")
                     title, sections = split_sections(raw)
+                    for error in validate_source(md_path, title, sections):
+                        validation_errors.append(f"{md_path.relative_to(TOPIC_DIR)}: {error}")
                     deck_name = f"{parent_deck}::{title}"
-                    deck = make_deck(deck_id_for(deck_name), deck_name)
+                    deck_id = deck_id_for(deck_name)
+                    previous = used_deck_ids.get(deck_id)
+                    if previous and previous != deck_name:
+                        validation_errors.append(
+                            f"deck id collision {deck_id}: {previous} vs {deck_name}"
+                        )
+                    used_deck_ids[deck_id] = deck_name
+                    deck = make_deck(deck_id, deck_name)
                     for section_title, body in sections:
                         question, answer_html = parse_qa(body, md_path.parent)
                         front = f"{title} | {section_title}<br><br>{html.escape(question)}"
                         add_basic(deck, front, answer_html)
                         total_cards += 1
                     total_files += 1
+
+        if validation_errors:
+            print("Source validation failed:")
+            for error in validation_errors:
+                print(f"  - {error}")
+            raise SystemExit(1)
 
         result = build(str(OUTPUT_PATH))
         print(result)

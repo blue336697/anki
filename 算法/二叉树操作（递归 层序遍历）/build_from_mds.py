@@ -17,17 +17,21 @@ sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_deck, add_basic, add_cloze, img, code, build, make_front
 
 PROBLEMS_DIR = TOPIC_DIR / 'problems'
+KNOWLEDGE_DIR = TOPIC_DIR / 'knowledge'
 OUTPUT_PATH = REPO_ROOT / '牌组' / '算法' / '二叉树.apkg'
+ANKI_TOPIC = '二叉树（递归）'
 
 
 def parse_md(md_path: Path) -> dict:
-    """Parse a problem md file into {title, sections: {name: content}}."""
+    """Parse a problem md file, including an optional live-Anki deck alias."""
     text = md_path.read_text(encoding='utf-8')
 
     title_match = re.search(r'^# (.+)$', text, re.MULTILINE)
     if not title_match:
         raise ValueError(f"No title in {md_path}")
     title = title_match.group(1).strip()
+    deck_match = re.search(r'^<!--\s*anki-deck:\s*(.+?)\s*-->$', text, re.MULTILINE)
+    deck_title = deck_match.group(1).strip() if deck_match else title
 
     sections: dict[str, str] = {}
     section_heads = list(re.finditer(r'^## (.+)$', text, re.MULTILINE))
@@ -37,7 +41,7 @@ def parse_md(md_path: Path) -> dict:
         end = section_heads[i + 1].start() if i + 1 < len(section_heads) else len(text)
         sections[name] = text[start:end].strip()
 
-    return {'title': title, 'sections': sections}
+    return {'title': title, 'deck_title': deck_title, 'sections': sections}
 
 
 def process_body_with_images(text: str) -> str:
@@ -110,23 +114,24 @@ def process_complexity(content: str) -> tuple:
 
 def build_apkg() -> str:
     """Read all problem mds and generate APKG."""
-    # Template deck
-    d0 = make_deck(1747300600, '算法::二叉树::原理通识')
-    add_basic(d0, '二叉树遍历框架',
-        '前序：根→左→右 | 中序：左→根→右 | 后序：左→右→根<br>'
-        '层序：BFS队列，每层size控制<br>'
-        '递归三部曲：1.终止条件→2.处理当前层→3.递归子树')
-    add_cloze(d0,
-        '二叉树递归与迭代<br>'
-        '递归：隐式使用系统栈，代码简洁<br>'
-        '迭代：显式使用{{c1::Stack}}模拟递归<br>'
-        '层序遍历：使用{{c1::Queue}}，for循环按层处理<br>'
-        'Morris遍历：{{c1::O(1)}}空间，利用叶子节点空闲指针')
-    add_basic(d0, '二叉树常用技巧',
-        '自顶向下：传递状态参数（如前缀和、当前深度）<br>'
-        '自底向上：汇总子树结果返回给父节点<br>'
-        '双递归：主递归遍历节点 + 辅助递归计算<br>'
-        'BFS层序：队列 + 每层size遍历')
+    # Principle cards are Markdown-backed too; Python must not hardcode content.
+    for index, md_path in enumerate(sorted(KNOWLEDGE_DIR.glob('*.md'))):
+        data = parse_md(md_path)
+        d0 = make_deck(
+            1747300600 + index,
+            f"算法::{ANKI_TOPIC}::{data['deck_title']}",
+        )
+        for sec_name, sec_content in data['sections'].items():
+            if sec_name.startswith('Basic｜'):
+                front = sec_name.split('｜', 1)[1].strip()
+                add_basic(d0, front, process_basic_text(sec_content))
+            elif sec_name.startswith('Cloze｜'):
+                lines = sec_content.splitlines()
+                text_lines = [line for line in lines if not line.startswith('> ')]
+                hints = [line[2:].strip() for line in lines if line.startswith('> ')]
+                add_cloze(d0, '<br>'.join(text_lines), '<br>'.join(hints))
+            else:
+                raise ValueError(f'Unsupported knowledge section {sec_name} in {md_path}')
 
     md_files = sorted(PROBLEMS_DIR.glob('*.md'))
     deck_id = 1747300601
@@ -136,9 +141,10 @@ def build_apkg() -> str:
     for md_path in md_files:
         data = parse_md(md_path)
         title = data['title']
+        deck_title = data['deck_title']
         sections = data['sections']
 
-        d = make_deck(deck_id, f'算法::二叉树::{title}')
+        d = make_deck(deck_id, f'算法::{ANKI_TOPIC}::{deck_title}')
         deck_id += 1
 
         for sec_name, sec_content in sections.items():
@@ -164,6 +170,9 @@ def build_apkg() -> str:
             elif sec_name == '关键技巧':
                 if sec_content.strip():
                     add_basic(d, make_front(title, '关键技巧'), process_basic_text(sec_content))
+
+            elif sec_content.strip():
+                add_basic(d, make_front(title, sec_name), process_basic_text(sec_content))
 
         total_problems += 1
         total_cards += len(d.notes)

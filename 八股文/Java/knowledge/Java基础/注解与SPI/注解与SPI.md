@@ -37,14 +37,14 @@ A:
 - JDBC Driver、日志门面、部分序列化/编解码扩展都体现了 SPI 思路
 - 面试边界：Java SPI 默认按配置发现所有实现，缺少按名称精准选择、依赖注入和包装增强等高级能力
 
-## Spring/Dubbo SPI 对比卡
-Q: Java SPI、Spring 扩展机制、Dubbo SPI 有什么区别？
+## Java SPI 与 Spring 扩展机制对比卡
+Q: Java SPI 与 Spring 扩展机制有什么区别？
 A:
 - Java SPI 简单通用，按接口发现实现，但功能较弱
 - Spring 主要依赖 BeanFactory、条件装配、ImportSelector、SpringFactories/AutoConfiguration 等机制组织扩展
-- Dubbo SPI 支持按名称加载、自适应扩展、自动包装、自动激活，更适合 RPC 框架按 URL 参数选择实现
-- Java SPI 会实例化遍历实现，Dubbo SPI 更强调按需加载和扩展点治理
-- 面试表达：三者都是扩展思想，但能力边界和使用场景不同
+- Java SPI 的提供方由 `META-INF/services` 声明，`ServiceLoader` 不依赖 Spring 容器
+- Spring 扩展可以参与依赖注入、生命周期、条件匹配和配置绑定，能力更完整但与容器耦合
+- 面试表达：Java SPI 适合轻量接口实现发现，Spring 扩展适合应用级组件装配和治理
 
 ## 正确性审查卡
 Q: 注解与 SPI 有哪些常见误区？

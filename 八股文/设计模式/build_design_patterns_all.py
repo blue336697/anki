@@ -1,126 +1,126 @@
-"""Build APKG from design-pattern knowledge notes."""
-
+"""Build design-pattern and DDD cards from knowledge/**/*.md."""
 import html
 import os
 import re
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-TOPIC_DIR = Path(__file__).resolve().parent
-SKILL_DIR = REPO_ROOT / ".claude" / "skills" / "anki-apkg-generator"
-KNOWLEDGE_ROOT = TOPIC_DIR / "knowledge"
-OUTPUT_PATH = REPO_ROOT / "牌组" / "八股文" / "设计模式" / "设计模式八股文.apkg"
+ROOT = Path(__file__).resolve().parents[2]
+TOPIC = Path(__file__).resolve().parent
+SOURCE = TOPIC / "knowledge"
+OUTPUT = ROOT / "牌组" / "八股文" / "设计模式" / "设计模式与DDD八股文.apkg"
+sys.path.insert(0, str(ROOT / ".claude" / "skills" / "anki-apkg-generator" / "scripts"))
+from apkg_builder import add_basic, build, code, make_deck  # noqa: E402
 
-sys.path.insert(0, str(SKILL_DIR / "scripts"))
-from apkg_builder import add_basic, build, code, img, make_deck  # noqa: E402
+CODE_RE = re.compile(r"```(?:java)?\n(.*?)```", re.S)
+CATEGORIES = {
+    "设计原则": "八股文::设计模式与DDD::设计原则",
+    "创建型": "八股文::设计模式与DDD::创建型",
+    "结构型": "八股文::设计模式与DDD::结构型",
+    "行为型": "八股文::设计模式与DDD::行为型",
+    "DDD战略设计": "八股文::设计模式与DDD::DDD战略设计",
+    "DDD战术设计": "八股文::设计模式与DDD::DDD战术设计",
+    "DDD工程落地": "八股文::设计模式与DDD::DDD工程落地",
+}
 
-IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
-CODE_RE = re.compile(r"```(\w+)?\n(.*?)```", re.S)
+
+def deck_id(name):
+    return 3_700_000_000 + sum((i + 1) * ord(c) for i, c in enumerate(name)) % 100_000_000
 
 
-def deck_id_for(name: str) -> int:
-    return 3_000_000_000 + sum((i + 1) * ord(ch) for i, ch in enumerate(name)) % 100_000_000
-
-
-def split_sections(text: str) -> tuple[str, list[tuple[str, str]]]:
+def split(text):
     text = text.replace("\r\n", "\n")
-    title_match = re.search(r"^#\s+(.+?)\s*$", text, re.M)
-    title = title_match.group(1).strip() if title_match else "未命名"
-    matches = list(re.finditer(r"^##\s+(.+?)\s*$", text, re.M))
-    sections: list[tuple[str, str]] = []
-    for i, match in enumerate(matches):
-        start = match.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        sections.append((match.group(1).strip(), text[start:end].strip()))
-    return title, sections
+    title = re.search(r"^#\s+(.+)$", text, re.M)
+    marks = list(re.finditer(r"^##\s+(.+)$", text, re.M))
+    return (title.group(1).strip() if title else "未命名"), [
+        (m.group(1).strip(), text[m.end() : marks[i + 1].start() if i + 1 < len(marks) else len(text)].strip())
+        for i, m in enumerate(marks)
+    ]
 
 
-def inline_markup(line: str) -> str:
-    escaped = html.escape(line)
-    escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
-    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
-    return escaped
-
-
-def text_to_html(text: str) -> str:
-    rendered: list[str] = []
-    for raw_line in text.splitlines():
-        line = raw_line.strip()
+def text_html(text):
+    out = []
+    for raw in text.splitlines():
+        line = raw.strip()
         if not line:
             continue
-        image_match = IMAGE_RE.search(line)
-        if image_match:
-            rendered.append(img(image_match.group(1)))
-            continue
-        if line.startswith("- "):
-            rendered.append("• " + inline_markup(line[2:]) + "<br>")
-        elif re.match(r"^\d+\.\s+", line):
-            rendered.append(inline_markup(line) + "<br>")
-        else:
-            rendered.append(inline_markup(line) + "<br>")
-    return "".join(rendered)
+        escaped = html.escape(line)
+        escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
+        escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+        out.append(("• " + escaped[2:] if line.startswith("- ") else escaped) + "<br>")
+    return "".join(out)
 
 
-def mdish_to_html(body: str) -> str:
-    parts: list[str] = []
-    pos = 0
+def render(body):
+    out, pos = [], 0
     for match in CODE_RE.finditer(body):
-        before = body[pos : match.start()]
-        parts.append(text_to_html(before))
-        lang = (match.group(1) or "").lower()
-        raw = html.unescape(match.group(2).strip("\n"))
-        if lang in {"java", ""}:
-            parts.append(code(raw))
-        else:
-            parts.append(f"<pre><code>{html.escape(raw)}</code></pre>")
+        out.append(text_html(body[pos : match.start()]))
+        out.append(code(html.unescape(match.group(1).strip("\n"))))
         pos = match.end()
-    parts.append(text_to_html(body[pos:]))
-    return "".join(part for part in parts if part)
+    out.append(text_html(body[pos:]))
+    return "".join(out)
 
 
-def parse_qa(body: str) -> tuple[str, str]:
-    q_match = re.search(r"^Q:\s*(.+?)\s*$", body, re.M)
-    a_match = re.search(r"^A:\s*$", body, re.M)
-    if not q_match or not a_match:
-        return "这个知识点要怎么理解？", mdish_to_html(body)
-    question = q_match.group(1).strip()
-    answer = body[a_match.end():].strip()
-    return question, mdish_to_html(answer)
+def qa(body):
+    q = re.search(r"^Q:\s*(.+)$", body, re.M)
+    a = re.search(r"^A:\s*$", body, re.M)
+    return (q.group(1).strip(), render(body[a.end() :].strip())) if q and a else ("如何理解？", render(body))
 
 
-def main() -> None:
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    old_cwd = Path.cwd()
-    os.chdir(TOPIC_DIR)
+def validate(path, title, sections):
+    errors = []
+    if title == "未命名" or len(sections) < 5:
+        errors.append("missing title or fewer than 5 cards")
+    if not CODE_RE.search(path.read_text(encoding="utf-8")):
+        errors.append("topic has no Java example")
+    for heading, body in sections:
+        qs = len(re.findall(r"^Q:\s*.+$", body, re.M))
+        ans = list(re.finditer(r"^A:\s*$", body, re.M))
+        if qs != 1 or len(ans) != 1:
+            errors.append(f"{heading}: Q={qs}, A={len(ans)}")
+        elif len(body[ans[0].end() :].strip()) < 90:
+            errors.append(f"{heading}: shallow answer")
+    return errors
 
-    total_cards = 0
-    total_files = 0
 
+def main():
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    previous = Path.cwd()
+    os.chdir(TOPIC)
+    errors, ids, file_count, card_count = [], {}, 0, 0
     try:
-        for category_dir in sorted(KNOWLEDGE_ROOT.iterdir()):
-            if not category_dir.is_dir() or category_dir.name.startswith("."):
+        for category in sorted(SOURCE.iterdir()):
+            if not category.is_dir():
                 continue
-            for topic_dir in sorted(category_dir.iterdir()):
-                if not topic_dir.is_dir() or topic_dir.name.startswith("."):
+            parent = CATEGORIES.get(category.name)
+            if not parent:
+                errors.append(f"unknown category {category.name}")
+                continue
+            for topic in sorted(category.iterdir()):
+                if not topic.is_dir():
                     continue
-                for md_path in sorted(topic_dir.glob("*.md")):
-                    raw = md_path.read_text(encoding="utf-8")
-                    title, sections = split_sections(raw)
-                    deck_name = f"八股文::设计模式::{category_dir.name}::{title}"
-                    deck = make_deck(deck_id_for(deck_name), deck_name)
-                    for section_title, body in sections:
-                        question, answer_html = parse_qa(body)
-                        front = f"{title} | {section_title}<br><br>{html.escape(question)}"
-                        add_basic(deck, front, answer_html)
-                        total_cards += 1
-                    total_files += 1
-
-        result = build(str(OUTPUT_PATH))
-        print(result)
-        print(f"Knowledge files: {total_files}, cards: {total_cards}")
+                for path in sorted(topic.glob("*.md")):
+                    title, sections = split(path.read_text(encoding="utf-8"))
+                    errors.extend(f"{path.relative_to(TOPIC)}: {e}" for e in validate(path, title, sections))
+                    name = f"{parent}::{title}"
+                    did = deck_id(name)
+                    if did in ids and ids[did] != name:
+                        errors.append(f"deck id collision: {ids[did]} / {name}")
+                    ids[did] = name
+                    deck = make_deck(did, name)
+                    for heading, body in sections:
+                        question, answer = qa(body)
+                        add_basic(deck, f"{title} | {heading}<br><br>{html.escape(question)}", answer)
+                        card_count += 1
+                    file_count += 1
+        if errors:
+            print("Source validation failed:")
+            print("\n".join(f"  - {e}" for e in errors))
+            raise SystemExit(1)
+        print(build(str(OUTPUT)))
+        print(f"Knowledge files: {file_count}, cards: {card_count}")
     finally:
-        os.chdir(old_cwd)
+        os.chdir(previous)
 
 
 if __name__ == "__main__":

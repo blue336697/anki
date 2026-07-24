@@ -5,6 +5,9 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Optional
+
+import genanki
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TOPIC_DIR = Path(__file__).resolve().parent
@@ -13,7 +16,7 @@ KNOWLEDGE_ROOT = TOPIC_DIR / "knowledge"
 OUTPUT_PATH = REPO_ROOT / "牌组" / "八股文" / "MySQL" / "MySQL八股文.apkg"
 
 sys.path.insert(0, str(SKILL_DIR / "scripts"))
-from apkg_builder import add_basic, build, code, img, make_deck  # noqa: E402
+from apkg_builder import BASIC_MODEL, build, code, img, make_deck  # noqa: E402
 
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 CODE_RE = re.compile(r"```(\w+)?\n(.*?)```", re.S)
@@ -36,6 +39,11 @@ def split_sections(text: str) -> tuple[str, list[tuple[str, str]]]:
     return title, sections
 
 
+def tag_name(value: str) -> str:
+    """Create one stable Anki tag without spaces or tag separators."""
+    return re.sub(r"[\s:]+", "-", value.strip())
+
+
 def inline_markup(line: str) -> str:
     escaped = html.escape(line)
     escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
@@ -43,7 +51,7 @@ def inline_markup(line: str) -> str:
     return escaped
 
 
-def text_to_html(text: str) -> str:
+def text_to_html(text: str, base_dir: Optional[Path] = None) -> str:
     rendered: list[str] = []
     for raw_line in text.splitlines():
         line = raw_line.strip()
@@ -51,7 +59,10 @@ def text_to_html(text: str) -> str:
             continue
         image_match = IMAGE_RE.search(line)
         if image_match:
-            rendered.append(img(image_match.group(1)))
+            img_path = image_match.group(1)
+            if base_dir and not img_path.startswith(("http://", "https://", "/")):
+                img_path = str(base_dir / img_path)
+            rendered.append(img(img_path))
             continue
         if line.startswith("- "):
             rendered.append("• " + inline_markup(line[2:]) + "<br>")
@@ -62,12 +73,12 @@ def text_to_html(text: str) -> str:
     return "".join(rendered)
 
 
-def mdish_to_html(body: str) -> str:
+def mdish_to_html(body: str, base_dir: Optional[Path] = None) -> str:
     parts: list[str] = []
     pos = 0
     for match in CODE_RE.finditer(body):
         before = body[pos : match.start()]
-        parts.append(text_to_html(before))
+        parts.append(text_to_html(before, base_dir))
         lang = (match.group(1) or "").lower()
         raw = html.unescape(match.group(2).strip("\n"))
         if lang in {"java", "sql", ""}:
@@ -75,18 +86,18 @@ def mdish_to_html(body: str) -> str:
         else:
             parts.append(f"<pre><code>{html.escape(raw)}</code></pre>")
         pos = match.end()
-    parts.append(text_to_html(body[pos:]))
+    parts.append(text_to_html(body[pos:], base_dir))
     return "".join(part for part in parts if part)
 
 
-def parse_qa(body: str) -> tuple[str, str]:
+def parse_qa(body: str, base_dir: Optional[Path] = None) -> tuple[str, str]:
     q_match = re.search(r"^Q:\s*(.+?)\s*$", body, re.M)
     a_match = re.search(r"^A:\s*$", body, re.M)
     if not q_match or not a_match:
-        return "这个知识点要怎么理解？", mdish_to_html(body)
+        return "这个知识点要怎么理解？", mdish_to_html(body, base_dir)
     question = q_match.group(1).strip()
     answer = body[a_match.end():].strip()
-    return question, mdish_to_html(answer)
+    return question, mdish_to_html(answer, base_dir)
 
 
 def main() -> None:
@@ -110,9 +121,23 @@ def main() -> None:
                     deck_name = f"八股文::MySQL::{category_dir.name}::{title}"
                     deck = make_deck(deck_id_for(deck_name), deck_name)
                     for section_title, body in sections:
-                        question, answer_html = parse_qa(body)
+                        question, answer_html = parse_qa(body, md_path.parent)
                         front = f"{title} | {section_title}<br><br>{html.escape(question)}"
-                        add_basic(deck, front, answer_html)
+                        note = genanki.Note(
+                            model=BASIC_MODEL,
+                            fields=[front, answer_html],
+                            guid=genanki.guid_for(deck_name, section_title),
+                            tags=[
+                                "八股文",
+                                "MySQL",
+                                "追问链",
+                                "源码机制级",
+                                "MySQL-8.4",
+                                tag_name(category_dir.name),
+                                tag_name(title),
+                            ],
+                        )
+                        deck.add_note(note)
                         total_cards += 1
                     total_files += 1
 

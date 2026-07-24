@@ -10,82 +10,61 @@
 时间 O(n)：DFS 建无向邻接表访问每条树边一次，随后从 target 做 BFS，每个节点最多入队一次 -> O(n)<br>空间 O(n)：邻接表、visited 集合和 BFS 队列都可能保存 O(n) 个节点，结果列表另按答案数量计
 
 ## 题解(树转图+BFS)
-树转图（领接表）+BFS
+树转无向图（邻接表）+ BFS。建边时用 `connect(a, b)` 一次加入双向边，内部用 `computeIfAbsent` 初始化邻接表，避免手写 `get/null/put` 的重复逻辑。
 
 ```java
 class Solution {
-    Map<Integer, List<Integer>> map;
-    List<Integer> res;
-    Set<Integer> visit;
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        if(root == null)
-            return new ArrayList();
-        res = new ArrayList<>();
-        //使用map存放领接表，key是节点，value是相邻的点
-        //之所以使用领接表不用矩阵，对于本体的树转化为图其实属于稀疏图，为了节约内存
-        map = new HashMap<>();
-        //我们使用BFS的方式去遍历图，以target向外扩散k次就是目标的所有节点了
-        dfs(root);
-        //我们用一个集合标记去过的节点
-        visit = new HashSet<>();
-        Deque<Integer> queue = new LinkedList<>();
-        queue.add(target.val);
-        visit.add(target.val);
-        int size = 0;
-        while(!queue.isEmpty() && k >= 0){
-            size = queue.size();
-            for(int i = 0; i < size; i++){
-                int temp = queue.poll();
-                if(k == 0){ //到达目标距离的所有节点，循环队列里面节点次数最后返回即可
-                    res.add(temp);
-                    continue;
-                }
-                //得到当前节点的相邻节点
-                List<Integer> nodes = map.get(temp);
-                if(nodes == null)   continue;
-                for(int node : nodes){
-                    //防止重复遍历，如果没有访问过加入队列和访问集合
-                    if(!visit.contains(node)){
-                        queue.add(node);
-                        visit.add(node);
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        buildGraph(root, graph);
+
+        Deque<Integer> queue = new ArrayDeque<>();
+        Set<Integer> visited = new HashSet<>();
+        queue.offer(target.val);
+        visited.add(target.val);
+
+        while (!queue.isEmpty() && k-- > 0) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int cur = queue.poll();
+                for (int next : graph.getOrDefault(cur, Collections.emptyList())) {
+                    if (visited.add(next)) {
+                        queue.offer(next);
                     }
                 }
-
             }
-            k--;
+        }
+
+        List<Integer> res = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            res.add(queue.poll());
         }
         return res;
+    }
 
-    }
-    //构建图的边关系：通过dfs遍历每个节点，每个节点将左右孩子分别添加进去，注意是无向图，双向的
-    public void dfs(TreeNode root){
-        if(root == null)
+    private void buildGraph(TreeNode node, Map<Integer, List<Integer>> graph) {
+        if (node == null) {
             return;
-        if(root.left != null){
-            add(root.val, root.left.val);
-            add(root.left.val, root.val);
-            dfs(root.left);
         }
-        if(root.right != null){
-            add(root.val, root.right.val);
-            add(root.right.val, root.val);
-            dfs(root.right);
+        if (node.left != null) {
+            connect(node.val, node.left.val, graph);
+            buildGraph(node.left, graph);
+        }
+        if (node.right != null) {
+            connect(node.val, node.right.val, graph);
+            buildGraph(node.right, graph);
         }
     }
-    //添加具体的边关系
-    public void add(int a, int b){
-        if(map.get(a) == null){
-            List<Integer> list = new ArrayList<>();
-            list.add(b);
-            map.put(a, list);
-        }else{
-            List<Integer> list = map.get(a);
-            list.add(b);
-            map.put(a, list);
-        }
+
+    private void connect(int a, int b, Map<Integer, List<Integer>> graph) {
+        graph.computeIfAbsent(a, key -> new ArrayList<>()).add(b);
+        graph.computeIfAbsent(b, key -> new ArrayList<>()).add(a);
     }
 }
 ```
 
 ## 关键技巧
-BFS层序遍历：队列+每层size循环；HashMap存储中序val→index映射，O(1)定位根节点位置
+1. 树要能从子节点走回父节点，所以先转成无向图再 BFS。
+2. `connect(a, b)` 负责一次性加入 `a -> b` 和 `b -> a`，建边逻辑集中在一个地方。
+3. `computeIfAbsent(key, k -> new ArrayList<>()).add(next)` 可以替代手写 `containsKey/get/put`。
+4. BFS 扩散 k 层后，队列中剩下的节点就是距离 target 正好为 k 的节点。

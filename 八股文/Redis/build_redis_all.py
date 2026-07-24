@@ -7,6 +7,8 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+import genanki
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TOPIC_DIR = Path(__file__).resolve().parent
 SKILL_DIR = REPO_ROOT / ".claude" / "skills" / "anki-apkg-generator"
@@ -14,7 +16,7 @@ KNOWLEDGE_ROOT = TOPIC_DIR / "knowledge"
 OUTPUT_PATH = REPO_ROOT / "牌组" / "八股文" / "Redis" / "Redis八股文.apkg"
 
 sys.path.insert(0, str(SKILL_DIR / "scripts"))
-from apkg_builder import add_basic, build, code, img, make_deck  # noqa: E402
+from apkg_builder import BASIC_MODEL, build, code, img, make_deck  # noqa: E402
 
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 CODE_RE = re.compile(r"```(\w+)?\n(.*?)```", re.S)
@@ -30,17 +32,17 @@ def split_sections(text: str) -> tuple[str, list[tuple[str, str]]]:
     title = title_match.group(1).strip() if title_match else "未命名"
     matches = list(re.finditer(r"^##\s+(.+?)\s*$", text, re.M))
     sections: list[tuple[str, str]] = []
-    if matches:
-        header_end = matches[0].start()
-        header = text[:header_end].strip()
     for i, match in enumerate(matches):
         start = match.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
         body = text[start:end].strip()
-        if i == 0 and header:
-            body = header + "\n" + body
         sections.append((match.group(1).strip(), body))
     return title, sections
+
+
+def tag_name(value: str) -> str:
+    """Create one stable Anki tag without spaces or tag separators."""
+    return re.sub(r"[\s:]+", "-", value.strip())
 
 
 def inline_markup(line: str) -> str:
@@ -125,7 +127,19 @@ def main() -> None:
                     for section_title, body in sections:
                         question, answer_html = parse_qa(body, md_path.parent)
                         front = f"{title} | {section_title}<br><br>{html.escape(question)}"
-                        add_basic(deck, front, answer_html)
+                        note = genanki.Note(
+                            model=BASIC_MODEL,
+                            fields=[front, answer_html],
+                            guid=genanki.guid_for(deck_name, section_title),
+                            tags=[
+                                "八股文",
+                                "Redis",
+                                "追问链",
+                                tag_name(category_dir.name),
+                                tag_name(title),
+                            ],
+                        )
+                        deck.add_note(note)
                         total_cards += 1
                     total_files += 1
 

@@ -1,109 +1,77 @@
-# JVM运行时参数与GC日志
-![image 2.png](image 2.png)
-![image 1.png](image 1.png)
-![image.png](image.png)
+# JVM 参数、统一日志与 GC 诊断
 
-## 概念卡
-Q: JVM参数的三类选项（标准、-X、-XX）有什么不同？为什么-Xmx实际上属于-XX参数？
-A:
-- 标准参数（以-开头）：
-  - 最稳定，跨JDK版本几乎不变，所有JVM实现都支持
-  - 例如：-help, -version, -server, -client, -agentlib, -javaagent
-  - 可通过java -help查看所有标准参数
-- -X参数（非标准化参数）：
-  - 功能相对稳定但官方声明后续版本可能变更
-  - 例如：-Xint（纯解释执行）、-Xcomp（优先编译执行）、-Xmixed（混合模式，默认）
-  - 可通过java -X查看所有-X参数
-- -XX参数（实验性/非标准化参数，使用最多）：
-  - 分Boolean类型（-XX:+/-<option>）和Key-Value类型（-XX:<option>=<value>）
-  - 用于开发和调试JVM，可能在不同版本间变化
-  - 例如：-XX:+UseG1GC、-XX:MaxGCPauseMillis=200
-- -Xmx/-Xms/-Xss的本质：
-  - 虽然以-X开头，但实际上等价于-XX参数：
-    - -Xms = -XX:InitialHeapSize
-    - -Xmx = -XX:MaxHeapSize
-    - -Xss = -XX:ThreadStackSize
-  - 这些是使用最频繁的参数，以-X简写形式方便记忆
-- 查看参数值的命令：
-  - -XX:+PrintFlagsInitial：查看所有参数的默认初始值
-  - -XX:+PrintFlagsFinal：查看运行时的最终值（冒号标记=被修改过的值）
-  - -XX:+PrintCommandLineFlags：查看用户手动设置和JVM自动设置的参数
+> 基线：JDK 21/25。优先使用 JEP 158/271 统一日志，不再以 CMS 专用参数作为主线。
 
-## 概念卡
-Q: 为什么生产环境中通常将-Xms和-Xmx设置为相同值？新生代的比例参数如何影响GC行为？
+## 01-参数分层
+Q: 线上 JVM 参数应按什么层次设计？
 A:
-- -Xms = -Xmx的原因：
-  - 防止堆内存动态扩缩容的开销：JVM在运行时会根据内存压力扩缩堆大小，扩容需要重新计算堆分区比例（年轻代/老年代边界），缩容需要压缩整理内存，这些操作都需要额外的GC或STW
-  - 避免GC性能波动：堆大小不稳定导致GC频率和停顿时间波动，使性能不可预测
-  - 生产环境最佳实践：将-Xms和-Xmx设为相同值，配合-XX:+AlwaysPreTouch（启动时物理分配所有内存页，避免运行时按需分配的延迟抖动）
-- 新生代比例参数：
-  - -XX:NewRatio（默认2）：老年代:新生代 = 2:1，新生代占堆的1/3。调大新生代 → 减少Minor GC频率 → 但每次Minor GC时间变长，晋升到老年代的对象更少，减少Full GC风险
-  - -XX:SurvivorRatio（默认8）：Eden:S0 = 8:1，即Eden:S0:S1 = 8:1:1
-  - -XX:+UseAdaptiveSizePolicy（默认开启）：JVM自适应调整各区比例。如果显式设置了SurvivorRatio但不关闭此参数，实际比例可能不是8:1:1。必须同时显式设置-XX:SurvivorRatio和-XX:-UseAdaptiveSizePolicy才能精确控制
-- JDK7之后的空间分配担保规则变化：
-  - 无论-XX:HandlePromotionFailure设为true或false，规则统一为：只要老年代的连续空间大于新生代对象总大小或历次晋升的平均大小，就执行Minor GC，否则执行Full GC
+- 容量层：`-Xms/-Xmx`、Metaspace、Direct Memory、线程栈和容器总内存之间必须有完整预算。
+- 收集器层：明确 G1、ZGC 或 Parallel；先使用合理默认值建立基线，避免复制不理解的参数模板。
+- 可观测层：统一 GC 日志、OOM heap dump、错误日志、JFR 和必要的 Native Memory Tracking。
+- 稳定性层：容器感知、退出策略、熔断/重启、磁盘空间和日志轮转，避免诊断功能反过来拖垮节点。
+- 参数值必须与 JDK 发行版、容器 CPU/内存限制和真实工作负载一起版本化。
 
-## 概念卡
-Q: 如何读懂GC日志？GC日志中user、sys、real三个时间的含义是什么？
+## 02-容器内存预算
+Q: 已设置 `-Xmx`，为什么 Java 进程仍会被容器 OOMKill？
 A:
-- GC日志的三个关键时间：
-  - user（用户态CPU时间）：GC线程在用户态消耗的CPU总时间。多核并行GC时，这是所有GC线程的CPU时间之和
-  - sys（内核态CPU时间）：GC线程在内核态的系统调用和等待事件消耗的CPU时间
-  - real（墙上时钟时间）：从GC开始到结束的实际时钟时间。并行GC的real通常远小于user+sys（因为多个GC线程同时在多个核上工作）；如果real > user+sys，可能存在IO瓶颈或CPU资源不足
-- 以典型的Minor GC日志为例：
-  ```
-  [GC (Allocation Failure) [PSYoungGen: 76800K->8433K(89600K)] 76800K->8449K(294400K), 0.0088371 secs]
-  ```
-  - 中括号内：新生代回收前占用 -> 回收后占用（新生代总大小）
-  - 中括号外：整个堆回收前占用 -> 回收后占用（堆总大小）
-  - 触发原因：Allocation Failure（Eden区分配失败，即满了）
-- Full GC日志示例解析：
-  ```
-  [Full GC (Metadata GC Threshold) [PSYoungGen: 10082K->0K] [ParOldGen: 32K->9638K] 10114K->9638K, [Metaspace: 20158K->20156K], 0.0285388 secs]
-  ```
-  - 触发原因：Metadata GC Threshold（元空间达到GC阈值）
-  - 可以看到各分区（YoungGen、OldGen、Metaspace）的占用变化
-  - Full GC时间0.028秒（约28ms），比Minor GC的8ms长得多
-- 不同收集器在GC日志中的标识：
-  - Serial新生代: [DefNew
-  - ParNew: [ParNew
-  - Parallel Scavenge: [PSYoungGen
-  - Parallel Old: [ParOldGen
-  - G1: garbage-first heap
-- 分析工具：GCeasy（在线，部分收费）、GCViewer（开源客户端）
+- `-Xmx` 只限制 Java heap，不包含 Metaspace、Code Cache、线程栈、Direct Buffer、GC 辅助结构、JNI 和 libc。
+- 可近似建模：`RSS ≈ heap committed + metaspace + code cache + thread stacks + direct/native + JVM overhead`。
+- 平台线程数乘以 `-Xss` 会形成显著地址空间与提交内存；大量虚拟线程不一线程一 OS 栈，但其 continuation/对象仍占堆。
+- 容器限制应高于稳定 RSS 并保留突发和 native allocator 碎片余量；不要让 `Xmx` 等于容器上限。
+- OOMKill 往往没有 Java 异常，排查需结合 cgroup memory events、内核日志和进程级指标。
 
-## 机制卡
-Q: Full GC的触发原因有哪些？如何通过参数配置来减少Full GC的频率？
+## 03-统一GC日志
+Q: JDK 21 怎样配置一份可用于生产诊断的 GC 日志？
 A:
-- Full GC的触发原因：
-  1. 老年代空间不足：晋升的对象总大小超过老年代剩余连续空间
-  2. 元空间（Metaspace）不足：类元数据溢出（JDK8后的常见原因）
-  3. System.gc()显式调用：可被-XX:+DisableExplicitGC禁用
-  4. CMS的Concurrent Mode Failure：CMS并发回收期间老年代被填满，退化为Serial Old单线程Full GC
-  5. 空间分配担保失败：Minor GC前判断老年代剩余空间不足
-  6. G1的Evacuation Failure：没有足够的to-space存放晋升对象
-- 减少Full GC的参数配置策略：
-  1. 合理设置堆大小：-Xms = -Xmx（避免动态伸缩），根据应用需求设置合适值
-  2. 元空间设置：-XX:MetaspaceSize适当调大（减少因元空间扩容触发的Full GC），-XX:MaxMetaspaceSize设置上限防止无限增长
-  3. 老年代GC阈值：CMS的-XX:CMSInitiatingOccupancyFraction适当降低（默认JDK6+为92%，如果内存增长快应降低），让CMS尽早开始回收
-  4. 晋升阈值：-XX:MaxTenuringThreshold适当调大，让对象在Survivor多待几轮，减少提前晋升到老年代
-  5. 大对象直接分配阈值：-XX:PretenureSizeThreshold设置合理值，避免短期大对象直接进入老年代
-  6. 禁用显式GC：-XX:+DisableExplicitGC（但注意依赖System.gc()的框架如RMI可能会有问题）
-  7. OOM自动dump：-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/dump，便于事后分析
-- Full GC频繁是系统需要调优的明确信号，不应通过参数"硬撑"，而应从代码层面排查内存泄漏和对象生命周期问题
+```text
+-Xlog:gc*,safepoint:file=logs/gc.log:time,uptime,level,tags:filecount=10,filesize=100M
+```
+- `gc*` 覆盖 GC 周期、阶段和堆变化，`safepoint` 帮助区分 GC 暂停与其他 VM 操作暂停。
+- `time/uptime/level/tags` 让多实例、重启和事件关联更可靠；文件轮转防止磁盘被无限占满。
+- 更细日志会增加 I/O 与体积，临时诊断后应回收过高 verbosity。
+- `-XX:+PrintGCDetails` 等旧参数属于旧日志体系，阅读历史日志时可识别，但新配置应优先 `-Xlog`。
 
-## 机制卡
-Q: JDK8默认使用Parallel Scavenge + Parallel Old组合，JDK9起默认使用G1。这个变化背后的技术考量是什么？
+## 04-读懂一次GC
+Q: 分析 GC 日志时应按什么顺序建立因果链？
 A:
-- JDK8默认Parallel收集器的考量（吞吐量优先）：
-  - 时代背景：JDK8发布于2014年，当时服务器以多核但内存不算特别大为典型配置，批处理、后台计算场景常见
-  - Parallel收集器通过多线程并行回收+自适应调节策略，在固定内存下最大化吞吐量
-  - CMS虽然低延迟但碎片和浮动垃圾问题显著，不适合做默认
-  - G1在JDK7加入但标记为Experimental，还不够成熟
-- JDK9默认G1的考量（延迟可控）：
-  - 时代变化：服务器内存越来越大（几十GB甚至上百GB堆），CPU核数越来越多。大堆下CMS和Parallel的Full GC STW时间可能达到几十秒，完全不可接受
-  - G1的Region-based设计天然适合大堆——通过增量式回收将停顿时间控制在目标范围内（默认200ms），在大堆下也能保持稳定的响应时间
-  - 互联网/微服务架构的主流化——应用更关注响应延迟而非纯吞吐量，G1的低延迟特性更贴合需求
-  - G1经过JDK7/8多个版本的打磨已经成熟稳定
-- 演进路线：Serial（JDK1.3前默认） -> Parallel（JDK5-8默认） -> G1（JDK9+默认） -> ZGC（未来趋势，JDK15 production-ready，JDK21支持分代）
-- 默认GC的变化反映了硬件演进（内存从MB到GB再到TB、核数从单核到数十核）和架构演进（从单体到微服务、从批处理到实时交互）的趋势
+1. 识别收集器、GC 类型和触发原因：allocation failure、metadata threshold、System.gc、humongous 等。
+2. 比较 GC 前后 used、committed 和 live set，判断本轮释放量与长期存活集。
+3. 看暂停各阶段耗时、worker CPU 与墙钟差异，识别扫描、复制、引用处理或调度问题。
+4. 计算 allocation rate、晋升速率和周期频率，判断应用产生垃圾的速度是否超过回收能力。
+5. 联合请求 p99、CPU throttle、磁盘、容器内存和发布事件；单条 GC 记录很少能独立证明根因。
+
+## 05-G1诊断
+Q: G1 日志中哪些信号意味着需要优先排查应用而不是继续调参数？
+A:
+- Young GC 极频繁且回收后占用很低：分配速率高，先定位临时对象、序列化和批量数据处理。
+- Mixed GC 后老年代下降有限：live set/缓存真实过大，或并发标记启动太晚，需要容量和对象生命周期分析。
+- Humongous Region 持续增长：检查大数组、大 JSON/ByteBuffer、批量查询结果和 Region 尺寸关系。
+- To-space exhausted、evacuation failure 或 Full GC：疏散余量不足，可能由晋升突增、堆过紧或 CPU 跟不上引起。
+- RSet/卡处理时间高：跨区引用写密集；需要看对象图和写入模式，而不是只调暂停目标。
+
+## 06-ZGC诊断
+Q: ZGC 重点看哪些指标？为什么暂停很短仍可能请求变慢？
+A:
+- 看 allocation rate、live set、GC cycle duration、并发 GC CPU 和 allocation stall，而不只看 pause。
+- 并发 GC 与业务争抢 CPU 时，请求延迟可上升但 GC pause 仍很短；容器 throttle 会放大这种现象。
+- 堆余量不足时应用可能等待 GC 腾出空间，形成 allocation stall。
+- Generational ZGC 还应观察年轻/老年代行为和晋升压力，不能套用非分代 ZGC 的旧图景。
+- 低暂停指标只说明 VM 停顿短，不代表端到端延迟一定低。
+
+## 07-OOM与现场保全
+Q: 线上发生 OOM 时怎样保全现场而不制造二次故障？
+A:
+- 可配置 `-XX:+HeapDumpOnOutOfMemoryError` 和可控的 dump 路径，但必须评估文件大小、磁盘空间和写盘时间。
+- `HeapDumpPath` 指向有容量、权限和采集流程的持久卷；不要默认写满容器根盘。
+- heap dump 适合堆对象问题；Metaspace/线程/native 问题还需要 classloader stats、thread dump、NMT 和系统指标。
+- 明确 OOM 后是否退出并由编排系统重启；半失效进程继续接流量通常比快速失败更危险。
+- dump 可能包含用户数据、密钥和业务内容，传输、存储与访问必须按敏感数据治理。
+
+## 08-正确性审查
+Q: JVM 调优中哪些动作风险最高？
+A:
+- 不理解就复制几十个 `-XX` 参数，会冻结旧版本经验并干扰新 JDK 自适应策略。
+- 只看平均暂停，忽略 p99/p999、GC CPU、allocation stall 和业务吞吐。
+- 看到 OOM 就增加堆，可能挤压 native memory 并延长最坏停顿。
+- 继续教授 `UseConcMarkSweepGC`、`CMSInitiatingOccupancyFraction` 等 CMS 参数作为当前方案。
+- 没有压测与回滚基线就一次修改多项参数，最终无法判断哪个变化产生效果。

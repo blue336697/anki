@@ -16,17 +16,20 @@ sys.path.insert(0, str(SKILL_DIR / 'scripts'))
 from apkg_builder import make_deck, add_basic, add_cloze, img, build, make_front, code
 
 PROBLEMS_DIR = TOPIC_DIR / 'problems'
+KNOWLEDGE_DIR = TOPIC_DIR / 'knowledge'
 OUTPUT_PATH = REPO_ROOT / '牌组' / '算法' / '动态规划.apkg'
 
 
 def parse_md(md_path: Path) -> dict:
-    """Parse a problem md file into {title, sections: {name: content}}."""
+    """Parse a problem md file, including an optional live-Anki deck alias."""
     text = md_path.read_text(encoding='utf-8')
 
     title_match = re.search(r'^# (.+)$', text, re.MULTILINE)
     if not title_match:
         raise ValueError(f"No title in {md_path}")
     title = title_match.group(1).strip()
+    deck_match = re.search(r'^<!--\s*anki-deck:\s*(.+?)\s*-->$', text, re.MULTILINE)
+    deck_title = deck_match.group(1).strip() if deck_match else title
 
     sections: dict[str, str] = {}
     section_heads = list(re.finditer(r'^## (.+)$', text, re.MULTILINE))
@@ -36,7 +39,7 @@ def parse_md(md_path: Path) -> dict:
         end = section_heads[i + 1].start() if i + 1 < len(section_heads) else len(text)
         sections[name] = text[start:end].strip()
 
-    return {'title': title, 'sections': sections}
+    return {'title': title, 'deck_title': deck_title, 'sections': sections}
 
 
 def process_body_with_images(text: str) -> str:
@@ -94,17 +97,31 @@ def process_body_with_images(text: str) -> str:
 
 def build_apkg() -> str:
     """Read all problem mds and generate APKG."""
-    # Template deck
-    d0 = make_deck(1747300100, '算法::动态规划::算法模板')
-    add_cloze(d0,
-        '状态转移核心模式：dp[i] = {{c1::max/min}}( {{c1::dp[i-1]}}, {{c1::dp[i-2] + ...}} )',
-        '最值型 DP：分类讨论"选或不选"取最优')
-    add_cloze(d0,
-        '降维关键：倒序防 {{c1::重复使用}}，正序允许 {{c1::无限次使用}}',
-        '0-1 背包倒序，完全背包正序')
+    # Principle cards are Markdown-backed too; Python must not hardcode content.
+    for index, md_path in enumerate(sorted(KNOWLEDGE_DIR.glob('*.md'))):
+        data = parse_md(md_path)
+        d0 = make_deck(1747300100 + index, f"算法::动态规划::{data['deck_title']}")
+        for sec_name, sec_content in data['sections'].items():
+            text_match = re.search(
+                r'^Text:\s*(.+?)(?=^Back Extra:|\Z)',
+                sec_content,
+                re.MULTILINE | re.DOTALL,
+            )
+            extra_match = re.search(
+                r'^Back Extra:\s*(.*)$',
+                sec_content,
+                re.MULTILINE | re.DOTALL,
+            )
+            if not text_match:
+                raise ValueError(f'Missing Text in {md_path} section {sec_name}')
+            add_cloze(
+                d0,
+                text_match.group(1).strip(),
+                extra_match.group(1).strip() if extra_match else '',
+            )
 
     md_files = sorted(PROBLEMS_DIR.glob('*.md'))
-    # Skip template/empty decks (not real problems)
+    # Historical placeholder; principle cards now live under knowledge/.
     skip_files = {'原理通识.md'}
     md_files = [f for f in md_files if f.name not in skip_files]
     deck_id = 1747300101
@@ -117,9 +134,10 @@ def build_apkg() -> str:
     for md_path in md_files:
         data = parse_md(md_path)
         title = data['title']
+        deck_title = data['deck_title']
         sections = data['sections']
 
-        d = make_deck(deck_id, f'算法::动态规划::{title}')
+        d = make_deck(deck_id, f'算法::动态规划::{deck_title}')
         deck_id += 1
 
         for sec_name, sec_content in sections.items():

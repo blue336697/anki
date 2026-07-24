@@ -1,4 +1,6 @@
 # 数组中的第K个最大元素
+<!-- aliases: 数据流第K大 -->
+<!-- tags: source::leetcode source::字节 pattern::TopK -->
 
 ## 题干
 给定整数数组 nums 和整数 k，返回数组中第 k 个最大的元素。
@@ -15,6 +17,8 @@ heapify三步：(1)找largest (2)不相等则swap (3)递归向下调整
 维护大小为 k 的小顶堆，堆顶即第 k 大。
 
 ```java
+import java.util.PriorityQueue;
+
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
@@ -79,7 +83,43 @@ PriorityQueue小顶堆法：
 
 ## 复杂度(自实现大根堆)
 自实现大根堆法：
-时间 {{c1::O(n log n)}}
-推导：建堆O(n)，但k次heapify每次O(log n) → 实际k次调整即O(k log n)，最坏k=n时为O(n log n)
+时间 {{c1::O(n + k log n)}}
+推导：Floyd 自底向上建堆 O(n)，之后做 k-1 次交换与向下调整，每次 O(log n)；当 k=n 时最坏 O(n log n)
 空间 {{c1::O(1)}}
 推导：原地建堆，全部操作在原数组上进行
+
+## 字节变形：数据流第 K 大
+初始化时给定 k 和一批初始数字，之后不断调用 `add(value)`，每次都返回当前数据流中的第 k 大元素。
+
+离线数组可以使用快速选择或原地堆；数据流无法预知未来元素，也不能每次重新排序。应长期维护一个大小不超过 k 的小根堆：
+
+- 堆内保存{{c1::当前最大的 k 个元素}}
+- 堆顶是这 k 个元素中最小的，因此正好是{{c1::全局第 k 大}}
+- 新元素入堆后若大小超过 k，弹出堆顶
+
+单次 `add` 时间 O(log k)，长期空间 O(k)。重复值按出现次数计入排名。
+
+## 题解(数据流小根堆)
+```java
+import java.util.PriorityQueue;
+
+class KthLargest {
+    private final int k;
+    private final PriorityQueue<Integer> topK = new PriorityQueue<>();
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for (int value : nums) {
+            add(value);
+        }
+    }
+
+    public int add(int value) {
+        topK.offer(value);
+        if (topK.size() > k) {
+            topK.poll();
+        }
+        return topK.peek();
+    }
+}
+```

@@ -12,7 +12,7 @@ A:
   2. 超时获取锁（tryLock(time)），避免无限期等待
   3. 非阻塞获取锁（tryLock()），获取不到立即返回
   4. 多条件等待：一个 Lock 可创建多个 Condition
-- 缺点：必须手动 unlock()（finally 块中），使用更复杂；synchronized 有 JVM 层面的偏向锁/轻量级锁等优化
+- 缺点：必须在 finally 中手动 unlock；synchronized 则由 JVM 保证异常退出时释放，并持续享受锁消除、锁粗化和轻量/膨胀路径等运行时优化
 - 面试表达：Lock 不是替代 synchronized，而是在 synchronized 不够灵活的场合使用。90% 的场景 synchronized 足够
 
 ## 机制卡
@@ -46,7 +46,7 @@ A:
 ## 边界卡
 Q: Lock 接口和 synchronized 各自的适用场景？如何选择？
 A:
-- 优先 synchronized：逻辑简单、不需要中断/超时、锁持有时间短。JVM 有偏向锁/轻量级锁/锁粗化/锁消除等自动优化
+- 优先 synchronized：逻辑简单、不需要中断/超时、锁持有时间短。现代 JVM 有轻量锁、锁膨胀、锁粗化、锁消除等优化；偏向锁属于已退出默认路径的历史机制
 - 选择 Lock 的场景：需要尝试获取锁（tryLock）、需要可中断的锁获取、需要超时等待、需要多条件等待（多个 Condition）、需要在不同方法中获取和释放锁
 - 性能考量：JDK 6 之后 synchronized 做了大量优化，轻量级竞争下性能相差无几。高竞争场景下，显式锁的公平性选择和条件队列能提供更好的控制
 - 知名陷阱：Lock 必须 finally 中 unlock，否则异常导致锁永不释放；synchronized 自动释放
